@@ -3,7 +3,6 @@ title: "Datos"
 format: html
 ---
 
-
 ```{r}
 library(readr)
 library(dplyr)
@@ -22,6 +21,7 @@ head(DF_diario)
 ```{r}
 names(DF_diario)
 ```
+
 ```{r}
 names(DF_demo)
 ```
@@ -57,7 +57,6 @@ DF_exam %>%
          ) -> DF_exam
 ```
 
-
 ```{r}
 
 subset1 <- select(DF_diario, Cod, Registro, Horas, Consultas, Comprension, Satisfaccion, Uso, Sensacion)
@@ -69,7 +68,6 @@ dataset_final <- subset1 %>%
   full_join(subset3, by = c("Cod", "Registro"))
 
 ```
-
 
 ```{r}
 
@@ -93,12 +91,25 @@ radiografia <- data.frame(
 radiografia
 ```
 
-#Limpieza de Uso
+##Normalizacion de Uso
+
 ```{r}
 
-sort(table(dataset_final$Uso), decreasing = T)
+DFe <- dataset_final 
 
+sort(table(DFe$Uso), decreasing = T)
+
+DFe <- dataset_final %>%
+  mutate(Uso = case_when(
+    
+    grepl("(?i)ningun|nada|no.*us[eé]", Uso) ~ "No uso IA",
+    grepl("(?i)revisar|repasar|profundizar", Uso) ~ "Repasar conceptos",
+    grepl("(?i)investigar|buscar|consultar", Uso) ~ "Investigar",
+
+    TRUE ~ Uso
+  ))
+print("----------------------------------")
+sort(table(DFe$Uso), decreasing = T)
 
 
 ```
-
