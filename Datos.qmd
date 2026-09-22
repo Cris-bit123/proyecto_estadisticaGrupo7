@@ -1,0 +1,113 @@
+---
+title: "Datos"
+format: html
+---
+
+
+```{r}
+library(readr)
+library(dplyr)
+```
+
+```{r}
+DF_diario <- read_csv("diario.csv")
+DF_exam <- read_csv("examenes.csv")
+DF_demo <- read_csv("demograficos.csv")
+```
+
+```{r}
+head(DF_diario)
+```
+
+Recomendaciones:
+
++ Adecuar los nombres de las variables usando la función `rename`.
+
++ Dar una descripción detallada de los tipos y valores admisibles para cada variable y colocarlo todo en la **libreta de códigos**.
+
++ Establecer las políticas de manejo de errores obvios y datos faltantes.
+
+
+```{r}
+names(DF_diario)
+```
+```{r}
+names(DF_demo)
+```
+
+```{r}
+names(DF_diario)
+```
+
+```{r}
+names(DF_exam)
+```
+
+```{r}
+DF_diario %>% 
+  rename(Cod = `Dirección de correo electrónico`
+         , Registro = `Marca temporal`,
+         Horas = `¿Cuántas horas dormiste la noche pasada?`,
+         Consultas = `¿Cuántas consultas a una IA realizaste hoy?`,
+         Comprension = `¿Qué nivel de comprensión tuviste de las actividades académicas que realizaste hoy?`,
+         Satisfaccion = `¿Qué nivel de satisfacción tienes con tu avance académico de hoy?`,
+         Uso = `¿Cuál fue el uso principal que le diste a la IA hoy?`,
+         Sensacion = `¿Cuál fue tu sensación principal después de usar la IA hoy?`
+         ) -> DF_diario
+DF_demo %>% 
+  rename(Cod = `Dirección de correo electrónico`
+         , Registro = `Marca temporal`
+         , Creditos = `cantidad de créditos académicos cursados en el ciclo regular ( colocar solo el número  )`
+         ) -> DF_demo
+DF_exam %>% 
+  rename(Cod = `Dirección de correo electrónico`
+         , Registro = `Marca temporal`,
+          Nota = `Nota del examen`,
+         ) -> DF_exam
+```
+
+
+```{r}
+
+subset1 <- select(DF_diario, Cod, Registro, Horas, Consultas, Comprension, Satisfaccion, Uso, Sensacion)
+subset2 <- select(DF_demo, Cod, Registro, Creditos)
+subset3 <- select(DF_exam, Cod, Registro, Nota)
+
+dataset_final <- subset1 %>%
+  full_join(subset2, by = c("Cod", "Registro")) %>%
+  full_join(subset3, by = c("Cod", "Registro"))
+
+```
+
+
+```{r}
+
+correos <- c("cristobal.aranda@utec.edu.pe", "pedro.chavez@utec.edu.pe", "rodrigo.sanchez.m@utec.edu.pe", "joaquin.temoche@utec.edu.pe", "victor.tipe@utec.edu.pe")
+
+temp <- dataset_final %>% filter(Cod %in% correos)
+
+```
+
+```{r}
+
+radiografia <- data.frame(
+  Variable = names(dataset_final),
+  NAs = colSums(is.na(dataset_final)),
+  Datos_Llenos = colSums(!is.na(dataset_final)),
+  Total_Filas = nrow(dataset_final)
+)
+
+
+
+radiografia
+```
+
+#Limpieza de Uso
+```{r}
+
+sort(table(dataset_final$Uso), decreasing = T)
+
+
+
+```
+
