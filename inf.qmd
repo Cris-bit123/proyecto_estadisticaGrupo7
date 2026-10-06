@@ -1,7 +1,398 @@
 ---
-title: "Proyecto de Estadistica"
-format: html
-editor: visual
+title: "Avance 3 - PG1: Proyecto de Estadística"
+subtitle: "Estadística y Probabilidades I (CC1105)"
+author:
+  - Cristobal Javier Aranda Gallardo
+  - Pedro Máximo Chávez Oscanoa
+  - Rodrigo Sebastian Sanchez Mosquera
+  - Joaquín Antonio Temoche Sánchez
 ---
 
-## INFORME
+## Introducción
+
+Nuestro tema en cuestion trata sobre la relación entre las horas de sueño, el uso de Inteligencia Artificial y el rendimiento académico en nuestra sección de Estadística y Probabilidades. Es relvevante discutir al respecto ya que nos da la oportunidad de investigar de forma más analítica como varía el desempeño de un grupo universitario. Factores como el sueño o la IA tienen su impacto en la vida diaria de los estudiantes, y es posible que se puedan encontrar alguna tendencia que involucre ambas en el rendimiento académico.
+
+## Tema
+
+Relación entre las horas de sueño, el uso de Inteligencia Artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades 1, sección 1 durante el ciclo 2026-2
+
+## Objetivos
+
+### Objetivo general
+
+Evaluar la relación entre las horas de sueño, el uso de herramientas de inteligencia artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades 1, sección 1, durante el ciclo 2026-2.
+
+### Objetivos específicos
+
+1.  Analizar la relación entre la cantidad de horas de sueño y el rendimiento académico de los estudiantes de Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2.
+
+2.  Analizar la relación entre las características del uso de herramientas de inteligencia artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2, considerando la intensidad de uso y la utilidad percibida de estas herramientas.
+
+3.  Describir las correlación entre las horas de sueño y el nivel de compresión de las actividades académicas realizadas en los estudiantes de Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2.
+
+## Datos
+
+### Población y Muestra
+
+- **Población:** Todos los estudiantes matriculados en Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2.
+- **Muestra:** Estudiantes de Estadística y Probabilidades I, sección 1, que participen en la recolección de datos y completen correctamente el formulario en el periodo establecido.
+
+### Instrumento de recolección
+
+Formulario de Google Forms de aplicación periódica, compuesto por preguntas obligatorias destinadas a registrar las horas de sueño, el rendimiento académico y diferentes características del uso de herramientas de inteligencia artificial por parte de los estudiantes, como la cantidad de consultas realizadas, los días de uso, la utilidad percibida y la principal finalidad académica.
+
+## Variables a utilizar
+
+| Variable | Tipo | Ejemplo de medición |
+|------------------------|------------------------|------------------------|
+| Horas promedio de sueño por noche | Cuantitativa continua | 5.5 h/6h/7.25h |
+| Nota o promedio actual en el curso | Cuantitativa continua | 12.5/14.8/16/18.5 |
+| Número de consultas realizadas a herramientas de IA durante la última semana | Cuantitativa discreta | 0/3/8/15/20 |
+| Cantidad de créditos académicos cursados en el ciclo regular | Cuantitativa discreta | 5/10/14/18/22 |
+| Nivel de comprensión de las actividades académicas realizadas ese dia | Cualitativa ordinal | Muy bajo / Bajo / Moderado / Alto / Muy alto |
+| Satisfacción con el rendimiento académico actual | Cualitativa ordinal | Muy insatisfecho / Insatisfecho / Neutral / Satisfecho / Muy satisfecho |
+| Principal finalidad académica para la que utiliza IA | Cualitativa Nominal | Resolver ejercicios / Explicar temas / Resumir / Revisar respuestas / No uso IA |
+| ¿Cuál fue tu sensación principal después de usar la IA hoy? | Cualitativa Nominal | Confianza / Alivio / Frustración / Indiferencia / No usó IA ese día |
+
+## Limpieza
+
+Durante la recolección, debido a la naturalidad del como estaba estructurado el forms, no habian valores NULLS que tratar ya que todas las preguntas eran obligatorias, por lo que no habia forma de que hubieran observaciones incompletas. Por otro lado, si bien varias preguntas eran de opción multiple, habían preguntas que te dejaban escribir tu propia opción, lo que nos dió una variedad de respuestas. Determinamos que para la variable "Uso", habían 5 respuestas principales:\
+-"Resolver ejercicios"\
+-"Resumir\
+-"Programar"\
+-"Redactar"\
+-"No uso IA"\
+Como las demas respuestas era diferentes entre si pero menores en cantidad comparadas a las demás, todas se juntaron a una sola categoría denominada "Otros".
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+DF_diario <- read_csv("diario.csv")
+DF_exam <- read_csv("examenes.csv")
+DF_demo <- read_csv("demograficos.csv")
+```
+
+```{r}
+DF_diario %>% 
+  rename(Cod = `Dirección de correo electrónico`
+         , Registro = `Marca temporal`,
+         Horas = `¿Cuántas horas dormiste la noche pasada?`,
+         Consultas = `¿Cuántas consultas a una IA realizaste hoy?`,
+         Comprension = `¿Qué nivel de comprensión tuviste de las actividades académicas que realizaste hoy?`,
+         Satisfaccion = `¿Qué nivel de satisfacción tienes con tu avance académico de hoy?`,
+         Uso = `¿Cuál fue el uso principal que le diste a la IA hoy?`,
+         Sensacion = `¿Cuál fue tu sensación principal después de usar la IA hoy?`
+         ) -> DF_diario
+DF_demo %>% 
+  rename(Cod = `Dirección de correo electrónico`
+         , Registro = `Marca temporal`
+         , Creditos = `cantidad de créditos académicos cursados en el ciclo regular ( colocar solo el número  )`
+         ) -> DF_demo
+DF_exam %>% 
+  rename(Cod = `Dirección de correo electrónico`
+         , Registro = `Marca temporal`,
+          Nota = `Nota del examen`,
+         ) -> DF_exam
+```
+
+```{r}
+subset_diario <- select(DF_diario, Cod, Horas, Consultas, Comprension, Satisfaccion, Uso, Sensacion)
+subset_demo<- select(DF_demo, Cod, Creditos)
+subset_exam <- select(DF_exam, Cod, Nota)
+
+```
+
+## Codificación de variables categóricas
+
+Las variables ordinales se codifican como factores ordenados, respetando el orden conceptual de sus categorías. Las variables nominales se codifican como factores no ordenados.
+
+```{r}
+subset_diario <- subset_diario %>%
+  mutate(
+   # Continua
+    Horas = as.numeric(Horas),
+    
+    # Discreta
+    Consultas = as.integer(Consultas),
+    
+    # Cualitativa ordinal
+    # Muy bajo < Bajo < Moderado < Alto < Muy alto
+    Comprension = factor(
+      trimws(as.character(Comprension)),
+      levels = c("Muy bajo", "Bajo", "Moderado", "Alto", "Muy alto"),
+      ordered = TRUE
+    ),
+
+    # Cualitativa ordinal
+    # 1 < 2 < 3 < 4 < 5
+    Satisfaccion = factor(
+      trimws(as.character(Satisfaccion)),
+      levels = c("1", "2", "3", "4", "5"),
+      ordered = TRUE
+    ),
+
+    # Limpieza de la variable Uso
+    Uso = case_when(
+      grepl("(?i)ningun|nada|no.*us[eé]|nothing", Uso) ~ "No uso IA",
+      Uso %in% c("Resolver ejercicios", "Resumir", "Programar", "Redactar", "No uso IA") ~ Uso,
+      TRUE ~ "Otros"
+    ),
+
+    # Cualitativa nominal
+    Uso = factor(Uso, ordered = FALSE),
+
+    # Cualitativa nominal
+    Sensacion = factor(
+      trimws(as.character(Sensacion)),
+      ordered = FALSE
+    )
+  )
+
+
+subset_demo <- subset_demo %>%
+  mutate(
+    Creditos = as.integer(Creditos))
+
+subset_exam <- subset_exam %>%
+  mutate(
+    Nota = as.numeric(Nota))
+```
+
+## Comprobación de la codificación
+
+```{r}
+str(subset_diario)
+summary(subset_diario)
+
+levels(subset_diario$Comprension)
+levels(subset_diario$Satisfaccion)
+levels(subset_diario$Uso)
+levels(subset_diario$Sensacion)
+
+is.factor(subset_diario$Comprension)
+is.ordered(subset_diario$Comprension)
+
+is.factor(subset_diario$Satisfaccion)
+is.ordered(subset_diario$Satisfaccion)
+
+is.factor(subset_diario$Uso)
+is.ordered(subset_diario$Uso)
+
+is.factor(subset_diario$Sensacion)
+is.ordered(subset_diario$Sensacion)
+```
+
+## Identificación del Grupo 7
+
+```{r}
+correos <- c(
+  "cristobal.aranda@utec.edu.pe",
+  "pedro.chavez@utec.edu.pe",
+  "rodrigo.sanchez.m@utec.edu.pe",
+  "joaquin.temoche@utec.edu.pe",
+  "victor.tipe@utec.edu.pe"
+)
+
+grupo7_diario <- subset_diario %>% filter(Cod %in% correos)
+grupo7_demo <- subset_demo %>% filter(Cod %in% correos)
+grupo7_exam <- subset_exam %>% filter(Cod %in% correos)
+```
+
+## Radiografía de las bases
+
+No se realiza un `full_join()` directo entre las tres bases porque un mismo estudiante puede tener múltiples registros en más de una tabla. Una unión únicamente por `Cod` podría multiplicar artificialmente las observaciones. Por ello, las bases se conservan separadas hasta definir una regla de correspondencia entre registros.
+
+```{r}
+radiografia <- function(datos) {
+  data.frame(
+    Variable = names(datos),
+    NAs = colSums(is.na(datos)),
+    Datos_Llenos = colSums(!is.na(datos)),
+    Total_Filas = nrow(datos)
+  )
+}
+
+radiografia_diario <- radiografia(subset_diario)
+radiografia_demo <- radiografia(subset_demo)
+radiografia_exam <- radiografia(subset_exam)
+
+radiografia_diario
+radiografia_demo
+radiografia_exam
+```
+
+## Horas
+
+Calculamos la media y la mediana como medidas de posición y la Desviación Estándar y el Rango Intercuartil como medidas de dispersión.
+
+La media nos da el promedio aritmético, pero se puede ver afectado a valores muy grandes o pequeños . Por otro lado, la mediana nos dara el valor que está exactamente en el medio. Al compararlas podemos analizar que si la media es muy distinta a la mediana, significa que hay valores extremos que tiran del promedio, pero si son similares, el sueño en el salón es más simétrico.
+
+La desviación estándar nos indica cuántas horas, en promedio, se alejan los alumnos de la media global. El rango intercuartil nos indica en qué rango de horas de sueño se concentra el 50% central de los estudiantes, ignorando a los que duermen muy poco o en exceso.
+
+```{r}
+
+
+summary(subset_diario$Horas)
+
+
+media_horas <- mean(subset_diario$Horas, na.rm = TRUE)
+mediana_horas <- median(subset_diario$Horas, na.rm = TRUE)
+sd_horas <- sd(subset_diario$Horas, na.rm = TRUE)
+iqr_horas <- IQR(subset_diario$Horas, na.rm = TRUE)
+
+cat("Media:", media_horas, "\nMediana:", mediana_horas, 
+    "\nDesv. Estándar:", sd_horas, "\nIQR:", iqr_horas)
+
+
+ggplot(subset_diario, aes(x = Horas)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "black", alpha = 0.7) +
+  geom_vline(aes(xintercept = media_horas), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = mediana_horas), color = "green", linetype = "solid", size = 1) +
+  labs(title = "Distribución de las Horas de Sueño",
+       subtitle = "Rojo = Media | Verde = Mediana",
+       x = "Horas de Sueño",
+       y = "Frecuencia (Cantidad de alumnos)") +
+  theme_minimal()
+
+```
+
+## Consultas
+
+Se puede notar como la mayoría de estudiantes hcae pocas consultas usualmente, pero también es posible que a veces se hacen consultas más numerosas. Por ello, la medida de posición más confiable aquí es la mediana, junto con el rango (mínimo y máximo) y el IQR para la dispersión.
+
+La mediana sería la descripcion más adecuada, si se usará la media, es probable que aquellas observaciones que contienen las consultas numerosas muevan el promedio, y esto no representaria al publico general.
+
+El rango nos revela los extremos absolutos de uso en el salón, y para medir la variabilidad en la cantidad de consultas a la IA, el rango intercuartil permite hacer esto de forma que aquellos valores más altos no influyan enormemente en el nivel de dispersión del rango de consultas
+
+```{r}
+
+mediana_consultas <- median(subset_diario$Consultas, na.rm = TRUE)
+cuartiles_consultas <- quantile(subset_diario$Consultas, probs = c(0.25, 0.75), na.rm = TRUE)
+iqr_consultas <- IQR(subset_diario$Consultas, na.rm = TRUE)
+rango_consultas <- range(subset_diario$Consultas, na.rm = TRUE)
+
+cat("Mediana (Posición central):", mediana_consultas, "\n")
+cat("Mínimo:", rango_consultas[1], "| Máximo:", rango_consultas[2], "\n")
+cat("El 50% central de los alumnos realiza entre", cuartiles_consultas[1], "y", cuartiles_consultas[2], "consultas.\n")
+cat("Rango Intercuartílico (IQR):", iqr_consultas, "\n")
+```
+
+## Comprension
+
+Utilizamos la mediana y la moda como medidas de posición, y la Distribución de Frecuencias Relativas para evaluar la dispersión.
+
+Al ser una variable ordinal, sus categorías tienen una jerarquía lógica de "Muy bajo" a "Muy alto". Aunque no podemos calcular un promedio matemático, la mediana nos permite identificar el punto de quiebre donde se sitúa el 50% de la clase, mientras que la moda nos indica la sensación más predominante.\\
+
+La dispersión se justifica a través de los porcentajes relativos, esto nos revela si el salón tiene baja ("Moderado") o alta dispersión ("Muy bajo" y "Muy alto")
+
+```{r}
+
+tabla_comprension <- table(subset_diario$Comprension)
+prop_comprension <- prop.table(tabla_comprension) * 100
+prop_comprension
+
+moda_comprension <- names(tabla_comprension)[which.max(tabla_comprension)]
+
+mediana_comprension_idx <- median(as.numeric(subset_diario$Comprension), na.rm = TRUE)
+mediana_comprension <- levels(subset_diario$Comprension)[mediana_comprension_idx]
+
+cat("La Moda es:", moda_comprension, "\nLa Mediana se ubica en:", mediana_comprension, "\n")
+
+
+library(ggplot2)
+ggplot(subset_diario[!is.na(subset_diario$Comprension), ], aes(x = Comprension)) +
+  geom_bar(fill = "#4C72B0", color = "black", alpha = 0.8) +
+  labs(title = "Distribución del Nivel de Comprensión Académica",
+       x = "Nivel Percibido",
+       y = "Frecuencia (Alumnos)") +
+  theme_minimal()
+
+```
+
+##Uso
+
+Ante esta variable nominal, sus categorias son independientes y carecen de un orden jerárquico, por lo que la única medida de posició es la moda.
+
+Para medir su variabilidad o dispersión, recurrimos al análisis porcentual de sus frecuencias, esto nos ayudará a entender que tan concentrados o diversos está cada una de estas categorias.
+
+```{r}
+
+
+tabla_uso <- table(subset_diario$Uso)
+prop_uso <- prop.table(tabla_uso) * 100
+
+
+prop_uso_ordenada <- sort(prop_uso, decreasing = TRUE)
+
+cat("Distribución porcentual de los usos de IA:\n")
+print(round(prop_uso_ordenada, 2))
+
+moda_uso <- names(prop_uso_ordenada)[1]
+porcentaje_moda <- round(prop_uso_ordenada[1], 2)
+
+cat("\nConclusión Descriptiva:\n")
+cat("La Moda es '", moda_uso, "', concentrando un ", porcentaje_moda, "% del total de las respuestas registradas.\n", sep = "")
+
+```
+
+## Análisis de Interacción
+
+### Relación entre Horas de Sueño y Nivel de Comprensión
+
+Para evaluar la interacción entre una variable cuantitativa continua (`Horas` de sueño) y una cualitativa ordinal (`Comprension`), se calcula el resumen de medidas de tendencia central y dispersión (Media, Mediana y Desviación Estándar) de las horas de sueño agrupadas por cada nivel de comprensión.\\
+
+De esta forma podremos comparar directamente si los estudiantes que reportan un nivel de comprensión "Alto" o "Muy alto" presentan, en promedio, patrones de sueño distintos  frente a los que reportan un nivel "Bajo" o "Muy bajo".
+
+Para la visualización utilizaremos Boxplotes. Nos permite observar en paralelo las medianas (línea central de la caja), la dispersión del 50% central (tamaño de la caja) y la presencia de valores atípicos en las horas de sueño para cada uno de los cinco niveles de comprensión percibida.
+
+```{r}
+
+
+# 1. Tabla de resumen numérico agrupado
+resumen_bivariado <- subset_diario %>%
+  filter(!is.na(Comprension) & !is.na(Horas)) %>%
+  group_by(Comprension) %>%
+  summarise(
+    Cantidad_Alumnos = n(),
+    Media_Horas = round(mean(Horas), 2),
+    Mediana_Horas = median(Horas),
+    Desv_Estandar = round(sd(Horas), 2)
+  )
+
+cat("Resumen de Horas de Sueño por Nivel de Comprensión:\n")
+print(resumen_bivariado)
+
+# 2. Gráfico de cajas comparativo
+ggplot(subset_diario %>% filter(!is.na(Comprension) & !is.na(Horas)), 
+       aes(x = Comprension, y = Horas, fill = Comprension)) +
+  geom_boxplot(alpha = 0.7, color = "black", outlier.color = "red", outlier.shape = 16) +
+  labs(title = "Distribución de Horas de Sueño según el Nivel de Comprensión",
+       subtitle = "Comparación de medianas y dispersión por categoría",
+       x = "Nivel de Comprensión",
+       y = "Horas de Sueño") +
+  scale_fill_brewer(palette = "Blues") + # Paleta de colores secuencial
+  theme_minimal() +
+  theme(legend.position = "none") # Ocultamos leyenda porque el eje X ya lo explica
+```
+A partir del análisis entre las horas de sueño y el nivel de comprensión percibido, se pueden notas ciertas particularidades:
+
+* La espectativa inicial es que si estás bien descanzado, rendirás mejor, pero los datos revelan que la mediana de sueño se mantiene constante en 7 horas para la gran mayoría de los niveles de comprensión.
+
+* El pequeño grupo de estudiantes que reportó el menor nivel de comprensión  fue el que registró la mayor cantidad de horas de sueño, lo cual es lo opuesto de la espectativa inicial. Tambien se puede ver en la amplitud de su caja y su desviación estándar que que este grupo posee los hábitos de sueño más irregulares.
+
+* El diagrama de cajas permite identificar casos atípicos de estudiantes que reportaron dormir cantidades mínimas, y a pesar de esto, estos alumnos lograron posicionarse en los niveles de comprensión "Moderado" e incluso "Alto".
+
+De por si se podría argumentar que este análisis contradice los resultados que se esperaban inicialmente en esta relación, y resulta que el sueño, por si sola, no ha sido un factor que influye directamente con el nivel de comprensión en este grupo de estudiantes.
+
+## *Hacer el analisis bivariable entre las otras variables segun nuestro objetivos especificos**
+
+
+## Conclusiones
+
+Ante el analisis realizado en estas variables, resulta interesante saber que, por medios de estos metodos, llega a desafiar las expectativas iniciales que uno tiene al momento de relacionar estas variables. Tambíen invita a considerar otras opciones, descartando interacciones que  parecen no tener bastante relevancia entre si.
+
+

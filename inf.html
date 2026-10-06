@@ -6,8 +6,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Cristobal Javier Aranda Gallardo">
+<meta name="author" content="Pedro Máximo Chávez Oscanoa">
+<meta name="author" content="Rodrigo Sebastian Sanchez Mosquera">
+<meta name="author" content="Joaquín Antonio Temoche Sánchez">
 
-<title>Proyecto de Estadistica</title>
+<title>Avance 3 - PG1: Proyecto de Estadística</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -22,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -49,13 +88,23 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Proyecto de Estadistica</h1>
+<h1 class="title">Avance 3 - PG1: Proyecto de Estadística</h1>
+<p class="subtitle lead">Estadística y Probabilidades I (CC1105)</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Cristobal Javier Aranda Gallardo </p>
+             <p>Pedro Máximo Chávez Oscanoa </p>
+             <p>Rodrigo Sebastian Sanchez Mosquera </p>
+             <p>Joaquín Antonio Temoche Sánchez </p>
+          </div>
+  </div>
     
   
     
@@ -66,8 +115,608 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="informe" class="level2">
-<h2 class="anchored" data-anchor-id="informe">INFORME</h2>
+<section id="introducción" class="level2">
+<h2 class="anchored" data-anchor-id="introducción">Introducción</h2>
+<p>Nuestro tema en cuestion trata sobre la relación entre las horas de sueño, el uso de Inteligencia Artificial y el rendimiento académico en nuestra sección de Estadística y Probabilidades. Es relvevante discutir al respecto ya que nos da la oportunidad de investigar de forma más analítica como varía el desempeño de un grupo universitario. Factores como el sueño o la IA tienen su impacto en la vida diaria de los estudiantes, y es posible que se puedan encontrar alguna tendencia que involucre ambas en el rendimiento académico.</p>
+</section>
+<section id="tema" class="level2">
+<h2 class="anchored" data-anchor-id="tema">Tema</h2>
+<p>Relación entre las horas de sueño, el uso de Inteligencia Artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades 1, sección 1 durante el ciclo 2026-2</p>
+</section>
+<section id="objetivos" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos">Objetivos</h2>
+<section id="objetivo-general" class="level3">
+<h3 class="anchored" data-anchor-id="objetivo-general">Objetivo general</h3>
+<p>Evaluar la relación entre las horas de sueño, el uso de herramientas de inteligencia artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades 1, sección 1, durante el ciclo 2026-2.</p>
+</section>
+<section id="objetivos-específicos" class="level3">
+<h3 class="anchored" data-anchor-id="objetivos-específicos">Objetivos específicos</h3>
+<ol type="1">
+<li><p>Analizar la relación entre la cantidad de horas de sueño y el rendimiento académico de los estudiantes de Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2.</p></li>
+<li><p>Analizar la relación entre las características del uso de herramientas de inteligencia artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2, considerando la intensidad de uso y la utilidad percibida de estas herramientas.</p></li>
+<li><p>Describir las correlación entre las horas de sueño y el nivel de compresión de las actividades académicas realizadas en los estudiantes de Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2.</p></li>
+</ol>
+</section>
+</section>
+<section id="datos" class="level2">
+<h2 class="anchored" data-anchor-id="datos">Datos</h2>
+<section id="población-y-muestra" class="level3">
+<h3 class="anchored" data-anchor-id="población-y-muestra">Población y Muestra</h3>
+<ul>
+<li><strong>Población:</strong> Todos los estudiantes matriculados en Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2.</li>
+<li><strong>Muestra:</strong> Estudiantes de Estadística y Probabilidades I, sección 1, que participen en la recolección de datos y completen correctamente el formulario en el periodo establecido.</li>
+</ul>
+</section>
+<section id="instrumento-de-recolección" class="level3">
+<h3 class="anchored" data-anchor-id="instrumento-de-recolección">Instrumento de recolección</h3>
+<p>Formulario de Google Forms de aplicación periódica, compuesto por preguntas obligatorias destinadas a registrar las horas de sueño, el rendimiento académico y diferentes características del uso de herramientas de inteligencia artificial por parte de los estudiantes, como la cantidad de consultas realizadas, los días de uso, la utilidad percibida y la principal finalidad académica.</p>
+</section>
+</section>
+<section id="variables-a-utilizar" class="level2">
+<h2 class="anchored" data-anchor-id="variables-a-utilizar">Variables a utilizar</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Tipo</th>
+<th>Ejemplo de medición</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Horas promedio de sueño por noche</td>
+<td>Cuantitativa continua</td>
+<td>5.5 h/6h/7.25h</td>
+</tr>
+<tr class="even">
+<td>Nota o promedio actual en el curso</td>
+<td>Cuantitativa continua</td>
+<td>12.5/14.8/16/18.5</td>
+</tr>
+<tr class="odd">
+<td>Número de consultas realizadas a herramientas de IA durante la última semana</td>
+<td>Cuantitativa discreta</td>
+<td>0/3/8/15/20</td>
+</tr>
+<tr class="even">
+<td>Cantidad de créditos académicos cursados en el ciclo regular</td>
+<td>Cuantitativa discreta</td>
+<td>5/10/14/18/22</td>
+</tr>
+<tr class="odd">
+<td>Nivel de comprensión de las actividades académicas realizadas ese dia</td>
+<td>Cualitativa ordinal</td>
+<td>Muy bajo / Bajo / Moderado / Alto / Muy alto</td>
+</tr>
+<tr class="even">
+<td>Satisfacción con el rendimiento académico actual</td>
+<td>Cualitativa ordinal</td>
+<td>Muy insatisfecho / Insatisfecho / Neutral / Satisfecho / Muy satisfecho</td>
+</tr>
+<tr class="odd">
+<td>Principal finalidad académica para la que utiliza IA</td>
+<td>Cualitativa Nominal</td>
+<td>Resolver ejercicios / Explicar temas / Resumir / Revisar respuestas / No uso IA</td>
+</tr>
+<tr class="even">
+<td>¿Cuál fue tu sensación principal después de usar la IA hoy?</td>
+<td>Cualitativa Nominal</td>
+<td>Confianza / Alivio / Frustración / Indiferencia / No usó IA ese día</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="limpieza" class="level2">
+<h2 class="anchored" data-anchor-id="limpieza">Limpieza</h2>
+<p>Durante la recolección, debido a la naturalidad del como estaba estructurado el forms, no habian valores NULLS que tratar ya que todas las preguntas eran obligatorias, por lo que no habia forma de que hubieran observaciones incompletas. Por otro lado, si bien varias preguntas eran de opción multiple, habían preguntas que te dejaban escribir tu propia opción, lo que nos dió una variedad de respuestas. Determinamos que para la variable “Uso”, habían 5 respuestas principales:<br>
+-“Resolver ejercicios”<br>
+-“Resumir<br>
+-”Programar”<br>
+-“Redactar”<br>
+-“No uso IA”<br>
+Como las demas respuestas era diferentes entre si pero menores en cantidad comparadas a las demás, todas se juntaron a una sola categoría denominada “Otros”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Adjuntando el paquete: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>DF_diario <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"diario.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 345 Columns: 16
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (7): Marca temporal, ¿Cuál fue el uso principal que le diste a la IA hoy...
+dbl (9): ¿Cuántas consultas a una IA realizaste hoy?, ¿Qué nivel de confianz...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>DF_exam <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"examenes.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 80 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (5): Marca temporal, Nota del examen, Cödigo del Curso del examen, Direc...
+dbl (2): Importancia personal del examen respecto al curso (x ∈ {1, 2, 3, 4,...
+lgl (1): Puntuación
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>DF_demo <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"demograficos.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 42 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): Marca temporal, Dirección de correo electrónico
+dbl (2): cantidad de créditos académicos cursados en el ciclo regular ( colo...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>DF_diario <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Cod =</span> <span class="st">`</span><span class="at">Dirección de correo electrónico</span><span class="st">`</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         , <span class="at">Registro =</span> <span class="st">`</span><span class="at">Marca temporal</span><span class="st">`</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Horas =</span> <span class="st">`</span><span class="at">¿Cuántas horas dormiste la noche pasada?</span><span class="st">`</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">Consultas =</span> <span class="st">`</span><span class="at">¿Cuántas consultas a una IA realizaste hoy?</span><span class="st">`</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Comprension =</span> <span class="st">`</span><span class="at">¿Qué nivel de comprensión tuviste de las actividades académicas que realizaste hoy?</span><span class="st">`</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Satisfaccion =</span> <span class="st">`</span><span class="at">¿Qué nivel de satisfacción tienes con tu avance académico de hoy?</span><span class="st">`</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">Uso =</span> <span class="st">`</span><span class="at">¿Cuál fue el uso principal que le diste a la IA hoy?</span><span class="st">`</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">Sensacion =</span> <span class="st">`</span><span class="at">¿Cuál fue tu sensación principal después de usar la IA hoy?</span><span class="st">`</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>         ) <span class="ot">-&gt;</span> DF_diario</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>DF_demo <span class="sc">%&gt;%</span> </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Cod =</span> <span class="st">`</span><span class="at">Dirección de correo electrónico</span><span class="st">`</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>         , <span class="at">Registro =</span> <span class="st">`</span><span class="at">Marca temporal</span><span class="st">`</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>         , <span class="at">Creditos =</span> <span class="st">`</span><span class="at">cantidad de créditos académicos cursados en el ciclo regular ( colocar solo el número  )</span><span class="st">`</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>         ) <span class="ot">-&gt;</span> DF_demo</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>DF_exam <span class="sc">%&gt;%</span> </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Cod =</span> <span class="st">`</span><span class="at">Dirección de correo electrónico</span><span class="st">`</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>         , <span class="at">Registro =</span> <span class="st">`</span><span class="at">Marca temporal</span><span class="st">`</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">Nota =</span> <span class="st">`</span><span class="at">Nota del examen</span><span class="st">`</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>         ) <span class="ot">-&gt;</span> DF_exam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>subset_diario <span class="ot">&lt;-</span> <span class="fu">select</span>(DF_diario, Cod, Horas, Consultas, Comprension, Satisfaccion, Uso, Sensacion)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>subset_demo<span class="ot">&lt;-</span> <span class="fu">select</span>(DF_demo, Cod, Creditos)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>subset_exam <span class="ot">&lt;-</span> <span class="fu">select</span>(DF_exam, Cod, Nota)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="codificación-de-variables-categóricas" class="level2">
+<h2 class="anchored" data-anchor-id="codificación-de-variables-categóricas">Codificación de variables categóricas</h2>
+<p>Las variables ordinales se codifican como factores ordenados, respetando el orden conceptual de sus categorías. Las variables nominales se codifican como factores no ordenados.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>subset_diario <span class="ot">&lt;-</span> subset_diario <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Continua</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Horas =</span> <span class="fu">as.numeric</span>(Horas),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Discreta</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Consultas =</span> <span class="fu">as.integer</span>(Consultas),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cualitativa ordinal</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Muy bajo &lt; Bajo &lt; Moderado &lt; Alto &lt; Muy alto</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Comprension =</span> <span class="fu">factor</span>(</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">trimws</span>(<span class="fu">as.character</span>(Comprension)),</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Muy bajo"</span>, <span class="st">"Bajo"</span>, <span class="st">"Moderado"</span>, <span class="st">"Alto"</span>, <span class="st">"Muy alto"</span>),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cualitativa ordinal</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1 &lt; 2 &lt; 3 &lt; 4 &lt; 5</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Satisfaccion =</span> <span class="fu">factor</span>(</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">trimws</span>(<span class="fu">as.character</span>(Satisfaccion)),</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>),</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Limpieza de la variable Uso</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">Uso =</span> <span class="fu">case_when</span>(</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">grepl</span>(<span class="st">"(?i)ningun|nada|no.*us[eé]|nothing"</span>, Uso) <span class="sc">~</span> <span class="st">"No uso IA"</span>,</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>      Uso <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Resolver ejercicios"</span>, <span class="st">"Resumir"</span>, <span class="st">"Programar"</span>, <span class="st">"Redactar"</span>, <span class="st">"No uso IA"</span>) <span class="sc">~</span> Uso,</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Otros"</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cualitativa nominal</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">Uso =</span> <span class="fu">factor</span>(Uso, <span class="at">ordered =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cualitativa nominal</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sensacion =</span> <span class="fu">factor</span>(</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">trimws</span>(<span class="fu">as.character</span>(Sensacion)),</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordered =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>subset_demo <span class="ot">&lt;-</span> subset_demo <span class="sc">%&gt;%</span></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">Creditos =</span> <span class="fu">as.integer</span>(Creditos))</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>subset_exam <span class="ot">&lt;-</span> subset_exam <span class="sc">%&gt;%</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">Nota =</span> <span class="fu">as.numeric</span>(Nota))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="comprobación-de-la-codificación" class="level2">
+<h2 class="anchored" data-anchor-id="comprobación-de-la-codificación">Comprobación de la codificación</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(subset_diario)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [345 × 7] (S3: tbl_df/tbl/data.frame)
+ $ Cod         : chr [1:345] "camila.alfaro@utec.edu.pe" "angelo.urbina@utec.edu.pe" "camila.alfaro@utec.edu.pe" "eduardo.vila@utec.edu.pe" ...
+ $ Horas       : num [1:345] 9 5 9 8.33 8 7 8 8 5 10 ...
+ $ Consultas   : int [1:345] 9 0 13 2 4 32 2 2 20 0 ...
+ $ Comprension : Ord.factor w/ 5 levels "Muy bajo"&lt;"Bajo"&lt;..: 4 3 4 5 3 3 4 3 3 2 ...
+ $ Satisfaccion: Ord.factor w/ 5 levels "1"&lt;"2"&lt;"3"&lt;"4"&lt;..: 4 3 3 4 3 3 1 4 3 1 ...
+ $ Uso         : Factor w/ 6 levels "No uso IA","Otros",..: 6 1 6 2 6 6 2 6 2 1 ...
+ $ Sensacion   : Factor w/ 5 levels "Alivio","Confianza",..: 1 1 1 2 1 4 4 4 4 5 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(subset_diario)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Cod          Horas          Consultas      Comprension  Satisfaccion
+ Length   :345   Min.   : 0.000   Min.   : 0.0   Muy bajo: 12   1: 22       
+ N.unique : 40   1st Qu.: 6.000   1st Qu.: 4.0   Bajo    : 21   2: 33       
+ N.blank  :  0   Median : 7.000   Median : 7.0   Moderado:194   3:159       
+ Min.nchar: 22   Mean   : 6.761   Mean   :13.8   Alto    : 97   4:116       
+ Max.nchar: 31   3rd Qu.: 8.000   3rd Qu.:21.0   Muy alto: 21   5: 15       
+                 Max.   :13.000   Max.   :68.0                              
+                  Uso                  Sensacion  
+ No uso IA          : 20   Alivio           :128  
+ Otros              : 26   Confianza        : 78  
+ Programar          : 70   Frustración      : 29  
+ Redactar           : 28   Indiferencia     : 90  
+ Resolver ejercicios:116   No usé IA ese día: 20  
+ Resumir            : 85                          </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(subset_diario<span class="sc">$</span>Comprension)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Muy bajo" "Bajo"     "Moderado" "Alto"     "Muy alto"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(subset_diario<span class="sc">$</span>Satisfaccion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1" "2" "3" "4" "5"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(subset_diario<span class="sc">$</span>Uso)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "No uso IA"           "Otros"               "Programar"          
+[4] "Redactar"            "Resolver ejercicios" "Resumir"            </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(subset_diario<span class="sc">$</span>Sensacion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Alivio"            "Confianza"         "Frustración"      
+[4] "Indiferencia"      "No usé IA ese día"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.factor</span>(subset_diario<span class="sc">$</span>Comprension)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.ordered</span>(subset_diario<span class="sc">$</span>Comprension)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.factor</span>(subset_diario<span class="sc">$</span>Satisfaccion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.ordered</span>(subset_diario<span class="sc">$</span>Satisfaccion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.factor</span>(subset_diario<span class="sc">$</span>Uso)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.ordered</span>(subset_diario<span class="sc">$</span>Uso)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.factor</span>(subset_diario<span class="sc">$</span>Sensacion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.ordered</span>(subset_diario<span class="sc">$</span>Sensacion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</section>
+<section id="identificación-del-grupo-7" class="level2">
+<h2 class="anchored" data-anchor-id="identificación-del-grupo-7">Identificación del Grupo 7</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>correos <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cristobal.aranda@utec.edu.pe"</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pedro.chavez@utec.edu.pe"</span>,</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rodrigo.sanchez.m@utec.edu.pe"</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"joaquin.temoche@utec.edu.pe"</span>,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"victor.tipe@utec.edu.pe"</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>grupo7_diario <span class="ot">&lt;-</span> subset_diario <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Cod <span class="sc">%in%</span> correos)</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>grupo7_demo <span class="ot">&lt;-</span> subset_demo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Cod <span class="sc">%in%</span> correos)</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>grupo7_exam <span class="ot">&lt;-</span> subset_exam <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Cod <span class="sc">%in%</span> correos)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="radiografía-de-las-bases" class="level2">
+<h2 class="anchored" data-anchor-id="radiografía-de-las-bases">Radiografía de las bases</h2>
+<p>No se realiza un <code>full_join()</code> directo entre las tres bases porque un mismo estudiante puede tener múltiples registros en más de una tabla. Una unión únicamente por <code>Cod</code> podría multiplicar artificialmente las observaciones. Por ello, las bases se conservan separadas hasta definir una regla de correspondencia entre registros.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>radiografia <span class="ot">&lt;-</span> <span class="cf">function</span>(datos) {</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> <span class="fu">names</span>(datos),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">NAs =</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(datos)),</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Datos_Llenos =</span> <span class="fu">colSums</span>(<span class="sc">!</span><span class="fu">is.na</span>(datos)),</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Filas =</span> <span class="fu">nrow</span>(datos)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>radiografia_diario <span class="ot">&lt;-</span> <span class="fu">radiografia</span>(subset_diario)</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>radiografia_demo <span class="ot">&lt;-</span> <span class="fu">radiografia</span>(subset_demo)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>radiografia_exam <span class="ot">&lt;-</span> <span class="fu">radiografia</span>(subset_exam)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>radiografia_diario</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Variable NAs Datos_Llenos Total_Filas
+Cod                   Cod   0          345         345
+Horas               Horas   0          345         345
+Consultas       Consultas   0          345         345
+Comprension   Comprension   0          345         345
+Satisfaccion Satisfaccion   0          345         345
+Uso                   Uso   0          345         345
+Sensacion       Sensacion   0          345         345</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>radiografia_demo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         Variable NAs Datos_Llenos Total_Filas
+Cod           Cod   0           42          42
+Creditos Creditos   0           42          42</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>radiografia_exam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Variable NAs Datos_Llenos Total_Filas
+Cod       Cod   0           80          80
+Nota     Nota   0           80          80</code></pre>
+</div>
+</div>
+</section>
+<section id="horas" class="level2">
+<h2 class="anchored" data-anchor-id="horas">Horas</h2>
+<p>Calculamos la media y la mediana como medidas de posición y la Desviación Estándar y el Rango Intercuartil como medidas de dispersión.</p>
+<p>La media nos da el promedio aritmético, pero se puede ver afectado a valores muy grandes o pequeños . Por otro lado, la mediana nos dara el valor que está exactamente en el medio. Al compararlas podemos analizar que si la media es muy distinta a la mediana, significa que hay valores extremos que tiran del promedio, pero si son similares, el sueño en el salón es más simétrico.</p>
+<p>La desviación estándar nos indica cuántas horas, en promedio, se alejan los alumnos de la media global. El rango intercuartil nos indica en qué rango de horas de sueño se concentra el 50% central de los estudiantes, ignorando a los que duermen muy poco o en exceso.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(subset_diario<span class="sc">$</span>Horas)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   6.000   7.000   6.761   8.000  13.000 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>media_horas <span class="ot">&lt;-</span> <span class="fu">mean</span>(subset_diario<span class="sc">$</span>Horas, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>mediana_horas <span class="ot">&lt;-</span> <span class="fu">median</span>(subset_diario<span class="sc">$</span>Horas, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>sd_horas <span class="ot">&lt;-</span> <span class="fu">sd</span>(subset_diario<span class="sc">$</span>Horas, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>iqr_horas <span class="ot">&lt;-</span> <span class="fu">IQR</span>(subset_diario<span class="sc">$</span>Horas, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Media:"</span>, media_horas, <span class="st">"</span><span class="sc">\n</span><span class="st">Mediana:"</span>, mediana_horas, </span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">Desv. Estándar:"</span>, sd_horas, <span class="st">"</span><span class="sc">\n</span><span class="st">IQR:"</span>, iqr_horas)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Media: 6.760828 
+Mediana: 7 
+Desv. Estándar: 1.889007 
+IQR: 2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(subset_diario, <span class="fu">aes</span>(<span class="at">x =</span> Horas)) <span class="sc">+</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> media_horas), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> mediana_horas), <span class="at">color =</span> <span class="st">"green"</span>, <span class="at">linetype =</span> <span class="st">"solid"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución de las Horas de Sueño"</span>,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Rojo = Media | Verde = Mediana"</span>,</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Horas de Sueño"</span>,</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frecuencia (Cantidad de alumnos)"</span>) <span class="sc">+</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="inf_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="consultas" class="level2">
+<h2 class="anchored" data-anchor-id="consultas">Consultas</h2>
+<p>Se puede notar como la mayoría de estudiantes hcae pocas consultas usualmente, pero también es posible que a veces se hacen consultas más numerosas. Por ello, la medida de posición más confiable aquí es la mediana, junto con el rango (mínimo y máximo) y el IQR para la dispersión.</p>
+<p>La mediana sería la descripcion más adecuada, si se usará la media, es probable que aquellas observaciones que contienen las consultas numerosas muevan el promedio, y esto no representaria al publico general.</p>
+<p>El rango nos revela los extremos absolutos de uso en el salón, y para medir la variabilidad en la cantidad de consultas a la IA, el rango intercuartil permite hacer esto de forma que aquellos valores más altos no influyan enormemente en el nivel de dispersión del rango de consultas</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>mediana_consultas <span class="ot">&lt;-</span> <span class="fu">median</span>(subset_diario<span class="sc">$</span>Consultas, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>cuartiles_consultas <span class="ot">&lt;-</span> <span class="fu">quantile</span>(subset_diario<span class="sc">$</span>Consultas, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>iqr_consultas <span class="ot">&lt;-</span> <span class="fu">IQR</span>(subset_diario<span class="sc">$</span>Consultas, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>rango_consultas <span class="ot">&lt;-</span> <span class="fu">range</span>(subset_diario<span class="sc">$</span>Consultas, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mediana (Posición central):"</span>, mediana_consultas, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mediana (Posición central): 7 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mínimo:"</span>, rango_consultas[<span class="dv">1</span>], <span class="st">"| Máximo:"</span>, rango_consultas[<span class="dv">2</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mínimo: 0 | Máximo: 68 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"El 50% central de los alumnos realiza entre"</span>, cuartiles_consultas[<span class="dv">1</span>], <span class="st">"y"</span>, cuartiles_consultas[<span class="dv">2</span>], <span class="st">"consultas.</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>El 50% central de los alumnos realiza entre 4 y 21 consultas.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Rango Intercuartílico (IQR):"</span>, iqr_consultas, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rango Intercuartílico (IQR): 17 </code></pre>
+</div>
+</div>
+</section>
+<section id="comprension" class="level2">
+<h2 class="anchored" data-anchor-id="comprension">Comprension</h2>
+<p>Utilizamos la mediana y la moda como medidas de posición, y la Distribución de Frecuencias Relativas para evaluar la dispersión.</p>
+<p>Al ser una variable ordinal, sus categorías tienen una jerarquía lógica de “Muy bajo” a “Muy alto”. Aunque no podemos calcular un promedio matemático, la mediana nos permite identificar el punto de quiebre donde se sitúa el 50% de la clase, mientras que la moda nos indica la sensación más predominante.\</p>
+<p>La dispersión se justifica a través de los porcentajes relativos, esto nos revela si el salón tiene baja (“Moderado”) o alta dispersión (“Muy bajo” y “Muy alto”)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>tabla_comprension <span class="ot">&lt;-</span> <span class="fu">table</span>(subset_diario<span class="sc">$</span>Comprension)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>prop_comprension <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(tabla_comprension) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>prop_comprension</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Muy bajo      Bajo  Moderado      Alto  Muy alto 
+ 3.478261  6.086957 56.231884 28.115942  6.086957 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>moda_comprension <span class="ot">&lt;-</span> <span class="fu">names</span>(tabla_comprension)[<span class="fu">which.max</span>(tabla_comprension)]</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>mediana_comprension_idx <span class="ot">&lt;-</span> <span class="fu">median</span>(<span class="fu">as.numeric</span>(subset_diario<span class="sc">$</span>Comprension), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>mediana_comprension <span class="ot">&lt;-</span> <span class="fu">levels</span>(subset_diario<span class="sc">$</span>Comprension)[mediana_comprension_idx]</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"La Moda es:"</span>, moda_comprension, <span class="st">"</span><span class="sc">\n</span><span class="st">La Mediana se ubica en:"</span>, mediana_comprension, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>La Moda es: Moderado 
+La Mediana se ubica en: Moderado </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(subset_diario[<span class="sc">!</span><span class="fu">is.na</span>(subset_diario<span class="sc">$</span>Comprension), ], <span class="fu">aes</span>(<span class="at">x =</span> Comprension)) <span class="sc">+</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"#4C72B0"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución del Nivel de Comprensión Académica"</span>,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Nivel Percibido"</span>,</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frecuencia (Alumnos)"</span>) <span class="sc">+</span></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="inf_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>##Uso</p>
+<p>Ante esta variable nominal, sus categorias son independientes y carecen de un orden jerárquico, por lo que la única medida de posició es la moda.</p>
+<p>Para medir su variabilidad o dispersión, recurrimos al análisis porcentual de sus frecuencias, esto nos ayudará a entender que tan concentrados o diversos está cada una de estas categorias.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>tabla_uso <span class="ot">&lt;-</span> <span class="fu">table</span>(subset_diario<span class="sc">$</span>Uso)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>prop_uso <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(tabla_uso) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>prop_uso_ordenada <span class="ot">&lt;-</span> <span class="fu">sort</span>(prop_uso, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Distribución porcentual de los usos de IA:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Distribución porcentual de los usos de IA:</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">round</span>(prop_uso_ordenada, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Resolver ejercicios             Resumir           Programar            Redactar 
+              33.62               24.64               20.29                8.12 
+              Otros           No uso IA 
+               7.54                5.80 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>moda_uso <span class="ot">&lt;-</span> <span class="fu">names</span>(prop_uso_ordenada)[<span class="dv">1</span>]</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>porcentaje_moda <span class="ot">&lt;-</span> <span class="fu">round</span>(prop_uso_ordenada[<span class="dv">1</span>], <span class="dv">2</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Conclusión Descriptiva:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Conclusión Descriptiva:</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"La Moda es '"</span>, moda_uso, <span class="st">"', concentrando un "</span>, porcentaje_moda, <span class="st">"% del total de las respuestas registradas.</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>La Moda es 'Resolver ejercicios', concentrando un 33.62% del total de las respuestas registradas.</code></pre>
+</div>
+</div>
+</section>
+<section id="análisis-de-interacción" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-de-interacción">Análisis de Interacción</h2>
+<section id="relación-entre-horas-de-sueño-y-nivel-de-comprensión" class="level3">
+<h3 class="anchored" data-anchor-id="relación-entre-horas-de-sueño-y-nivel-de-comprensión">Relación entre Horas de Sueño y Nivel de Comprensión</h3>
+<p>Para evaluar la interacción entre una variable cuantitativa continua (<code>Horas</code> de sueño) y una cualitativa ordinal (<code>Comprension</code>), se calcula el resumen de medidas de tendencia central y dispersión (Media, Mediana y Desviación Estándar) de las horas de sueño agrupadas por cada nivel de comprensión.\</p>
+<p>De esta forma podremos comparar directamente si los estudiantes que reportan un nivel de comprensión “Alto” o “Muy alto” presentan, en promedio, patrones de sueño distintos frente a los que reportan un nivel “Bajo” o “Muy bajo”.</p>
+<p>Para la visualización utilizaremos Boxplotes. Nos permite observar en paralelo las medianas (línea central de la caja), la dispersión del 50% central (tamaño de la caja) y la presencia de valores atípicos en las horas de sueño para cada uno de los cinco niveles de comprensión percibida.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Tabla de resumen numérico agrupado</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>resumen_bivariado <span class="ot">&lt;-</span> subset_diario <span class="sc">%&gt;%</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Comprension) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Horas)) <span class="sc">%&gt;%</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Comprension) <span class="sc">%&gt;%</span></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Cantidad_Alumnos =</span> <span class="fu">n</span>(),</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Media_Horas =</span> <span class="fu">round</span>(<span class="fu">mean</span>(Horas), <span class="dv">2</span>),</span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mediana_Horas =</span> <span class="fu">median</span>(Horas),</span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Desv_Estandar =</span> <span class="fu">round</span>(<span class="fu">sd</span>(Horas), <span class="dv">2</span>)</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Resumen de Horas de Sueño por Nivel de Comprensión:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Resumen de Horas de Sueño por Nivel de Comprensión:</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(resumen_bivariado)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 5
+  Comprension Cantidad_Alumnos Media_Horas Mediana_Horas Desv_Estandar
+  &lt;ord&gt;                  &lt;int&gt;       &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
+1 Muy bajo                  12        7.29          7.75          2.25
+2 Bajo                      21        6.97          7             1.73
+3 Moderado                 194        6.69          7             1.96
+4 Alto                      97        6.68          7             1.74
+5 Muy alto                  21        7.25          7             1.85</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Gráfico de cajas comparativo</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(subset_diario <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Comprension) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Horas)), </span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Comprension, <span class="at">y =</span> Horas, <span class="at">fill =</span> Comprension)) <span class="sc">+</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">outlier.color =</span> <span class="st">"red"</span>, <span class="at">outlier.shape =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución de Horas de Sueño según el Nivel de Comprensión"</span>,</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Comparación de medianas y dispersión por categoría"</span>,</span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Nivel de Comprensión"</span>,</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Horas de Sueño"</span>) <span class="sc">+</span></span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Blues"</span>) <span class="sc">+</span> <span class="co"># Paleta de colores secuencial</span></span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="co"># Ocultamos leyenda porque el eje X ya lo explica</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="inf_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A partir del análisis entre las horas de sueño y el nivel de comprensión percibido, se pueden notas ciertas particularidades:</p>
+<ul>
+<li><p>La espectativa inicial es que si estás bien descanzado, rendirás mejor, pero los datos revelan que la mediana de sueño se mantiene constante en 7 horas para la gran mayoría de los niveles de comprensión.</p></li>
+<li><p>El pequeño grupo de estudiantes que reportó el menor nivel de comprensión fue el que registró la mayor cantidad de horas de sueño, lo cual es lo opuesto de la espectativa inicial. Tambien se puede ver en la amplitud de su caja y su desviación estándar que que este grupo posee los hábitos de sueño más irregulares.</p></li>
+<li><p>El diagrama de cajas permite identificar casos atípicos de estudiantes que reportaron dormir cantidades mínimas, y a pesar de esto, estos alumnos lograron posicionarse en los niveles de comprensión “Moderado” e incluso “Alto”.</p></li>
+</ul>
+<p>De por si se podría argumentar que este análisis contradice los resultados que se esperaban inicialmente en esta relación, y resulta que el sueño, por si sola, no ha sido un factor que influye directamente con el nivel de comprensión en este grupo de estudiantes.</p>
+</section>
+</section>
+<section id="hacer-el-analisis-bivariable-entre-las-otras-variables-segun-nuestro-objetivos-especificos" class="level2">
+<h2 class="anchored" data-anchor-id="hacer-el-analisis-bivariable-entre-las-otras-variables-segun-nuestro-objetivos-especificos">*Hacer el analisis bivariable entre las otras variables segun nuestro objetivos especificos**</h2>
+</section>
+<section id="conclusiones" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones">Conclusiones</h2>
+<p>Ante el analisis realizado en estas variables, resulta interesante saber que, por medios de estos metodos, llega a desafiar las expectativas iniciales que uno tiene al momento de relacionar estas variables. Tambíen invita a considerar otras opciones, descartando interacciones que parecen no tener bastante relevancia entre si.</p>
 </section>
 
 </main>
