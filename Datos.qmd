@@ -58,58 +58,86 @@ DF_exam %>%
 ```
 
 ```{r}
+subset_diario <- select(DF_diario, Cod, Horas, Consultas, Comprension, Satisfaccion, Uso, Sensacion)
+subset_demo<- select(DF_demo, Cod, Creditos)
+subset_exam <- select(DF_exam, Cod, Nota)
 
-subset1 <- select(DF_diario, Cod, Registro, Horas, Consultas, Comprension, Satisfaccion, Uso, Sensacion)
-subset2 <- select(DF_demo, Cod, Registro, Creditos)
-subset3 <- select(DF_exam, Cod, Registro, Nota)
-
-dataset_final <- subset1 %>%
-  full_join(subset2, by = c("Cod", "Registro")) %>%
-  full_join(subset3, by = c("Cod", "Registro"))
 
 ```
 
 ```{r}
 
-correos <- c("cristobal.aranda@utec.edu.pe", "pedro.chavez@utec.edu.pe", "rodrigo.sanchez.m@utec.edu.pe", "joaquin.temoche@utec.edu.pe", "victor.tipe@utec.edu.pe")
+correos <- c("cristobal.aranda@utec.edu.pe", "pedro.chavez@utec.edu.pe", 
+             "rodrigo.sanchez.m@utec.edu.pe", "joaquin.temoche@utec.edu.pe", 
+             "victor.tipe@utec.edu.pe")
 
-temp <- dataset_final %>% filter(Cod %in% correos)
+
+obs_diario <- sum(subset_diario$Cod %in% correos)
+obs_demo   <- sum(subset_demo$Cod %in% correos)
+obs_exam   <- sum(subset_exam$Cod %in% correos)
+
+# 2. Sumar los 3 números para obtener el total del equipo
+total_equipo <- obs_diario + obs_demo + obs_exam
+
+
+print(paste("Observaciones en Diario:", obs_diario))
+print(paste("Observaciones en Demo:", obs_demo))
+print(paste("Observaciones en Exam:", obs_exam))
+print(paste("Total general del equipo:", total_equipo))
 
 ```
 
 ```{r}
 
-radiografia <- data.frame(
-  Variable = names(dataset_final),
-  NAs = colSums(is.na(dataset_final)),
-  Datos_Llenos = colSums(!is.na(dataset_final)),
-  Total_Filas = nrow(dataset_final)
-)
+generar_radiografia <- function(df) {
+  data.frame(
+    Variable = names(df),
+    NAs = colSums(is.na(df)),
+    Datos_Llenos = colSums(!is.na(df)),
+    Total_Filas = nrow(df),
+    row.names = NULL 
+  )
+}
 
+radiografia_diario <- generar_radiografia(subset_diario)
+radiografia_demo   <- generar_radiografia(subset_demo)
+radiografia_exam   <- generar_radiografia(subset_exam)
 
+print("--- Radiografía Diario ---")
+print(radiografia_diario)
 
-radiografia
+print("--- Radiografía Demo ---")
+print(radiografia_demo)
+
+print("--- Radiografía Exam ---")
+print(radiografia_exam)
 ```
 
 ##Normalizacion de Uso
 
 ```{r}
 
-DFe <- dataset_final 
-
-sort(table(DFe$Uso), decreasing = T)
-
-DFe <- dataset_final %>%
+subset_diario <- subset_diario 
+sort(table(subset_diario$Uso), decreasing = T)
+subset_diario <- subset_diario %>%
   mutate(Uso = case_when(
+
+    grepl("(?i)ningun|nada|no.*us[eé]|nothing", Uso) ~ "No uso IA",
+    Uso %in% c("Resolver ejercicios", "Resumir", "Programar", "Redactar", "No uso IA") ~ Uso,
     
-    grepl("(?i)ningun|nada|no.*us[eé]", Uso) ~ "No uso IA",
-    grepl("(?i)revisar|repasar|profundizar", Uso) ~ "Repasar conceptos",
-    grepl("(?i)investigar|buscar|consultar", Uso) ~ "Investigar",
+    TRUE ~ "Otros"
 
-    TRUE ~ Uso
   ))
-print("----------------------------------")
-sort(table(DFe$Uso), decreasing = T)
 
+print("----------------------------------")
+
+sort(table(subset_diario$Uso), decreasing = T)
 
 ```
+
+```{r}
+
+sort(table(subset_exam$Nota), decreasing = T)
+
+```
+

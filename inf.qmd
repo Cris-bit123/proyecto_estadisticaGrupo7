@@ -1,0 +1,7 @@
+---
+title: "Proyecto de Estadistica"
+format: html
+editor: visual
+---
+
+## INFORME
