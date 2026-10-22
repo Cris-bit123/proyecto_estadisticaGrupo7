@@ -1,0 +1,583 @@
+---
+title: "Proyecto de Estadística: sueño, uso de IA y rendimiento académico"
+subtitle: "Estadística y Probabilidades I (CC1105) - Grupo 7 - Ciclo 2026-2"
+lang: es
+author:
+  - Cristóbal Javier Aranda Gallardo
+  - Pedro Máximo Chávez Oscanoa
+  - 
+  -
+  - Joaquín Antonio Temoche Sánchez
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-summary: "Ver código R"
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+## I. Tema y objetivos
+
+### I.1. Introducción y relevancia
+
+El descanso y el uso de herramientas de inteligencia artificial (IA) forman parte de la rutina de muchos estudiantes universitarios. Dormir pocas horas puede coincidir con periodos de mayor carga académica, mientras que la IA se utiliza para consultar dudas, resolver ejercicios o ahorrar tiempo. Sin embargo, utilizar estas herramientas con frecuencia no significa necesariamente obtener mejores calificaciones.
+
+Por esta razón, nuestro trabajo busca describir cómo se relacionan las horas de sueño, el uso de IA y el rendimiento académico entre los estudiantes que participaron en los formularios. También estudiamos si las horas de sueño guardan alguna relación con la comprensión que cada estudiante considera haber alcanzado durante el día.
+
+Este tema es relevante porque permite conocer mejor los hábitos de estudio del grupo y plantear nuevas preguntas a partir de datos reales. Los resultados son **descriptivos y exploratorios**: muestran asociaciones observadas, pero no permiten asegurar que una variable sea la causa de otra.
+
+### I.2. Objetivos
+
+**Objetivo general.** Evaluar la relación entre las horas de sueño, el uso de herramientas de inteligencia artificial y el rendimiento académico de los estudiantes que respondieron los formularios del proyecto durante el ciclo 2026-2.
+
+**Objetivos específicos.**
+
+1. Analizar la relación entre las horas de sueño declaradas y las notas de examen registradas por los estudiantes.
+2. Analizar la relación entre el uso de herramientas de IA y las notas de examen, considerando la cantidad de consultas y las tareas en las que se declaró un ahorro de tiempo.
+3. Describir la relación entre las horas de sueño y la comprensión percibida de las actividades académicas realizadas durante el día.
+
+**Alcance de los objetivos.** Las calificaciones provienen de exámenes de distintos cursos declarados por los participantes. Por tanto, se utilizan como una aproximación al rendimiento académico y no como una medición exclusiva del desempeño en CC1105. Además, el ahorro de tiempo representa una forma concreta de aprovechamiento de la IA, pero no equivale a una escala directa de utilidad percibida.
+
+### I.3. Organización del trabajo
+
+La siguiente es una **propuesta de distribución de tareas para el cierre del informe**
+
+| Integrante | Actividad propuesta | Momento |
+|:--|:--|:--|
+| Cristóbal Javier Aranda Gallardo | Revisar el análisis de sueño y comprensión, y las conclusiones relacionadas. | Revisión del informe |
+| Pedro Máximo Chávez Oscanoa | Revisar los CSV, las restricciones y la limpieza de los datos. | Antes de generar el HTML |
+|- | - |- |
+|- | - |- |
+| Joaquín Antonio Temoche Sánchez | Revisar las relaciones entre sueño, IA y notas de examen. | Antes de la entrega |
+
+Para el resto del ciclo, el equipo deberá mantener actualizadas las bases de datos, revisar los resultados cuando se incorporen nuevas respuestas y preparar la versión final del proyecto según el calendario del curso.
+
+## II. Datos y método
+
+### II.1. Población objetivo y unidad de análisis
+
+La población de interés está formada por los estudiantes matriculados en Estadística y Probabilidades I, sección 1, durante el ciclo 2026-2. En la práctica, los análisis se realizan sobre las respuestas voluntarias disponibles. Como los archivos no contienen una lista oficial de matrícula, no se puede comprobar que todas las respuestas correspondan a la población objetivo.
+
+Es importante diferenciar dos unidades de análisis: una **respuesta diaria** recoge lo declarado en un día determinado, mientras que un **estudiante** puede aportar respuestas de varios días y también varias notas de examen. No deben confundirse las respuestas con personas distintas.
+
+### II.2. Tipo de muestreo y recolección
+
+Se utilizó un muestreo **no probabilístico por participación voluntaria**. No se realizó una selección aleatoria de estudiantes, por lo que las conclusiones no pueden generalizarse estadísticamente a toda la sección.
+
+Los datos se recogieron mediante tres formularios y se exportaron a archivos CSV:
+
+- `diario.csv`: horas de sueño, consultas a IA, tareas con ahorro de tiempo, comprensión, satisfacción y otras respuestas diarias.
+- `examenes.csv`: notas de exámenes y cursos declarados.
+- `demograficos.csv`: información general, como créditos académicos cursados.
+
+Los formularios utilizados para la recolección de datos fueron los siguientes:
+
+- **Formulario diario:** [Ver formulario](https://docs.google.com/forms/d/e/1FAIpQLSf9LZ3tyLEgC4oDca7NH8S9Zh-StC2w6ukAMH6yRnJej6tVzQ/viewform)
+- **Formulario de exámenes:** [Ver formulario](https://docs.google.com/forms/d/e/1FAIpQLScOFYt4wl2XJGtB4w-PzHCnRUiT-wfdmIg2zGpAUDZ_R_GAIA/viewform)
+- **Formulario demográfico:** [Ver formulario](https://docs.google.com/forms/d/e/1FAIpQLScOFYt4wl2XJGtB4w-PzHCnRUiT-wfdmIg2zGpAUDZ_R_GAIA/viewform)
+
+
+### II.3. Variables estudiadas
+
+| Variable | Tipo | Unidad o categorías | Restricción utilizada |
+|:--|:--|:--|:--|
+| Horas dormidas | Cuantitativa continua | Horas por respuesta | Entre 0 y 24 horas |
+| Consultas a IA | Cuantitativa discreta | Número de consultas | Número mayor o igual a 0 |
+| Tareas con ahorro de tiempo | Cuantitativa discreta | Cantidad de tareas | Número mayor o igual a 0 |
+| Nota de examen | Cuantitativa | Nota declarada | Entre 0 y 20 puntos |
+| Créditos cursados | Cuantitativa discreta | Créditos declarados | Número mayor o igual a 0 |
+| Comprensión percibida | Cualitativa ordinal | Muy bajo, Bajo, Moderado, Alto, Muy alto | Una de las cinco categorías |
+| Satisfacción con el avance | Cualitativa ordinal | Niveles de 1 a 5 | Una de las cinco categorías |
+| Uso principal de IA | Cualitativa nominal | Finalidad declarada | Texto no vacío |
+| Sensación después del uso de IA | Cualitativa nominal | Sensación declarada | Texto no vacío |
+
+Las restricciones se aplican a las variables que analizamos. La escala de notas entre 0 y 20 se toma como referencia para los exámenes declarados y deberá confirmarse si se incorpora alguna nota registrada con otra escala.
+
+### II.4. Lectura y preparación de los CSV
+
+Los archivos deben estar en la misma carpeta que este `.qmd`. Para facilitar la revisión, utilizamos funciones básicas de R y mantenemos los nombres de las variables cortos.
+
+```{r}
+#| label: lectura-datos
+
+raw_diario <- read_csv("diario.csv", locale = locale(encoding = "UTF-8"), show_col_types = FALSE)
+raw_examenes <- read_csv("examenes.csv", locale = locale(encoding = "UTF-8"), show_col_types = FALSE)
+raw_demo <- read_csv("demograficos.csv", locale = locale(encoding = "UTF-8"), show_col_types = FALSE)
+
+# Elegimos y renombramos las columnas por su posición como en los CSV originales, 
+# aplicando transformaciones iniciales.
+diario <- raw_diario %>%
+  select(
+    Cod = 16,
+    Fecha_raw = 1,
+    Horas = 5,
+    Consultas = 2,
+    Ahorro = 13,
+    Comprension = 11,
+    Satisfaccion = 8,
+    Uso = 4,
+    Sensacion = 12
+  ) %>%
+  mutate(
+    Cod = tolower(trimws(Cod)),
+    Fecha = as.Date(substr(Fecha_raw, 1, 10), "%d/%m/%Y"),
+    Horas = as.numeric(Horas),
+    Consultas = as.numeric(Consultas),
+    Ahorro = as.numeric(Ahorro),
+    Comprension = trimws(Comprension),
+    Satisfaccion = as.character(Satisfaccion),
+    Uso = trimws(Uso),
+    Sensacion = trimws(Sensacion)
+  ) %>%
+  select(-Fecha_raw)
+
+examenes <- raw_examenes %>%
+  select(
+    Cod = 6,
+    Nota = 2,
+    Curso = 5
+  ) %>%
+  mutate(
+    Cod = tolower(trimws(Cod)),
+    Nota = as.numeric(Nota),
+    Curso = trimws(Curso)
+  )
+
+demo <- raw_demo %>%
+  select(
+    Cod = 4,
+    Creditos = 2
+  ) %>%
+  mutate(
+    Cod = tolower(trimws(Cod)),
+    Creditos = as.numeric(Creditos)
+  )
+```
+
+
+### II.5. Limpieza de los datos
+
+Antes del análisis se revisan los valores faltantes, los números fuera de los rangos establecidos y las categorías que no corresponden a las escalas del formulario. **No reemplazamos los valores faltantes por promedios ni inventamos respuestas**. Si un dato no sirve para cierta variable, se excluye de ese cálculo; las demás variables de esa fila pueden seguir siendo útiles.
+
+Los registros repetidos del diario no se eliminan de forma automática, porque un estudiante puede contestar en varios días. En las comparaciones con notas, primero se resume la información por estudiante y fecha, para que dos respuestas del mismo día no den mayor peso a esa jornada.
+
+```{r}
+#| label: limpieza
+# Los campos vacíos se dejan como valores faltantes.
+diario$Cod[diario$Cod %in% ""] <- NA
+examenes$Cod[examenes$Cod %in% ""] <- NA
+demo$Cod[demo$Cod %in% ""] <- NA
+
+diario$Uso[diario$Uso %in% ""] <- NA
+diario$Sensacion[diario$Sensacion %in% ""] <- NA
+
+# Corregimos valores que no cumplen las restricciones.
+diario$Horas[which(diario$Horas < 0 | diario$Horas > 24)] <- NA
+diario$Consultas[which(diario$Consultas < 0)] <- NA
+diario$Ahorro[which(diario$Ahorro < 0)] <- NA
+examenes$Nota[which(examenes$Nota < 0 | examenes$Nota > 20)] <- NA
+demo$Creditos[which(demo$Creditos < 0)] <- NA
+
+# Definimos el orden de las respuestas ordinales.
+diario$Comprension <- factor(
+  diario$Comprension,
+  levels = c("Muy bajo", "Bajo", "Moderado", "Alto", "Muy alto"),
+  ordered = TRUE
+)
+diario$Satisfaccion <- factor(
+  diario$Satisfaccion,
+  levels = as.character(1:5),
+  ordered = TRUE
+)
+```
+
+
+La variable **Uso** es un caso particular, ya que es la única variable elegida donde se pueden escribir usos diferentes a las opciones principales. Como existían varias variables distintas entre sí y no presentaban el mismo tamaño que las opciones multiples, se decidió, por un lado, juntar las variables que expresaban que no utilizaron IA como **No usó IA** y, por el otro lado, los demás casos también fueron demoninados **Otros**.
+```{r}
+
+diario <- diario %>%
+  mutate(
+    Uso = case_when(
+      grepl("(?i)ningun|nada|no.*us[eé]|nothing", Uso) ~ "No usó IA",
+      Uso %in% c("Resolver ejercicios", "Resumir", "Programar", "Redactar", "No usó IA") ~ Uso,
+      TRUE ~ "Otros"
+    )
+  )
+```
+
+La siguiente tabla permite comprobar cuántas observaciones válidas quedan por variable.
+
+```{r}
+#| label: cantidad-limpia
+limpieza <- data.frame(
+  Variable = c("Horas de sueño", "Consultas a IA", "Ahorro de tiempo",
+               "Comprensión", "Satisfacción", "Uso principal de IA",
+               "Sensación posterior a IA", "Notas de examen", "Créditos"),
+  Registros = c(rep(nrow(diario), 7), nrow(examenes), nrow(demo)),
+  Validos = c(sum(!is.na(diario$Horas)),
+              sum(!is.na(diario$Consultas)),
+              sum(!is.na(diario$Ahorro)),
+              sum(!is.na(diario$Comprension)),
+              sum(!is.na(diario$Satisfaccion)),
+              sum(!is.na(diario$Uso)),
+              sum(!is.na(diario$Sensacion)),
+              sum(!is.na(examenes$Nota)),
+              sum(!is.na(demo$Creditos)))
+)
+limpieza$Excluidos <- limpieza$Registros - limpieza$Validos
+knitr::kable(limpieza,
+             caption = "Registros originales y observaciones válidas por variable.")
+
+
+```
+
+En los archivos revisados por R hay `r nrow(diario)` respuestas diarias, `r nrow(examenes)` registros de exámenes y `r nrow(demo)` respuestas demográficas. Estas cantidades corresponden a archivos diferentes; no deben sumarse como si fueran estudiantes independientes.
+
+Los códigos identificadores distintos son `r length(unique(na.omit(diario$Cod)))` en el diario, `r length(unique(na.omit(examenes$Cod)))` en exámenes y `r length(unique(na.omit(demo$Cod)))` en datos demográficos. Los códigos se utilizan solo para relacionar respuestas; no se publican en las tablas del informe.
+
+```{r}
+#| label: revisar-respuestas-repetidas
+# Contamos las respuestas adicionales de un mismo estudiante y fecha.
+diario_fechado <- diario[!is.na(diario$Cod) & !is.na(diario$Fecha), ]
+repetidas <- sum(duplicated(diario_fechado[c("Cod", "Fecha")]))
+repetidas
+```
+
+Se identificaron `r repetidas` respuestas adicionales con el mismo código de estudiante y la misma fecha. No se presupone que todas sean errores; se resumirán por día cuando se compare la información de los formularios. La cantidad de observaciones válidas no equivale necesariamente al número de estudiantes independientes.
+
+
+
+
+## Identificación del Grupo 7
+
+```{r}
+correos <- c(
+  "cristobal.aranda@utec.edu.pe",
+  "pedro.chavez@utec.edu.pe",
+  "nestor.delacruz@utec.edu.pe",
+  "eden.paredes@utec.edu.pe",
+  "joaquin.temoche@utec.edu.pe"
+)
+
+grupo7_diario <- diario %>% filter(Cod %in% correos)
+grupo7_demo <- demo %>% filter(Cod %in% correos)
+grupo7_exam <- examenes %>% filter(Cod %in% correos)
+nrow(grupo7_exam) + nrow(grupo7_diario) + nrow(grupo7_demo)
+```
+
+
+## III. Análisis descriptivo
+
+### III.1. Variables cuantitativas
+
+Utilizamos media y mediana como medidas de posición, y desviación estándar y rango intercuartílico como medidas de dispersión. La mediana y el rango intercuartílico resultan especialmente útiles cuando aparecen valores elevados de consultas a IA que pueden alejar la media del comportamiento habitual.
+
+```{r}
+#| label: descriptivos
+cuantitativas <- data.frame(
+  Variable = c("Horas", "Consultas", "Ahorro", "Nota", "Créditos"),
+  n = c(sum(!is.na(diario$Horas)), sum(!is.na(diario$Consultas)),
+        sum(!is.na(diario$Ahorro)), sum(!is.na(examenes$Nota)),
+        sum(!is.na(demo$Creditos))),
+  Media = round(c(mean(diario$Horas, na.rm = TRUE),
+                  mean(diario$Consultas, na.rm = TRUE),
+                  mean(diario$Ahorro, na.rm = TRUE),
+                  mean(examenes$Nota, na.rm = TRUE),
+                  mean(demo$Creditos, na.rm = TRUE)), 2),
+  Mediana = round(c(median(diario$Horas, na.rm = TRUE),
+                    median(diario$Consultas, na.rm = TRUE),
+                    median(diario$Ahorro, na.rm = TRUE),
+                    median(examenes$Nota, na.rm = TRUE),
+                    median(demo$Creditos, na.rm = TRUE)), 2),
+  DE = round(c(sd(diario$Horas, na.rm = TRUE),
+               sd(diario$Consultas, na.rm = TRUE),
+               sd(diario$Ahorro, na.rm = TRUE),
+               sd(examenes$Nota, na.rm = TRUE),
+               sd(demo$Creditos, na.rm = TRUE)), 2),
+  RIC = round(c(IQR(diario$Horas, na.rm = TRUE),
+                IQR(diario$Consultas, na.rm = TRUE),
+                IQR(diario$Ahorro, na.rm = TRUE),
+                IQR(examenes$Nota, na.rm = TRUE),
+                IQR(demo$Creditos, na.rm = TRUE)), 2)
+)
+knitr::kable(cuantitativas,
+             caption = "Medidas descriptivas de las variables cuantitativas.")
+```
+
+Las respuestas diarias registran una mediana de `r median(diario$Horas, na.rm = TRUE)` horas de sueño y `r median(diario$Consultas, na.rm = TRUE)` consultas a IA. En cuanto a la dispersión, las horas presentan una desviación estándar de `r round(sd(diario$Horas, na.rm = TRUE), 2)` y las consultas una desviación estándar de `r round(sd(diario$Consultas, na.rm = TRUE), 2)`. La comparación entre la media y la mediana ayuda a detectar posibles asimetrías.
+
+```{r}
+#| label: histogramas
+#| fig-width: 9
+#| fig-height: 4
+#| fig-cap: "Distribución de horas de sueño y consultas a IA en las respuestas diarias."
+par(mfrow = c(1, 2))
+hist(diario$Horas, main = "Horas de sueño",
+     xlab = "Horas", ylab = "Respuestas", col = "lightblue")
+hist(diario$Consultas, main = "Consultas a IA",
+     xlab = "Número de consultas", ylab = "Respuestas", col = "lightgreen")
+par(mfrow = c(1, 1))
+```
+
+Los histogramas permiten observar en qué intervalos se concentran las respuestas. Como una persona puede haber respondido varios días, las barras indican frecuencias de **respuestas**, no cantidades de estudiantes distintos.
+
+### III.2. Variables cualitativas
+
+Para las variables cualitativas utilizamos tablas de frecuencias y porcentajes. En las variables ordinales también se respeta el orden de las categorías; no se calcula una media numérica de etiquetas como «Bajo» o «Alto».
+
+```{r}
+#| label: tablas-cualitativas
+# Tabla de comprensión.
+tabla_comprension <- table(diario$Comprension)
+knitr::kable(data.frame(
+  Comprension = names(tabla_comprension),
+  Frecuencia = as.vector(tabla_comprension),
+  Porcentaje = round(100 * as.vector(prop.table(tabla_comprension)), 1)
+), caption = "Comprensión percibida en las respuestas diarias.")
+
+# Tabla de satisfacción.
+tabla_satisfaccion <- table(diario$Satisfaccion)
+knitr::kable(data.frame(
+  Satisfaccion = names(tabla_satisfaccion),
+  Frecuencia = as.vector(tabla_satisfaccion),
+  Porcentaje = round(100 * as.vector(prop.table(tabla_satisfaccion)), 1)
+), caption = "Satisfacción con el avance académico diario.")
+```
+
+La categoría más frecuente de comprensión es «`r names(which.max(tabla_comprension))`», con `r max(as.vector(tabla_comprension))` respuestas. Este resultado describe cómo se sintieron los participantes respecto a las actividades de cada día y no constituye una prueba objetiva de aprendizaje.
+
+```{r}
+#| label: grafico-cualitativo
+#| fig-width: 7
+#| fig-height: 4
+#| fig-cap: "Frecuencia de los niveles de comprensión percibida."
+barplot(tabla_comprension, main = "Comprensión declarada",
+        xlab = "Nivel de comprensión", ylab = "Respuestas",
+        col = "lightblue")
+```
+
+La variable nominal «Uso principal de IA» presenta distintas tendencias en sus diferentes opciones, se puede visualizar en la tabla como el uso más popular entre todos es para resolver ejercicios.
+
+```{r}
+#| label: usos-ia
+usos <- sort(table(diario$Uso), decreasing = TRUE)
+knitr::kable(head(data.frame(
+  Uso = names(usos),
+  Respuestas = as.vector(usos)
+), 8), caption = "Usos de IA más frecuentes.")
+```
+
+### III.3. Relación entre dos variables numéricas
+
+Para estudiar conjuntamente las horas de sueño y la cantidad de consultas a IA utilizamos un diagrama de dispersión y la correlación de Spearman. Como ambas preguntas se encuentran en el formulario diario, la comparación utiliza respuestas del mismo día.
+
+```{r}
+#| label: relacion-sueno-ia
+#| fig-width: 7
+#| fig-height: 4.5
+#| fig-cap: "Horas de sueño frente a consultas a IA por respuesta diaria."
+plot(diario$Horas, diario$Consultas,
+     main = "Sueño y consultas a IA",
+     xlab = "Horas de sueño", ylab = "Consultas a IA",
+     pch = 19, col = "steelblue")
+
+rho_diario <- cor(diario$Horas, diario$Consultas,
+                  method = "spearman", use = "complete.obs")
+```
+
+La correlación de Spearman entre horas de sueño y consultas a IA es `r round(rho_diario, 2)`. Su signo indica la dirección de la asociación y su magnitud ayuda a evaluar su intensidad. Se observa junto con la dispersión de puntos, sin interpretar que el sueño provoque cambios en el uso de IA o viceversa. Las respuestas diarias de una misma persona pueden estar relacionadas entre sí.
+
+### III.4. Relación entre dos variables categóricas
+
+Comparamos los niveles de comprensión y satisfacción declarados durante el mismo día. La tabla de contingencia permite ver cómo se distribuye una categoría dentro de la otra. Además de las frecuencias, mostramos porcentajes por nivel de comprensión, para que la comparación no dependa solo del tamaño de cada grupo.
+
+```{r}
+#| label: relacion-categoricas
+tabla_cruzada <- table(diario$Comprension, diario$Satisfaccion)
+knitr::kable(tabla_cruzada,
+             caption = "Frecuencias: comprensión percibida y satisfacción.")
+
+porcentajes <- round(100 * prop.table(tabla_cruzada, 1), 1)
+knitr::kable(porcentajes,
+             caption = "Porcentajes de satisfacción dentro de cada nivel de comprensión.")
+```
+
+```{r}
+#| label: mosaico-categoricas
+#| fig-width: 8
+#| fig-height: 4.8
+#| fig-cap: "Relación descriptiva entre comprensión y satisfacción declaradas."
+mosaicplot(tabla_cruzada, main = "Comprensión y satisfacción",
+           xlab = "Comprensión", ylab = "Satisfacción", color = TRUE)
+```
+
+Este gráfico muestra qué combinaciones de comprensión y satisfacción son más frecuentes. Las áreas más grandes representan combinaciones con mayor cantidad de respuestas. Las diferencias de porcentajes describen los datos observados, pero no prueban una relación causal.
+
+### III.5. Relación entre una variable categórica y una numérica
+
+Para el tercer objetivo comparamos las horas de sueño con el nivel de comprensión del día. Utilizamos una tabla con el número de respuestas y la mediana de horas por categoría, acompañada de un diagrama de cajas.
+
+```{r}
+#| label: tabla-sueno-comprension
+resumen_comprension <- aggregate(Horas ~ Comprension, data = diario,
+                                 FUN = median)
+nombres <- table(diario$Comprension[!is.na(diario$Horas)])
+resumen_comprension$Respuestas <- as.vector(nombres)[
+  match(as.character(resumen_comprension$Comprension), names(nombres))
+]
+names(resumen_comprension)[2] <- "Mediana_horas"
+knitr::kable(resumen_comprension,
+             caption = "Horas de sueño según el nivel de comprensión.")
+```
+
+```{r}
+#| label: cajas-sueno-comprension
+#| fig-width: 8
+#| fig-height: 4.6
+#| fig-cap: "Horas de sueño por nivel de comprensión percibida."
+boxplot(Horas ~ Comprension, data = diario,
+        main = "Sueño y comprensión del día",
+        xlab = "Comprensión percibida", ylab = "Horas de sueño",
+        col = "lightblue")
+```
+
+Las medianas y las cajas permiten comprobar si las horas de sueño tienden a aumentar o disminuir conforme cambia la comprensión declarada. Es necesario observar también cuántas respuestas hay en cada categoría, ya que una categoría con muy pocos datos puede producir resultados poco estables. **La comprensión percibida no equivale a una nota ni a una medición objetiva del aprendizaje.**
+
+## IV. Relaciones con las notas de examen
+
+### IV.1. Preparación de datos por estudiante
+
+Las notas se encuentran en otro formulario. Para relacionarlas con los hábitos diarios, calculamos primero el promedio de las respuestas de cada estudiante **dentro de cada fecha**, después el promedio de sus días registrados y finalmente el promedio de sus exámenes. De este modo, cada estudiante aporta un punto a los gráficos de esta sección.
+
+```{r}
+#| label: preparar-comparacion
+# Conservamos las respuestas que tienen estudiante y fecha.
+diario_util <- diario[!is.na(diario$Cod) & !is.na(diario$Fecha), ]
+
+# Primero resumimos por estudiante y por día.
+diario_dia <- aggregate(
+  diario_util[c("Horas", "Consultas", "Ahorro")],
+  by = list(Cod = diario_util$Cod, Fecha = diario_util$Fecha),
+  FUN = function(x) mean(x, na.rm = TRUE)
+)
+
+# Después resumimos todos los días de cada estudiante.
+diario_est <- aggregate(
+  diario_dia[c("Horas", "Consultas", "Ahorro")],
+  by = list(Cod = diario_dia$Cod),
+  FUN = function(x) mean(x, na.rm = TRUE)
+)
+
+# Calculamos una nota promedio por estudiante.
+examen_util <- examenes[!is.na(examenes$Cod) & !is.na(examenes$Nota), ]
+examen_est <- aggregate(Nota ~ Cod, data = examen_util, FUN = mean)
+
+# Unimos las dos tablas sin repetir estudiantes.
+comparacion <- merge(diario_est, examen_est, by = "Cod")
+
+# Calculamos correlaciones de Spearman.
+rho_horas <- cor(comparacion$Horas, comparacion$Nota,
+                 method = "spearman", use = "complete.obs")
+rho_consultas <- cor(comparacion$Consultas, comparacion$Nota,
+                     method = "spearman", use = "complete.obs")
+rho_ahorro <- cor(comparacion$Ahorro, comparacion$Nota,
+                  method = "spearman", use = "complete.obs")
+```
+
+Se encontraron `r nrow(comparacion)` estudiantes con información que puede vincularse entre el diario y las notas de examen. Este número puede ser mucho menor que las respuestas diarias y constituye la cantidad de estudiantes disponibles para estas comparaciones, antes de considerar eventuales valores faltantes en cada par de variables.
+
+### IV.2. Objetivo 1: horas de sueño y notas
+
+```{r}
+#| label: resultado-objetivo-1
+resumen_sueno_nota <- data.frame(
+  Estudiantes_con_ambas_variables = sum(complete.cases(comparacion[c("Horas", "Nota")])),
+  Correlacion_Spearman = round(rho_horas, 2)
+)
+knitr::kable(resumen_sueno_nota,
+             caption = "Asociación entre horas de sueño y notas de examen.")
+```
+
+```{r}
+#| label: figura-objetivo-1
+#| fig-width: 7
+#| fig-height: 4.6
+#| fig-cap: "Promedio de horas de sueño frente al promedio de notas por estudiante."
+plot(comparacion$Horas, comparacion$Nota,
+     main = "Horas de sueño y notas",
+     xlab = "Horas promedio por día", ylab = "Nota promedio (0 a 20)",
+     pch = 19, col = "steelblue")
+```
+
+La correlación de Spearman obtenida fue de `r round(rho_horas, 2)`. Este resultado resume la asociación observada en la muestra; para interpretarlo se considera también la dispersión del gráfico. No se puede afirmar que dormir más produzca directamente mejores notas, porque no se controlaron otras condiciones de estudio ni se relacionó cada registro diario con un examen posterior específico.
+
+### IV.3. Objetivo 2: uso de IA y notas
+
+Comparamos dos indicadores de uso de IA con las notas: el promedio de consultas diarias y el promedio de tareas en las que se declaró un ahorro de tiempo.
+
+```{r}
+#| label: resultado-objetivo-2
+resumen_ia_nota <- data.frame(
+  Indicador = c("Consultas a IA", "Tareas con ahorro de tiempo"),
+  Estudiantes_validos = c(
+    sum(complete.cases(comparacion[c("Consultas", "Nota")])),
+    sum(complete.cases(comparacion[c("Ahorro", "Nota")]))
+  ),
+  Correlacion_Spearman = round(c(rho_consultas, rho_ahorro), 2)
+)
+knitr::kable(resumen_ia_nota,
+             caption = "Asociación entre uso de IA y notas declaradas.")
+```
+
+```{r}
+#| label: figura-objetivo-2
+#| fig-width: 9
+#| fig-height: 4
+#| fig-cap: "Consultas y tareas con ahorro de tiempo frente a las notas, por estudiante."
+par(mfrow = c(1, 2))
+plot(comparacion$Consultas, comparacion$Nota,
+     main = "Consultas y notas", xlab = "Consultas promedio por día",
+     ylab = "Nota promedio (0 a 20)", pch = 19, col = "darkgreen")
+plot(comparacion$Ahorro, comparacion$Nota,
+     main = "Ahorro de tiempo y notas", xlab = "Tareas con ahorro promedio",
+     ylab = "Nota promedio (0 a 20)", pch = 19, col = "steelblue")
+par(mfrow = c(1, 1))
+```
+
+La correlación entre consultas y notas fue `r round(rho_consultas, 2)`, mientras que la correlación entre tareas con ahorro de tiempo y notas fue `r round(rho_ahorro, 2)`. Los dos indicadores miden aspectos distintos del uso de IA; por ello, no es correcto interpretar que una mayor cantidad de consultas equivalga necesariamente a un mejor aprovechamiento. Las relaciones observadas no demuestran efectos sobre las calificaciones.
+
+### IV.4. Análisis conjunto de sueño, IA y rendimiento
+
+Además de analizar cada indicador por separado, comparamos las cuatro variables numéricas de los objetivos 1 y 2 mediante una matriz de correlaciones. Este análisis responde a la recomendación de estudiar **más relaciones entre variables** sin introducir modelos estadísticos que no sean necesarios para este avance.
+
+```{r}
+#| label: matriz-correlaciones
+matriz <- cor(comparacion[c("Horas", "Consultas", "Ahorro", "Nota")],
+              method = "spearman", use = "pairwise.complete.obs")
+knitr::kable(round(matriz, 2),
+             caption = "Correlaciones de Spearman entre sueño, IA y notas, por estudiante.")
+```
+
+La matriz permite revisar también cómo se relacionan las horas de sueño con las consultas a IA y con el ahorro de tiempo, además de la relación entre consultas y ahorro. Los valores cercanos a cero sugieren una asociación monotónica poco marcada; los valores positivos o negativos muestran la dirección de la tendencia. Debido al número limitado de estudiantes vinculados entre formularios, estos resultados se interpretan solo de manera descriptiva.
+
+## V. Conclusiones y limitaciones
+
+**Sobre el sueño y las notas.** La correlación de Spearman fue de `r round(rho_horas, 2)`. Este valor describe la tendencia observada entre los participantes, pero no permite asegurar que las horas de sueño determinen su rendimiento académico.
+
+**Sobre el uso de IA y las notas.** Las correlaciones fueron de `r round(rho_consultas, 2)` para consultas y `r round(rho_ahorro, 2)` para tareas con ahorro de tiempo. La intensidad de uso y el ahorro declarado son aspectos diferentes que conviene interpretar por separado.
+
+**Sobre el sueño y la comprensión.** Las tablas y los diagramas de cajas permiten comparar las horas de sueño entre niveles de comprensión percibida. Las diferencias describen respuestas diarias, no necesariamente estudiantes diferentes, y no prueban que el descanso determine cuánto se comprende.
+
+**Sobre las relaciones adicionales.** Los análisis entre sueño y consultas, comprensión y satisfacción, y la matriz de correlaciones amplían la descripción inicial y permiten aprovechar mejor las variables recogidas en los formularios.
+
+Las principales limitaciones son la participación voluntaria, las respuestas repetidas de algunos estudiantes, las posibles diferencias entre los cursos de los exámenes y la falta de correspondencia temporal entre cada hábito diario y una evaluación determinada. Además, el formulario diario puede contener muchas respuestas sin representar a varios estudiantes diferentes. Por ello, los tamaños de muestra deben explicarse con cuidado y los resultados no deben presentarse como conclusiones causales o generalizables a toda la sección.
+
