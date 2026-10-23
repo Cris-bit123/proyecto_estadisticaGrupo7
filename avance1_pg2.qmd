@@ -3,9 +3,11 @@ title: "Avance 1 - PG2: Probabilidad empírica y condicional"
 subtitle: "Estadística y Probabilidades I (CC1105)"
 author:
   - "NESTOR ALONSO DE LA CRUZ GOMEZ"
-  - ""
-  - ""
-  - ""
+  - "Eden Denisse Paredes Bartolo"
+  - "Cristobal Javier Aranda Gallardo "
+  - "Pedro Máximo Chávez Oscanoa"
+  - "Joaquín Antonio Temoche Sánchez"
+
 lang: es
 format:
   html:
