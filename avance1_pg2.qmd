@@ -30,7 +30,7 @@ Se trabaja con los registros del formulario diario de **toda la sección** (Esta
 #| label: lectura
 # Las columnas se toman por posición porque los nombres del forms son largos:
 # 5 = horas de sueño, 11 = nivel de comprensión, 16 = correo
-ruta <- "diario.csv"
+ruta <- "1diario.csv"
 diario <- read_delim(ruta, delim = NULL, show_col_types = FALSE)
 
 # DIAGNÓSTICO (borrar cuando salga bien): muestra qué archivo se leyó realmente
@@ -76,7 +76,7 @@ Entre las horas de sueño hay `r sum(df$horas == 0)` registros con 0 horas y `r 
 
 ### Observaciones limpias del grupo
 
-Se filtra el grupo solo para mostrar que se alcanza el mínimo solicitado (151). Luego se quita el filtro y se sigue con toda la sección.
+Se filtra el grupo.
 
 ```{r}
 #| label: grupo
