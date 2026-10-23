@@ -76,7 +76,7 @@ Entre las horas de sueño hay `r sum(df$horas == 0)` registros con 0 horas y `r 
 
 ### Observaciones limpias del grupo
 
-Se filtra el grupo.
+Se filtra el grupo
 
 ```{r}
 #| label: grupo
