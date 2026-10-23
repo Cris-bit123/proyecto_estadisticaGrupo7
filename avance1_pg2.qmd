@@ -1,0 +1,219 @@
+---
+title: "Avance 1 - PG2: Probabilidad empírica y condicional"
+subtitle: "Estadística y Probabilidades I (CC1105)"
+author:
+  - "NESTOR ALONSO DE LA CRUZ GOMEZ"
+  - ""
+  - ""
+  - ""
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(readr)
+library(dplyr)
+```
+
+## Datos y limpieza
+
+Se trabaja con los registros del formulario diario de **toda la sección** (Estadística y Probabilidades I, sección 1, ciclo 2026-2).
+
+```{r}
+#| label: lectura
+# Las columnas se toman por posición porque los nombres del forms son largos:
+# 5 = horas de sueño, 11 = nivel de comprensión, 16 = correo
+ruta <- "diario.csv"
+diario <- read_delim(ruta, delim = NULL, show_col_types = FALSE)
+
+# DIAGNÓSTICO (borrar cuando salga bien): muestra qué archivo se leyó realmente
+cat("Renderizado:", format(Sys.time()), "\n",
+    "Archivo:", normalizePath(ruta), "\n",
+    "Tamaño (bytes):", file.size(ruta), "\n",
+    "Filas leídas:", nrow(diario), "\n")
+
+# Duplicados exactos: se buscan en la fila completa (incluye la marca temporal)
+diario <- distinct(diario)
+
+df <- tibble(
+  correo = tolower(trimws(diario[[16]])),
+  horas = as.numeric(diario[[5]]),
+  comprension = factor(
+    trimws(diario[[11]]),
+    levels = c("Muy bajo", "Bajo", "Moderado", "Alto", "Muy alto"),
+    ordered = TRUE
+  )
+)
+
+# Limpieza: filas incompletas
+df <- df |>
+  filter(!is.na(horas), !is.na(comprension))
+
+# Horas de sueño (continua) categorizada en 4 rangos
+df <- df |>
+  mutate(
+    sueno = cut(
+      horas,
+      breaks = c(-Inf, 5, 7, 9, Inf),
+      labels = c("Muy corto", "Corto", "Adecuado", "Largo"),
+      ordered_result = TRUE
+    )
+  )
+
+n <- nrow(df)
+```
+
+Tras la limpieza (sin valores vacíos ni registros duplicados), la muestra efectiva de la sección es de **`r n` observaciones**.
+
+Entre las horas de sueño hay `r sum(df$horas == 0)` registros con 0 horas y `r sum(df$horas > 12)` con más de 12 horas. Se conservaron porque son valores posibles (por ejemplo, una noche sin dormir o un día de descanso largo) y no corresponden a errores de digitación evidentes.
+
+### Observaciones limpias del grupo
+
+Se filtra el grupo solo para mostrar que se alcanza el mínimo solicitado (151). Luego se quita el filtro y se sigue con toda la sección.
+
+```{r}
+#| label: grupo
+grupo <- c(
+  "cristobal.aranda@utec.edu.pe", "pedro.chavez@utec.edu.pe",
+  "rodrigo.sanchez.m@utec.edu.pe", "joaquin.temoche@utec.edu.pe",
+  "victor.tipe@utec.edu.pe",
+  "leyrin.aguilar@utec.edu.pe", "eden.paredes@utec.edu.pe",
+  "francisco.artiles@utec.edu.pe", "matias.caceres@utec.edu.pe",
+  "nestor.delacruz@utec.edu.pe"
+)
+
+n_grupo <- df |> filter(correo %in% grupo) |> nrow()
+n_grupo
+```
+
+El grupo cuenta con **`r n_grupo` observaciones limpias** (mínimo requerido: 151).
+
+## Parte 1: Probabilidad empírica
+
+```{r}
+#| label: funcion
+tabla_prob <- function(x) {
+  t <- table(x)
+  tibble(
+    evento = names(t),
+    n = as.integer(t),
+    P = round(as.numeric(t) / sum(t), 4)
+  )
+}
+```
+
+### Variable 1: Horas de sueño (cuantitativa continua, categorizada)
+
+Rangos según las horas de sueño $h$: Muy corto: $h \leq 5$; Corto: $5 < h \leq 7$; Adecuado: $7 < h \leq 9$; Largo: $h > 9$.
+
+1. **Experimento aleatorio:** seleccionar un registro al azar del estudio y observar las horas de sueño de la noche pasada.
+2. **Espacio de resultados:** Ω = {Muy corto, Corto, Adecuado, Largo}
+3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio cuyas horas de sueño pertenezcan a la categoría indicada (por ejemplo, Muy corto: 5 h o menos).
+4. **Probabilidades:**
+
+```{r}
+#| label: prob-sueno
+t_sueno <- tabla_prob(df$sueno)
+t_sueno
+```
+
+5. **Comprobación:** la suma de las probabilidades es `r sum(table(df$sueno)) / n`.
+
+### Variable 2: Nivel de comprensión (cualitativa ordinal)
+
+1. **Experimento aleatorio:** seleccionar un registro al azar del estudio y observar el nivel de comprensión de las actividades académicas del día.
+2. **Espacio de resultados:** Ω = {Muy bajo, Bajo, Moderado, Alto, Muy alto}
+3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio con el nivel de comprensión indicado.
+4. **Probabilidades:**
+
+```{r}
+#| label: prob-comprension
+t_comp <- tabla_prob(df$comprension)
+t_comp
+```
+
+5. **Comprobación:** la suma de las probabilidades es `r sum(table(df$comprension)) / n`.
+
+## Parte 2: Probabilidad condicional
+
+### 1. Eventos
+
+- **E₁:** seleccionar un registro al azar del estudio en el que el estudiante durmió 7 horas o menos.
+- **E₂:** seleccionar un registro al azar del estudio con nivel de comprensión alto o muy alto.
+
+```{r}
+#| label: eventos
+E1 <- df$horas <= 7
+E2 <- df$comprension %in% c("Alto", "Muy alto")
+
+p1  <- mean(E1)
+p2  <- mean(E2)
+p12 <- mean(E1 & E2)
+```
+
+P(E₁) = `r round(p1, 4)`, P(E₂) = `r round(p2, 4)`, P(E₁ ∩ E₂) = `r round(p12, 4)`.
+
+### 2. Prueba de independencia de eventos
+
+```{r}
+#| label: independencia
+c(
+  `P(E1 ∩ E2)` = round(p12, 3),
+  `P(E1)·P(E2)` = round(p1 * p2, 3),
+  `P(E1|E2)` = round(p12 / p2, 3),
+  `P(E1)` = round(p1, 3)
+)
+indep3 <- round(p12, 3) == round(p1 * p2, 3)
+indep2 <- round(p12, 2) == round(p1 * p2, 2)
+```
+
+Aproximando al tercer decimal, los eventos **`r ifelse(indep3, "sí", "no")`** son independientes; aproximando al segundo decimal, **`r ifelse(indep2, "sí", "no")`**.
+
+Con los valores sin redondear, P(E₁ ∩ E₂) = `r round(p12, 6)` y P(E₁)·P(E₂) = `r round(p1 * p2, 6)`. La igualdad **`r ifelse(isTRUE(all.equal(p12, p1 * p2)), "sí", "no")`** se cumple, y la conclusión se basa en estos valores sin redondear.
+
+### 3. Propiedades de la probabilidad
+
+```{r}
+#| label: propiedades
+c(
+  `P(E1 ∪ E2)` = round(p1 + p2 - p12, 4),
+  `P(E1 | E2)` = round(p12 / p2, 4),
+  `P(E2 | E1)` = round(p12 / p1, 4),
+  `P(E2 complemento)` = round(1 - p2, 4)
+)
+```
+
+Aquí se agregan las demás propiedades vistas en clase.
+
+### 4. Teorema de Bayes
+
+P(E₂|E₁) = P(E₁|E₂)·P(E₂) / \[ P(E₁|E₂)·P(E₂) + P(E₁|E₂ᶜ)·P(E₂ᶜ) \]
+
+```{r}
+#| label: bayes
+p_e1_dado_e2  <- p12 / p2
+p_e1_dado_e2c <- mean(E1[!E2])
+p2c <- 1 - p2
+
+total <- p_e1_dado_e2 * p2 + p_e1_dado_e2c * p2c   # probabilidad total = P(E1)
+bayes <- (p_e1_dado_e2 * p2) / total
+
+c(`P(E1|E2)` = round(p_e1_dado_e2, 4),
+  `P(E1|E2c)` = round(p_e1_dado_e2c, 4),
+  `P(E2c)` = round(p2c, 4),
+  `Prob. total` = round(total, 4),
+  `P(E2|E1) Bayes` = round(bayes, 4))
+```
+
+### 5. Interpretación en el contexto del estudio
+
+- **Independencia:** P(E₁ ∩ E₂) = `r round(p12, 3)` y P(E₁)·P(E₂) = `r round(p1 * p2, 3)`. Sin redondear, la diferencia P(E₁ ∩ E₂) − P(E₁)·P(E₂) es `r round(p12 - p1 * p2, 4)`, distinta de cero, por lo que los eventos no son independientes. La diferencia es pequeña: la relación entre dormir 7 horas o menos y el nivel de comprensión es débil en estos datos.
+- **Probabilidad condicional:** P(E₁|E₂) = `r round(p_e1_dado_e2, 3)`. Entre los registros con comprensión alta o muy alta, el **`r round(p_e1_dado_e2 * 100, 1)`%** corresponde a estudiantes que durmieron 7 horas o menos, algo menos que en el total de registros (`r round(p1 * 100, 1)`%).
+- **Bayes:** P(E₂|E₁) = `r round(bayes, 3)`. Dado que el estudiante durmió 7 horas o menos, la probabilidad de tener una comprensión alta o muy alta es de **`r round(bayes * 100, 1)`%**, ligeramente menor que la probabilidad general de **`r round(p2 * 100, 1)`%**.
+
+En el contexto del estudio, quienes duermen 7 horas o menos reportan una comprensión alta o muy alta algo menos seguido que el resto de estudiantes. La diferencia es de pocos puntos porcentuales, por lo que no se puede concluir que el sueño por sí solo determine la comprensión. Se trata de una asociación leve observada en la sección. Otros factores, como el uso de IA o las horas de estudio, podrían influir en la comprensión, pero son solo hipótesis: no se evaluaron en este análisis.
