@@ -411,4 +411,18 @@ A partir del análisis entre las horas de sueño y el nivel de comprensión perc
 
 De por si se podría argumentar que este análisis contradice los resultados que se esperaban inicialmente en esta relación, y resulta que el sueño, por si sola, no ha sido un factor que influye directamente con el nivel de comprensión en este grupo de estudiantes.
 
-## *Hacer el analisis bivariable entre las otras variables segun nuestro objetivos especificos**
+## *correcion: hacer el analisis bivariable entre las otras variables segun nuestro objetivos especificos**
+
+
+## ANALISIS PROBABILISTICO
+
+
+# Probabilidad empírica
+---
+
+# Probabilidad condicional
+---
+
+# Variables aleatorias
+---
+
