@@ -1,0 +1,352 @@
+---
+title: "Avance 2 - PG2"
+subtitle: "Variables aleatorias discretas y continuas | Estadística y Probabilidades I - Sección 1"
+author: "Cristóbal Aranda · Pedro Chávez · Joaquín Temoche · Eden Paredes · Néstor de la Cruz"
+date: "2026-11-06"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: none
+    width: 1280
+    height: 720
+    margin: 0.05
+    smaller: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: preparacion
+#| include: false
+
+leer_archivo <- function(nombre) {
+  opciones <- c(nombre, paste0("1", nombre))
+  archivo <- opciones[file.exists(opciones)]
+  if (length(archivo) == 0) {
+    stop(paste("No se encontró", nombre, "en la carpeta del proyecto."))
+  }
+  encabezado <- readLines(archivo[1], n = 1, warn = FALSE, encoding = "UTF-8")
+  n_comas <- lengths(regmatches(encabezado, gregexpr(",", encabezado, fixed = TRUE)))
+  n_puntos <- lengths(regmatches(encabezado, gregexpr(";", encabezado, fixed = TRUE)))
+  separador <- if (n_puntos > n_comas) ";" else ","
+  unique(read.csv(archivo[1], sep = separador, check.names = FALSE,
+                  stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM"))
+}
+
+columna <- function(datos, patrones, respaldo = NA_integer_) {
+  nombres <- tolower(iconv(names(datos), to = "ASCII//TRANSLIT", sub = ""))
+  for (patron in patrones) {
+    posicion <- grep(patron, nombres)
+    if (length(posicion) == 1) return(posicion)
+  }
+  if (!is.na(respaldo) && respaldo <= ncol(datos)) return(respaldo)
+  stop(paste("No se encontró una columna adecuada entre:",
+             paste(names(datos), collapse = " | ")))
+}
+
+numerico <- function(x) {
+  x <- trimws(as.character(x))
+  x <- gsub(",", ".", x, fixed = TRUE)
+  x <- gsub("[^0-9.-]", "", x)
+  suppressWarnings(as.numeric(x))
+}
+
+porcentaje <- function(x) ifelse(is.na(x), "No definido", paste0(round(100 * x, 2), "%"))
+numero <- function(x) round(x, 3)
+
+base_diario <- leer_archivo("diario.csv")
+base_demo <- leer_archivo("demograficos.csv")
+base_examenes <- leer_archivo("examenes.csv")
+
+col_horas <- columna(base_diario,
+                     c("horas.*dorm", "cuant.*dorm", "horas.*sueno", "dorm", "sueno"), 5)
+col_consultas <- columna(base_diario,
+                         c("numero.*consultas", "cuant.*consultas", "consultas.*ia",
+                           "consultas", "preguntas.*ia"))
+col_creditos <- columna(base_demo, c("creditos", "credito"))
+col_notas <- columna(base_examenes,
+                     c("nota.*examen", "calificacion.*examen", "nota", "calificacion"))
+
+horas <- numerico(base_diario[[col_horas]])
+consultas <- numerico(base_diario[[col_consultas]])
+creditos <- numerico(base_demo[[col_creditos]])
+notas <- numerico(base_examenes[[col_notas]])
+
+horas <- horas[is.finite(horas) & horas >= 0 & horas <= 24]
+consultas <- consultas[is.finite(consultas) & consultas >= 0 & consultas == floor(consultas)]
+creditos <- creditos[is.finite(creditos) & creditos >= 0 & creditos <= 40]
+notas <- notas[is.finite(notas) & notas >= 0 & notas <= 20]
+
+if (length(horas) < 3 || length(consultas) < 3 || length(creditos) < 3 ||
+    length(notas) < 3 || sd(horas) == 0 || sd(notas) == 0) {
+  stop("Los datos limpios no son suficientes para desarrollar las cuatro variables.")
+}
+
+p1 <- mean(consultas > 10)
+if (p1 <= 0 || p1 >= 1) {
+  stop("La frecuencia de más de 10 consultas es 0 o 1; no se puede usar este caso geométrico.")
+}
+
+esp1 <- 1 / p1
+var1 <- (1 - p1) / p1^2
+desv1 <- sqrt(var1)
+cv1 <- desv1 / esp1
+prob1 <- dgeom(19, p1)
+acum1 <- pgeom(18, p1)
+
+p2 <- mean(creditos >= 20)
+n2 <- 10
+esp2 <- n2 * p2
+var2 <- n2 * p2 * (1 - p2)
+desv2 <- sqrt(var2)
+cv2 <- if (esp2 == 0) NA_real_ else desv2 / esp2
+prob2 <- dbinom(7, n2, p2)
+acum2 <- pbinom(6, n2, p2, lower.tail = FALSE)
+
+mu_h <- mean(horas)
+sd_h <- sd(horas)
+var_h <- sd_h^2
+cv_h <- sd_h / mu_h
+asim_h <- mean(((horas - mu_h) / sd_h)^3)
+p_sw_h <- shapiro.test(head(horas, 5000))$p.value
+diagnostico_h <- if (p_sw_h >= 0.05) "no se rechaza la normalidad" else "se rechaza la normalidad"
+prob_h <- pnorm(8, mu_h, sd_h) - pnorm(6, mu_h, sd_h)
+acum_h <- pnorm(7, mu_h, sd_h)
+
+mu_n <- mean(notas)
+sd_n <- sd(notas)
+var_n <- sd_n^2
+cv_n <- sd_n / mu_n
+asim_n <- mean(((notas - mu_n) / sd_n)^3)
+p_sw_n <- shapiro.test(head(notas, 5000))$p.value
+diagnostico_n <- if (p_sw_n >= 0.05) "no se rechaza la normalidad" else "se rechaza la normalidad"
+prob_n <- pnorm(14, mu_n, sd_n, lower.tail = FALSE)
+acum_n <- pnorm(16, mu_n, sd_n) - pnorm(10, mu_n, sd_n)
+fuera_n <- pnorm(0, mu_n, sd_n) + pnorm(20, mu_n, sd_n, lower.tail = FALSE)
+```
+
+## Muestra efectiva
+
+Se utilizan las observaciones limpias de **toda la sección 1**, ciclo 2026-2.
+
+| Formulario | Variable de estudio | Registros válidos |
+|:--|:--|--:|
+| Diario | Consultas a IA | `r length(consultas)` |
+| Diario | Horas de sueño | `r length(horas)` |
+| Demográfico | Créditos académicos | `r length(creditos)` |
+| Exámenes | Nota obtenida | `r length(notas)` |
+
+Se quitaron filas exactamente duplicadas, valores faltantes y valores imposibles según la escala de cada variable. Cada registro corresponde a una respuesta; puede haber varios registros de una misma persona.
+
+## Variable discreta 1: consultas a IA
+
+**Caso:** ¿Cuál es la probabilidad de que la primera respuesta con **más de 10 consultas a IA en el día** aparezca en la vigésima selección?
+
+**Variable aleatoria:** $X =$ número de respuestas diarias seleccionadas hasta encontrar la primera con más de 10 consultas.
+
+- Distribución: $X \sim Geom(p)$, contando desde 1.
+- Éxito: la respuesta indica más de 10 consultas.
+- $p = P(\text{más de 10 consultas}) = \frac{\text{respuestas con más de 10 consultas}}{\text{respuestas válidas}}$.
+- Con los datos: $p =$ `r numero(p1)` (`r porcentaje(p1)`).
+
+```{r}
+#| fig-width: 7
+#| fig-height: 2.8
+#| out-width: 75%
+barplot(c(sum(consultas <= 10), sum(consultas > 10)),
+        names.arg = c("Hasta 10", "Más de 10"),
+        col = c("grey80", "grey50"),
+        ylab = "Respuestas", main = "Frecuencias observadas")
+```
+
+## Discreta 1: distribución y resultados
+
+::: {.columns}
+::: {.column width="53%"}
+```{r}
+#| fig-width: 6.2
+#| fig-height: 3.5
+#| out-width: 100%
+x <- 1:25
+barplot(dgeom(x - 1, p1), names.arg = x, col = "grey60",
+        border = NA, cex.names = 0.7,
+        ylab = "Probabilidad", xlab = "Número de respuestas",
+        main = "Distribución geométrica")
+```
+:::
+::: {.column width="47%"}
+$E(X)=1/p =$ `r numero(esp1)`
+
+$V(X)=(1-p)/p^2 =$ `r numero(var1)`
+
+$SD(X)=$ `r numero(desv1)`
+
+$CV(X)=$ `r porcentaje(cv1)`
+
+**Probabilidad solicitada**
+
+$P(X=20)=(1-p)^{19}p =$ **`r porcentaje(prob1)`**
+
+**Acumulada:** $P(X<20)=P(X\leq 19) =$ `r porcentaje(acum1)`.
+
+En R: `dgeom(19, p1)` y `pgeom(18, p1)`.
+:::
+:::
+
+## Variable discreta 2: créditos académicos
+
+**Caso:** Si se eligen 10 registros demográficos de forma independiente y con reemplazo, ¿cuál es la probabilidad de que exactamente 7 correspondan a estudiantes con **20 créditos o más**?
+
+**Variable aleatoria:** $Y =$ cantidad de registros, entre 10 seleccionados, con al menos 20 créditos.
+
+- Distribución: $Y \sim Binomial(n=10,p)$.
+- Éxito: registrar una carga académica de 20 créditos o más.
+- $p = P(\text{créditos} \geq 20) =$ `r numero(p2)` (`r porcentaje(p2)`).
+
+```{r}
+#| fig-width: 7
+#| fig-height: 2.7
+#| out-width: 75%
+hist(creditos, breaks = "Sturges", col = "grey75", border = "white",
+     xlab = "Créditos académicos", ylab = "Registros",
+     main = "Créditos declarados en la muestra")
+```
+
+## Discreta 2: distribución y resultados
+
+::: {.columns}
+::: {.column width="53%"}
+```{r}
+#| fig-width: 6.2
+#| fig-height: 3.5
+#| out-width: 100%
+y <- 0:n2
+barplot(dbinom(y, n2, p2), names.arg = y,
+        col = "grey60", border = NA,
+        xlab = "Respuestas con 20 créditos o más",
+        ylab = "Probabilidad", main = "Distribución binomial")
+```
+:::
+::: {.column width="47%"}
+$E(Y)=np =$ `r numero(esp2)`
+
+$V(Y)=np(1-p) =$ `r numero(var2)`
+
+$SD(Y)=$ `r numero(desv2)`
+
+$CV(Y)=$ `r porcentaje(cv2)`
+
+**Probabilidad solicitada**
+
+$P(Y=7)=\binom{10}{7}p^7(1-p)^3 =$ **`r porcentaje(prob2)`**
+
+**Acumulada:** $P(Y\geq 7) =$ `r porcentaje(acum2)`.
+
+En R: `dbinom(7, 10, p2)` y `pbinom(6, 10, p2, lower.tail = FALSE)`.
+:::
+:::
+
+## Variable continua 1: horas de sueño
+
+**Variable aleatoria:** $H =$ horas dormidas la noche anterior, registradas en el formulario diario.
+
+Se evalúa una aproximación normal mediante histograma, curva ajustada y gráfico de cuantiles.
+
+```{r}
+#| fig-width: 11
+#| fig-height: 3.6
+#| out-width: 100%
+op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
+hist(horas, probability = TRUE, breaks = "Sturges", col = "grey80",
+     border = "white", main = "Horas de sueño", xlab = "Horas")
+curve(dnorm(x, mu_h, sd_h), add = TRUE, lwd = 2)
+qqnorm(horas, pch = 16, cex = 0.55, main = "Gráfico Q-Q")
+qqline(horas, lwd = 2)
+par(op)
+```
+
+Media: `r numero(mu_h)` h. Mediana: `r numero(median(horas))` h. Desviación: `r numero(sd_h)` h. Asimetría: `r numero(asim_h)`.  
+Shapiro-Wilk: $p =$ `r numero(p_sw_h)`; `r diagnostico_h` al 5%.
+
+## Continua 1: propiedades y ejemplo
+
+Para el ejemplo se usa el modelo teórico $H \sim N(\mu,\sigma^2)$, con parámetros estimados:
+
+- $\mu =$ `r numero(mu_h)` horas y $\sigma =$ `r numero(sd_h)` horas.
+- $E(H)=\mu =$ `r numero(mu_h)` horas.
+- $V(H)=\sigma^2 =$ `r numero(var_h)` horas$^2$.
+- $SD(H)=\sigma =$ `r numero(sd_h)` horas.
+- $CV(H)=\sigma/\mu =$ `r porcentaje(cv_h)`.
+
+**Caso:** ¿Cuál es la probabilidad de que una respuesta elegida al azar registre entre 6 y 8 horas de sueño?
+
+$P(6 \leq H \leq 8)=F(8)-F(6) =$ **`r porcentaje(prob_h)`**.
+
+**Ejemplo acumulado:** $P(H \leq 7) =$ `r porcentaje(acum_h)`.
+
+En R: `pnorm(8, mu_h, sd_h) - pnorm(6, mu_h, sd_h)`.
+
+## Variable continua 2: nota de examen
+
+**Variable aleatoria:** $T =$ nota registrada de un examen, en escala de 0 a 20.
+
+Se evalúa una aproximación normal con el histograma y el gráfico Q-Q.
+
+```{r}
+#| fig-width: 11
+#| fig-height: 3.6
+#| out-width: 100%
+op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
+hist(notas, probability = TRUE, breaks = "Sturges", col = "grey80",
+     border = "white", main = "Notas de examen", xlab = "Nota (0 a 20)")
+curve(dnorm(x, mu_n, sd_n), add = TRUE, lwd = 2)
+qqnorm(notas, pch = 16, cex = 0.55, main = "Gráfico Q-Q")
+qqline(notas, lwd = 2)
+par(op)
+```
+
+Media: `r numero(mu_n)`. Mediana: `r numero(median(notas))`. Desviación: `r numero(sd_n)`. Asimetría: `r numero(asim_n)`.  
+Shapiro-Wilk: $p =$ `r numero(p_sw_n)`; `r diagnostico_n` al 5%.
+
+## Continua 2: propiedades y ejemplo
+
+Para el ejemplo se usa el modelo teórico $T \sim N(\mu,\sigma^2)$, con parámetros estimados:
+
+- $\mu =$ `r numero(mu_n)` puntos y $\sigma =$ `r numero(sd_n)` puntos.
+- $E(T)=\mu =$ `r numero(mu_n)` puntos.
+- $V(T)=\sigma^2 =$ `r numero(var_n)` puntos$^2$.
+- $SD(T)=\sigma =$ `r numero(sd_n)` puntos.
+- $CV(T)=\sigma/\mu =$ `r porcentaje(cv_n)`.
+
+**Caso:** ¿Cuál es la probabilidad de obtener una nota de al menos 14 puntos?
+
+$P(T\geq 14)=1-F(14) =$ **`r porcentaje(prob_n)`**.
+
+**Ejemplo de intervalo:** $P(10\leq T\leq 16) =$ `r porcentaje(acum_n)`.
+
+En R: `pnorm(14, mu_n, sd_n, lower.tail = FALSE)`.
+
+## Comparación de las cuatro variables
+
+| Variable aleatoria | Modelo | Resultado del ejemplo |
+|:--|:--|--:|
+| $X$: respuestas hasta primera con más de 10 consultas | Geométrica | `r porcentaje(prob1)` |
+| $Y$: registros con 20 o más créditos entre 10 | Binomial | `r porcentaje(prob2)` |
+| $H$: horas dormidas entre 6 y 8 | Normal aproximada | `r porcentaje(prob_h)` |
+| $T$: nota mayor o igual que 14 | Normal aproximada | `r porcentaje(prob_n)` |
+
+Los dos casos discretos utilizan **consultas** y **créditos**. Los dos casos continuos utilizan **horas de sueño** y **notas de examen**. Cada variable aleatoria y cada caso son diferentes.
+
+## Conclusiones y consideraciones
+
+- Los parámetros de las cuatro distribuciones se estimaron con las observaciones limpias disponibles de toda la sección.
+- Los modelos geométrico y binomial suponen selecciones independientes, por lo que las probabilidades son teóricas y aproximadas.
+- Las dos normales son modelos para desarrollar los ejemplos; los histogramas, Q-Q y Shapiro-Wilk permiten evaluar si son aproximaciones razonables.
+- Las notas solo pueden tomar valores entre 0 y 20. El modelo normal asigna `r porcentaje(fuera_n)` fuera de ese intervalo, lo cual constituye una limitación.
+- Los registros repetidos de un estudiante no equivalen a estudiantes distintos, y las respuestas no permiten afirmar causalidad.
+
+**Fuente de datos:** formularios diario, demográfico y de exámenes, Estadística y Probabilidades I, sección 1, ciclo 2026-2.
