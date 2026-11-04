@@ -202,7 +202,7 @@ grupo <- c(
   "nestor.delacruz@utec.edu.pe"
 )
 
-n_grupo_di <- DF_diario |> 
+n_grupo_di <- subset_diario |> 
   filter(Cod %in% grupo) |> 
   distinct(Cod, as.Date(Registro)) |>
   nrow()
