@@ -105,7 +105,8 @@ subset_exam <- select(DF_exam, Cod, Nota)
 | Principal `Uso` de IA | Cualitativa Nominal | Resolver ejercicios / Explicar temas / Resumir / Revisar respuestas / No uso IA |
 | `Sensación` de uso de IA | Cualitativa Nominal | Confianza / Alivio / Frustración / Indiferencia / No usó IA ese día |
 
-Adicionalmente cada subset cuenta con una columna `Cod` para indentificación 
+Adicionalmente cada subset cuenta con una columna `Cod` para indentificación y `Registro` en el subset diario por motivos de limpieza
+
 # Limpieza
 
 ## Codificación de variables
@@ -296,7 +297,7 @@ cat("El 50% central de los alumnos realiza entre", cuartiles_consultas[1], "y", 
 cat("Rango Intercuartílico (IQR):", iqr_consultas, "\n")
 ```
 
-### Comprension
+### Comprensión
 
 Utilizamos la mediana y la moda como medidas de posición, y la Distribución de Frecuencias Relativas para evaluar la dispersión.
 
