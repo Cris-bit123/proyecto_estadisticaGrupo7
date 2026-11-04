@@ -57,14 +57,14 @@ Formulario de Google Forms de aplicación periódica, compuesto por preguntas ob
 
 | Variable | Tipo | Ejemplo de medición |
 |------------------------|------------------------|------------------------|
-| Horas promedio de sueño por noche | Cuantitativa continua | 5.5 h/6h/7.25h |
-| Nota o promedio actual en el curso | Cuantitativa continua | 12.5/14.8/16/18.5 |
-| Número de consultas realizadas a herramientas de IA durante la última semana | Cuantitativa discreta | 0/3/8/15/20 |
-| Cantidad de créditos académicos cursados en el ciclo regular | Cuantitativa discreta | 5/10/14/18/22 |
-| Nivel de comprensión de las actividades académicas realizadas ese dia | Cualitativa ordinal | Muy bajo / Bajo / Moderado / Alto / Muy alto |
-| Satisfacción con el rendimiento académico actual | Cualitativa ordinal | Muy insatisfecho / Insatisfecho / Neutral / Satisfecho / Muy satisfecho |
-| Principal finalidad académica para la que utiliza IA | Cualitativa Nominal | Resolver ejercicios / Explicar temas / Resumir / Revisar respuestas / No uso IA |
-| ¿Cuál fue tu sensación principal después de usar la IA hoy? | Cualitativa Nominal | Confianza / Alivio / Frustración / Indiferencia / No usó IA ese día |
+| Horas de sueño | Cuantitativa continua | 5.5 h/6h/7.25h |
+| Nota | Cuantitativa continua | 12.5/14.8/16/18.5 |
+| Consultas a IA | Cuantitativa discreta | 0/3/8/15/20 |
+| Créditos | Cuantitativa discreta | 5/10/14/18/22 |
+| Nivel de comprensión | Cualitativa ordinal | Muy bajo / Bajo / Moderado / Alto / Muy alto |
+| Satisfacción de rendimiento académico | Cualitativa ordinal | Muy insatisfecho / Insatisfecho / Neutral / Satisfecho / Muy satisfecho |
+| Principal uso de IA | Cualitativa Nominal | Resolver ejercicios / Explicar temas / Resumir / Revisar respuestas / No uso IA |
+| Sensación de uso de IA | Cualitativa Nominal | Confianza / Alivio / Frustración / Indiferencia / No usó IA ese día |
 
 ## Limpieza
 
@@ -336,7 +336,7 @@ ggplot(subset_diario[!is.na(subset_diario$Comprension), ], aes(x = Comprension))
 
 ```
 
-##Uso
+## Uso
 
 Ante esta variable nominal, sus categorias son independientes y carecen de un orden jerárquico, por lo que la única medida de posició es la moda.
 
