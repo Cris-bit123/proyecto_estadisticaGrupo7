@@ -109,6 +109,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#renombramiento-de-columnas-y-creación-de-subsets" id="toc-renombramiento-de-columnas-y-creación-de-subsets" class="nav-link" data-scroll-target="#renombramiento-de-columnas-y-creación-de-subsets">Renombramiento de columnas y creación de subsets</a></li>
   <li><a href="#variables-a-utilizar" id="toc-variables-a-utilizar" class="nav-link" data-scroll-target="#variables-a-utilizar">Variables a utilizar</a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#limpieza" id="toc-limpieza" class="nav-link" data-scroll-target="#limpieza">Limpieza</a>
+  <ul class="collapse">
   <li><a href="#codificación-de-variables" id="toc-codificación-de-variables" class="nav-link" data-scroll-target="#codificación-de-variables">Codificación de variables</a>
   <ul class="collapse">
   <li><a href="#comprobación-de-la-codificación" id="toc-comprobación-de-la-codificación" class="nav-link" data-scroll-target="#comprobación-de-la-codificación">Comprobación de la codificación</a></li>
@@ -125,7 +128,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#horas" id="toc-horas" class="nav-link" data-scroll-target="#horas">Horas</a></li>
   <li><a href="#consultas" id="toc-consultas" class="nav-link" data-scroll-target="#consultas">Consultas</a></li>
-  <li><a href="#comprension" id="toc-comprension" class="nav-link" data-scroll-target="#comprension">Comprension</a></li>
+  <li><a href="#comprensión" id="toc-comprensión" class="nav-link" data-scroll-target="#comprensión">Comprensión</a></li>
   <li><a href="#uso" id="toc-uso" class="nav-link" data-scroll-target="#uso">Uso</a></li>
   </ul></li>
   <li><a href="#análisis-de-interacción" id="toc-análisis-de-interacción" class="nav-link" data-scroll-target="#análisis-de-interacción">Análisis de Interacción</a>
@@ -313,9 +316,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>Adicionalmente cada subset cuenta con una columna <code>Cod</code> para indentificación # Limpieza</p>
+<p>Adicionalmente cada subset cuenta con una columna <code>Cod</code> para indentificación y <code>Registro</code> en el subset diario por motivos de limpieza</p>
 </section>
 </section>
+</section>
+<section id="limpieza" class="level1">
+<h1>Limpieza</h1>
 <section id="codificación-de-variables" class="level2">
 <h2 class="anchored" data-anchor-id="codificación-de-variables">Codificación de variables</h2>
 <p>Las variables ordinales se codifican como factores ordenados, respetando el orden conceptual de sus categorías. Las variables nominales se codifican como factores no ordenados. Para las variables discretas y continuas, se asegura que su formato, sea entero o decimal, sea correcto.</p>
@@ -611,8 +617,8 @@ IQR: 3</code></pre>
 </div>
 </div>
 </section>
-<section id="comprension" class="level3">
-<h3 class="anchored" data-anchor-id="comprension">Comprension</h3>
+<section id="comprensión" class="level3">
+<h3 class="anchored" data-anchor-id="comprensión">Comprensión</h3>
 <p>Utilizamos la mediana y la moda como medidas de posición, y la Distribución de Frecuencias Relativas para evaluar la dispersión.</p>
 <p>Al ser una variable ordinal, sus categorías tienen una jerarquía lógica de “Muy bajo” a “Muy alto”. Aunque no podemos calcular un promedio matemático, la mediana nos permite identificar el punto de quiebre donde se sitúa el 50% de la clase, mientras que la moda nos indica la sensación más predominante.\</p>
 <p>La dispersión se justifica a través de los porcentajes relativos, esto nos revela si el salón tiene baja (“Moderado”) o alta dispersión (“Muy bajo” y “Muy alto”)</p>
