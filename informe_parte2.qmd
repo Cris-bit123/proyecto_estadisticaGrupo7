@@ -1,4 +1,3 @@
-
 ---
 title: "Influencias en el rendimiento académico"
 subtitle: "Estadística y Probabilidades I (CC1105)"
@@ -28,7 +27,7 @@ DF_exam <- read_csv("examenes.csv", show_col_types = FALSE)
 DF_demo <- read_csv("demograficos.csv", show_col_types = FALSE)
 ```
 
-# Introducción
+# INTRODUCCIÓN
 
 ## Relevancia
 
@@ -64,6 +63,7 @@ Evaluar la relación entre las horas de sueño, el uso de herramientas de inteli
 Formulario de Google Forms de aplicación periódica, compuesto por preguntas obligatorias destinadas a registrar las horas de sueño, el rendimiento académico y diferentes características del uso de herramientas de inteligencia artificial por parte de los estudiantes, como la cantidad de consultas realizadas, los días de uso, la utilidad percibida y la principal finalidad académica.
 
 ### Renombramiento de columnas y creación de subsets
+
 ```{r}
 
 DF_diario %>% 
@@ -99,15 +99,15 @@ subset_exam <- select(DF_exam, Cod, Nota)
 | `Horas` de Sueño | Cuantitativa continua | 5.5 h/6h/7.25h |
 | `Nota` de Examen | Cuantitativa continua | 12.5/14.8/16/18.5 |
 | `Consultas` a la IA | Cuantitativa discreta | 0/3/8/15/20 |
-|`Créditos` Académicos | Cuantitativa discreta | 5/10/14/18/22 |
+| `Créditos` Académicos | Cuantitativa discreta | 5/10/14/18/22 |
 | Nivel de `Comprensión` | Cualitativa ordinal | Muy bajo / Bajo / Moderado / Alto / Muy alto |
 | `Satisfacción` de rendimiento académico | Cualitativa ordinal | Muy insatisfecho / Insatisfecho / Neutral / Satisfecho / Muy satisfecho |
 | Principal `Uso` de IA | Cualitativa Nominal | Resolver ejercicios / Explicar temas / Resumir / Revisar respuestas / No uso IA |
 | `Sensación` de uso de IA | Cualitativa Nominal | Confianza / Alivio / Frustración / Indiferencia / No usó IA ese día |
 
-Adicionalmente cada subset cuenta con una columna `Cod` para indentificación y `Registro` en el subset diario por motivos de limpieza
+Adicionalmente cada subset cuenta con una columna `Cod` para identificación y `Registro` únicamente en el subset diario por motivos de limpieza.
 
-# Limpieza
+# LIMPIEZA
 
 ## Codificación de variables
 
@@ -167,9 +167,9 @@ str(subset_demo)
 str(subset_exam)
 ```
 
-## Normalización de variables
-La variable `Uso` es un caso particular, es la única variable escogida en la que es posible escribir un uso aparte de las opciones múltiple disponibles, por lo que es necesario normalizar. Al final hubo una variedad de usos que diferían bastante uno de otro, sin embargo, habían varios que expresaban que no se ha usado IA en ese día. Debido a esto, determinamos que para la variable `Uso`, se optó por unificar estas respuestas como **No uso IA** y **Otros**
+## Manejo de datos
 
+La variable `Uso` es un caso particular, es la única variable escogida en la que es posible escribir un uso aparte de las opciones múltiple disponibles, por lo que es necesario normalizar. Al final hubo una variedad de usos que diferían bastante uno de otro, sin embargo, habían varios que expresaban que no se ha usado IA en ese día. Debido a esto, determinamos que para la variable `Uso`, se optó por unificar estas respuestas como **No uso IA** y **Otros**
 
 ```{r}
 
@@ -185,38 +185,17 @@ subset_diario <- subset_diario %>%
 unique(subset_diario$Uso)
 ```
 
-
-
-### Observaciones limpias del grupo
-
-Se filtra el grupo
+Adicionalmente, como sección se ha definido que el subset diario se llenaría diariamente, por lo que se filtran aquellas observaciones que se hayan subido por la misma persona el mismo día.
 
 ```{r}
-grupo <- c(
-  "cristobal.aranda@utec.edu.pe", "pedro.chavez@utec.edu.pe", "joaquin.temoche@utec.edu.pe",
-  "rodrigo.sanchez.m@utec.edu.pe", 
-  "victor.tipe@utec.edu.pe",
-  "eden.paredes@utec.edu.pe",
-  "leyrin.aguilar@utec.edu.pe", 
-  "francisco.artiles@utec.edu.pe", 
-  "matias.caceres@utec.edu.pe",
-  "nestor.delacruz@utec.edu.pe"
-)
-
-n_grupo_di <- subset_diario |> 
-  filter(Cod %in% grupo) |> 
-  distinct(Cod, as.Date(Registro)) |>
-  nrow()
-n_grupo_ex <- subset_exam |> filter(Cod %in% grupo) |> nrow()
-n_grupo_dem<- subset_demo |> filter(Cod %in% grupo) |> nrow()
-n_grupo_di + n_grupo_ex + n_grupo_dem
-
-
+subset_diario <- subset_diario %>%
+  mutate(Fecha = as.Date(Registro)) %>%     
+  arrange(Cod, Registro) %>%                  
+  distinct(Cod, Fecha, .keep_all = TRUE) %>%  
+  select(-Fecha)      
 ```
 
 ### Radiografía de las bases
-
-No se realiza un `full_join()` directo entre las tres bases porque un mismo estudiante puede tener múltiples registros en más de una tabla. Una unión únicamente por `Cod` podría multiplicar artificialmente las observaciones. Por ello, las bases se conservan separadas hasta definir una regla de correspondencia entre registros.
 
 ```{r}
 radiografia <- function(datos) {
@@ -231,13 +210,40 @@ radiografia <- function(datos) {
 radiografia_diario <- radiografia(subset_diario)
 radiografia_demo <- radiografia(subset_demo)
 radiografia_exam <- radiografia(subset_exam)
+```
 
+```{r}
 radiografia_diario
 radiografia_demo
 radiografia_exam
 ```
 
-# Análisis descriptivo
+### Tamaño efectivo
+
+```{r}
+grupo <- c(
+  "cristobal.aranda@utec.edu.pe", 
+  "pedro.chavez@utec.edu.pe", 
+  "joaquin.temoche@utec.edu.pe",
+  "eden.paredes@utec.edu.pe",
+  "nestor.delacruz@utec.edu.pe"
+)
+
+n_grupo_di <- subset_diario |> 
+  filter(Cod %in% grupo) |> 
+  distinct(Cod, as.Date(Registro)) |>
+  nrow()
+n_grupo_ex <- subset_exam |> filter(Cod %in% grupo) |> nrow()
+n_grupo_dem<- subset_demo |> filter(Cod %in% grupo) |> nrow()
+
+```
+
+```{r}
+cat("Total de observaciones limpias de todos los subsets:", nrow(subset_diario) + nrow(subset_demo) + nrow(subset_exam), "\n")
+cat("Total de observaciones limpias del grupo:", n_grupo_di + n_grupo_ex + n_grupo_dem, "\n")
+```
+
+# ANÁLISIS DESCRIPTIVO
 
 ## Análisis univariado
 
@@ -266,8 +272,8 @@ cat("Media:", media_horas, "\nMediana:", mediana_horas,
 
 ggplot(subset_diario, aes(x = Horas)) +
   geom_histogram(binwidth = 1, fill = "steelblue", color = "black", alpha = 0.7) +
-  geom_vline(aes(xintercept = media_horas), color = "red", linetype = "dashed", size = 1) +
-  geom_vline(aes(xintercept = mediana_horas), color = "green", linetype = "solid", size = 1) +
+  geom_vline(aes(xintercept = media_horas), color = "red", linetype = "dashed", linewidth = 1) +
+  geom_vline(aes(xintercept = mediana_horas), color = "green", linetype = "solid", linewidth = 1) + 
   labs(title = "Distribución de las Horas de Sueño",
        subtitle = "Rojo = Media | Verde = Mediana",
        x = "Horas de Sueño",
@@ -331,7 +337,7 @@ ggplot(subset_diario[!is.na(subset_diario$Comprension), ], aes(x = Comprension))
 
 ### Uso
 
-Ante esta variable nominal, sus categorias son independientes y carecen de un orden jerárquico, por lo que la única medida de posició es la moda.
+Ante esta variable nominal, sus categorias son independientes y carecen de un orden jerárquico, por lo que la única medida de posición es la moda.
 
 Para medir su variabilidad o dispersión, recurrimos al análisis porcentual de sus frecuencias, esto nos ayudará a entender que tan concentrados o diversos está cada una de estas categorias.
 
@@ -357,13 +363,13 @@ cat("La Moda es '", moda_uso, "', concentrando un ", porcentaje_moda, "% del tot
 
 ## Análisis de Interacción
 
-### Relación entre Horas de Sueño y Nivel de Comprensión
+### 1. Relación entre Horas de Sueño y Nivel de Comprensión
 
-Para evaluar la interacción entre una variable cuantitativa continua (`Horas` de sueño) y una cualitativa ordinal (`Comprension`), se calcula el resumen de medidas de tendencia central y dispersión (Media, Mediana y Desviación Estándar) de las horas de sueño agrupadas por cada nivel de comprensión.\\
+Para evaluar la interacción entre una variable cuantitativa continua (`Horas` de sueño) y una cualitativa ordinal (`Comprension`), se calcula el resumen de medidas de tendencia central y dispersión (Media, Mediana y Desviación Estándar) de las horas de sueño agrupadas por cada nivel de comprensión.
 
-De esta forma podremos comparar directamente si los estudiantes que reportan un nivel de comprensión "Alto" o "Muy alto" presentan, en promedio, patrones de sueño distintos  frente a los que reportan un nivel "Bajo" o "Muy bajo".
+De esta forma podremos comparar directamente si los estudiantes que reportan un nivel de comprensión "Alto" o "Muy alto" presentan, en promedio, patrones de sueño distintos frente a los que reportan un nivel "Bajo" o "Muy bajo".
 
-Para la visualización utilizaremos Boxplotes. Nos permite observar en paralelo las medianas (línea central de la caja), la dispersión del 50% central (tamaño de la caja) y la presencia de valores atípicos en las horas de sueño para cada uno de los cinco niveles de comprensión percibida.
+Para la visualización utilizaremos Boxplots. Nos permite observar en paralelo las medianas (línea central de la caja), la dispersión del 50% central (tamaño de la caja) y la presencia de valores atípicos en las horas de sueño para cada uno de los cinco niveles de comprensión percibida.
 
 ```{r}
 
@@ -394,30 +400,87 @@ ggplot(subset_diario %>% filter(!is.na(Comprension) & !is.na(Horas)),
   theme_minimal() +
   theme(legend.position = "none") # Ocultamos leyenda porque el eje X ya lo explica
 ```
+
 A partir del análisis entre las horas de sueño y el nivel de comprensión percibido, se pueden notas ciertas particularidades:
 
-* La espectativa inicial es que si estás bien descanzado, rendirás mejor, pero los datos revelan que la mediana de sueño se mantiene constante en 7 horas para la gran mayoría de los niveles de comprensión.
+* La expectativa inicial es que si estás bien descansado, rendirás mejor, pero los datos revelan que la mediana de sueño se mantiene constante en 7 horas para la gran mayoría de los niveles de comprensión.
 
-* El pequeño grupo de estudiantes que reportó el menor nivel de comprensión  fue el que registró la mayor cantidad de horas de sueño, lo cual es lo opuesto de la espectativa inicial. Tambien se puede ver en la amplitud de su caja y su desviación estándar que que este grupo posee los hábitos de sueño más irregulares.
+* El pequeño grupo de estudiantes que reportó el menor nivel de comprensión fue el que registró la mayor cantidad de horas de sueño, lo cual es lo opuesto de la expectativa inicial. También se puede ver en la amplitud de su caja y su desviación estándar que que este grupo posee los hábitos de sueño más irregulares.
 
 * El diagrama de cajas permite identificar casos atípicos de estudiantes que reportaron dormir cantidades mínimas, y a pesar de esto, estos alumnos lograron posicionarse en los niveles de comprensión "Moderado" e incluso "Alto".
 
 De por si se podría argumentar que este análisis contradice los resultados que se esperaban inicialmente en esta relación, y resulta que el sueño, por si sola, no ha sido un factor que influye directamente con el nivel de comprensión en este grupo de estudiantes.
 
-## *correcion: hacer el analisis bivariable entre las otras variables segun nuestro objetivos especificos**
+### 2. Relación entre el Uso principal de la IA y el Nivel de Satisfacción
+
+Para evaluar la interacción entre dos variables cualitativas (`Uso` y `Satisfaccion`), utilizamos una tabla de contingencia que cruza las frecuencias de ambas categorías. Para que la comparación sea justa sin importar si un uso es más popular que otro, analizamos las proporciones relativas dentro de cada tipo de uso.
+
+Visualmente, empleamos un gráfico de barras apiladas al 100%. Esto nos permite observar rápidamente la distribución de los niveles de satisfacción como porcentajes dentro de cada categoría de uso de IA.
+
+```{r}
+
+tabla_uso_satisfaccion <- table(subset_diario$Uso, subset_diario$Satisfaccion)
+prop_uso_satisfaccion <- prop.table(tabla_uso_satisfaccion, margin = 1) * 100
+
+cat("Porcentaje de Satisfacción según el tipo de Uso de IA:\n")
+print(round(prop_uso_satisfaccion, 2))
+
+ggplot(subset_diario %>% filter(!is.na(Uso) & !is.na(Satisfaccion)), 
+       aes(x = Uso, fill = Satisfaccion)) +
+  geom_bar(position = "fill", color = "black") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_brewer(palette = "RdYlGn") + 
+  labs(title = "Nivel de Satisfacción según el Uso de Inteligencia Artificial",
+       subtitle = "Proporción de niveles de satisfacción dentro de cada categoría de uso",
+       x = "Uso Principal de la IA",
+       y = "Porcentaje de Estudiantes",
+       fill = "Nivel de\nSatisfacción") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+A partir de este gráfico se puede apreciar algunas cosas interesantes: 
+
+* En la opción de `Uso` donde no se usó IA, hay un porcentaje considerable que muestra un nivel de satisfacción bajo. Se puede interpretar que la satisfacción que los estudiantes perciben sobre su propio rendimiento puede estar ligado, en algún nivel, a si usaron IA o no aquel día. 
+
+* Por otro lado, el uso que parece traer más satisfacción resulta ser **Programar**, lo cuál tiene sentido debido a su naturaleza repetitiva. Usar IA de esta forma puede ser un factor asociado posible con una satisfacción mayor ese día.
+
+En general, parece que el nivel más prominente de nivel de satisfacción es el **3**, por lo que uno puede interpretar que la sección en sí se siente neutral en cuanto a su rendimiento académico diario.
+
+### 3. Interacción entre horas de sueño y consultas a la IA
+
+Al tratarse de dos variables cuantitativas (`Horas` y `Consultas`), la técnica adecuada para analizar su interacción es el Diagrama de Dispersión acompañado del Coeficiente de Correlación. Esto nos indicará si existe una asociación lineal entre la falta de sueño y una mayor dependencia de herramientas de IA.
+
+Dado que la variable de consultas es discreta y muchos estudiantes pueden reportar los mismos valores, aplicaremos un ligero desplazamiento visual en el gráfico para evitar que los puntos se superpongan y poder apreciar la verdadera concentración de los datos.
+
+```{r}
+correlacion <- cor(subset_diario$Horas, subset_diario$Consultas, method = "spearman")
+
+cat("Coeficiente de Correlación de Spearman:", round(correlacion, 3), "\n")
+
+ggplot(subset_diario, aes(x = Horas, y = Consultas)) +
+  geom_jitter(alpha = 0.6, color = "darkorange", width = 0.2, height = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x, color = "blue", linetype = "dashed", se = FALSE) +
+  labs(title = "Relación entre Horas de Sueño y Consultas a la Inteligencia Artificial",
+       subtitle = paste("Correlación:", round(correlacion, 3)),
+       x = "Horas de Sueño",
+       y = "Cantidad de Consultas a la IA") +
+  theme_minimal()
+```
+* El coeficiente es negativo pero cercano a 0, por lo que hay una dependencia débil entre estas dos variables. Se puede observar como si existe una tendencia donde los estudiantes que durmieron menos horas hacen más consultas, pero no es lo suficiente significante como para argumentar que la falta de horas de sueño afecta considerablemente el número de consultas.
+
+* Las cantidades más grandes de consultas ocurren dentro de un rango promedio de sueño, lo que evidencia que la necesidad intensiva de IA no esta ligado directamente al agotamiento físico, si no lo que son trabajos o tareas académicas del momento.
+
+Se puede concluir que, a pesar de que existe una relación mínima, la cantidad de consultas a la IA no esta asociada a las horas de sueño.
 
 
-## ANALISIS PROBABILISTICO
+# ANÁLISIS PROBABILÍSTICO
 
+## Probabilidad empírica
 
-# Probabilidad empírica
----
+## Probabilidad condicional
 
-# Probabilidad condicional
----
+## Variables aleatorias
 
-# Variables aleatorias
----
-
-#Conclusiones
----
+# Conclusiones
