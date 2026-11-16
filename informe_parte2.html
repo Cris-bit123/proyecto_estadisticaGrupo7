@@ -423,14 +423,14 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(subset_diario)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [895 × 8] (S3: tbl_df/tbl/data.frame)
- $ Cod         : chr [1:895] "camila.alfaro@utec.edu.pe" "angelo.urbina@utec.edu.pe" "camila.alfaro@utec.edu.pe" "eduardo.vila@utec.edu.pe" ...
- $ Registro    : chr [1:895] "12/09/2026 14:07:28" "12/09/2026 17:50:32" "12/09/2026 21:33:05" "12/09/2026 21:41:39" ...
- $ Horas       : num [1:895] 9 5 9 8.33 8 7 8 8 5 10 ...
- $ Consultas   : int [1:895] 9 0 13 2 4 32 2 2 20 0 ...
+<pre><code>tibble [984 × 8] (S3: tbl_df/tbl/data.frame)
+ $ Cod         : chr [1:984] "camila.alfaro@utec.edu.pe" "angelo.urbina@utec.edu.pe" "camila.alfaro@utec.edu.pe" "eduardo.vila@utec.edu.pe" ...
+ $ Registro    : chr [1:984] "12/09/2026 14:07:28" "12/09/2026 17:50:32" "12/09/2026 21:33:05" "12/09/2026 21:41:39" ...
+ $ Horas       : num [1:984] 9 5 9 8.33 8 7 8 8 5 10 ...
+ $ Consultas   : int [1:984] 9 0 13 2 4 32 2 2 20 0 ...
  $ Comprension : Ord.factor w/ 5 levels "Muy bajo"&lt;"Bajo"&lt;..: 4 3 4 5 3 3 4 3 3 2 ...
  $ Satisfaccion: Ord.factor w/ 5 levels "1"&lt;"2"&lt;"3"&lt;"4"&lt;..: 4 3 3 4 3 3 1 4 3 1 ...
- $ Uso         : Factor w/ 53 levels "-","0","Agendara recordatorio",..: 47 15 47 21 47 47 3 47 49 26 ...
+ $ Uso         : Factor w/ 58 levels "-","0","Agendara recordatorio",..: 52 17 52 24 52 52 3 52 54 29 ...
  $ Sensacion   : Factor w/ 5 levels "Alivio","Confianza",..: 1 1 1 2 1 4 4 4 4 5 ...</code></pre>
 </div>
 <details open="" class="code-fold">
@@ -438,18 +438,18 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(subset_demo)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [44 × 2] (S3: tbl_df/tbl/data.frame)
- $ Cod     : chr [1:44] "alejandro.soto@utec.edu.pe" "eduardo.vila@utec.edu.pe" "martin.armas@utec.edu.pe" "camila.alfaro@utec.edu.pe" ...
- $ Creditos: int [1:44] 22 22 20 18 16 4 18 22 21 18 ...</code></pre>
+<pre><code>tibble [47 × 2] (S3: tbl_df/tbl/data.frame)
+ $ Cod     : chr [1:47] "alejandro.soto@utec.edu.pe" "eduardo.vila@utec.edu.pe" "martin.armas@utec.edu.pe" "camila.alfaro@utec.edu.pe" ...
+ $ Creditos: int [1:47] 22 22 20 18 16 4 18 22 21 18 ...</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(subset_exam)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>tibble [193 × 2] (S3: tbl_df/tbl/data.frame)
- $ Cod : chr [1:193] "johan.huayta@utec.edu.pe" "samuel.abril@utec.edu.pe" "renzo.rivera.t@utec.edu.pe" "juan.fernandez.s@utec.edu.pe" ...
- $ Nota: num [1:193] 15 9 14 4.5 18.8 ...</code></pre>
+<pre><code>tibble [207 × 2] (S3: tbl_df/tbl/data.frame)
+ $ Cod : chr [1:207] "johan.huayta@utec.edu.pe" "samuel.abril@utec.edu.pe" "renzo.rivera.t@utec.edu.pe" "juan.fernandez.s@utec.edu.pe" ...
+ $ Nota: num [1:207] 15 9 14 4.5 18.8 ...</code></pre>
 </div>
 </div>
 </section>
@@ -514,7 +514,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAs"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Datos_Llenos"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Total_Filas"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cod","2":"0","3":"810","4":"810","_rn_":"Cod"},{"1":"Registro","2":"0","3":"810","4":"810","_rn_":"Registro"},{"1":"Horas","2":"0","3":"810","4":"810","_rn_":"Horas"},{"1":"Consultas","2":"0","3":"810","4":"810","_rn_":"Consultas"},{"1":"Comprension","2":"0","3":"810","4":"810","_rn_":"Comprension"},{"1":"Satisfaccion","2":"0","3":"810","4":"810","_rn_":"Satisfaccion"},{"1":"Uso","2":"0","3":"810","4":"810","_rn_":"Uso"},{"1":"Sensacion","2":"0","3":"810","4":"810","_rn_":"Sensacion"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAs"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Datos_Llenos"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Total_Filas"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cod","2":"0","3":"897","4":"897","_rn_":"Cod"},{"1":"Registro","2":"0","3":"897","4":"897","_rn_":"Registro"},{"1":"Horas","2":"0","3":"897","4":"897","_rn_":"Horas"},{"1":"Consultas","2":"0","3":"897","4":"897","_rn_":"Consultas"},{"1":"Comprension","2":"0","3":"897","4":"897","_rn_":"Comprension"},{"1":"Satisfaccion","2":"0","3":"897","4":"897","_rn_":"Satisfaccion"},{"1":"Uso","2":"0","3":"897","4":"897","_rn_":"Uso"},{"1":"Sensacion","2":"0","3":"897","4":"897","_rn_":"Sensacion"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -525,7 +525,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAs"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Datos_Llenos"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Total_Filas"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cod","2":"0","3":"44","4":"44","_rn_":"Cod"},{"1":"Creditos","2":"0","3":"44","4":"44","_rn_":"Creditos"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAs"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Datos_Llenos"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Total_Filas"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cod","2":"0","3":"47","4":"47","_rn_":"Cod"},{"1":"Creditos","2":"0","3":"47","4":"47","_rn_":"Creditos"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -536,7 +536,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAs"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Datos_Llenos"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Total_Filas"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cod","2":"0","3":"193","4":"193","_rn_":"Cod"},{"1":"Nota","2":"0","3":"193","4":"193","_rn_":"Nota"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["NAs"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Datos_Llenos"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Total_Filas"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cod","2":"0","3":"207","4":"207","_rn_":"Cod"},{"1":"Nota","2":"0","3":"207","4":"207","_rn_":"Nota"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -569,14 +569,14 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total de observaciones limpias de todos los subsets:"</span>, <span class="fu">nrow</span>(subset_diario) <span class="sc">+</span> <span class="fu">nrow</span>(subset_demo) <span class="sc">+</span> <span class="fu">nrow</span>(subset_exam), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Total de observaciones limpias de todos los subsets: 1047 </code></pre>
+<pre><code>Total de observaciones limpias de todos los subsets: 1151 </code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total de observaciones limpias del grupo:"</span>, n_grupo_di <span class="sc">+</span> n_grupo_ex <span class="sc">+</span> n_grupo_dem, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Total de observaciones limpias del grupo: 138 </code></pre>
+<pre><code>Total de observaciones limpias del grupo: 163 </code></pre>
 </div>
 </div>
 </section>
@@ -596,7 +596,7 @@ window.Quarto = {
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  0.000   6.000   7.000   6.594   8.000  14.000 </code></pre>
+  0.000   5.400   7.000   6.577   8.000  14.000 </code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
@@ -609,10 +609,10 @@ window.Quarto = {
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">Desv. Estándar:"</span>, sd_horas, <span class="st">"</span><span class="sc">\n</span><span class="st">IQR:"</span>, iqr_horas)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Media: 6.593842 
+<pre><code>Media: 6.577405 
 Mediana: 7 
-Desv. Estándar: 1.925842 
-IQR: 2</code></pre>
+Desv. Estándar: 1.928885 
+IQR: 2.6</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
@@ -690,7 +690,7 @@ IQR: 2</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Muy bajo      Bajo  Moderado      Alto  Muy alto 
- 4.320988  7.654321 59.135802 21.358025  7.530864 </code></pre>
+ 4.347826  7.246377 59.308807 21.516165  7.580825 </code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
@@ -749,9 +749,9 @@ La Mediana se ubica en: Moderado </code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Resolver ejercicios             Resumir           Programar            Redactar 
-              31.60               23.21               21.73                9.63 
+              30.77               23.08               22.41                9.70 
           No uso IA               Otros 
-               7.90                5.93 </code></pre>
+               7.69                6.35 </code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
@@ -769,7 +769,7 @@ Conclusión Descriptiva:</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"La Moda es '"</span>, moda_uso, <span class="st">"', concentrando un "</span>, porcentaje_moda, <span class="st">"% del total de las respuestas registradas.</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>La Moda es 'Resolver ejercicios', concentrando un 31.6% del total de las respuestas registradas.</code></pre>
+<pre><code>La Moda es 'Resolver ejercicios', concentrando un 30.77% del total de las respuestas registradas.</code></pre>
 </div>
 </div>
 </section>
@@ -808,11 +808,11 @@ Conclusión Descriptiva:</code></pre>
 <pre><code># A tibble: 5 × 5
   Comprension Cantidad_Alumnos Media_Horas Mediana_Horas Desv_Estandar
   &lt;ord&gt;                  &lt;int&gt;       &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
-1 Muy bajo                  35        6.81             7          1.92
-2 Bajo                      62        6.72             7          2.16
-3 Moderado                 479        6.5              7          2   
-4 Alto                     173        6.59             7          1.78
-5 Muy alto                  61        7.11             7          1.33</code></pre>
+1 Muy bajo                  39        6.65             7          2.27
+2 Bajo                      65        6.77             7          2.12
+3 Moderado                 532        6.48             7          1.99
+4 Alto                     193        6.6              7          1.79
+5 Muy alto                  68        7.07             7          1.31</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
@@ -866,12 +866,12 @@ Conclusión Descriptiva:</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     
                           1     2     3     4     5
-  No uso IA           39.06 25.00 29.69  4.69  1.56
-  Otros               27.08  8.33 29.17 20.83 14.58
-  Programar            1.14 10.23 42.61 27.84 18.18
-  Redactar             7.69  8.97 55.13 25.64  2.56
-  Resolver ejercicios  2.34 10.16 45.31 35.94  6.25
-  Resumir              3.72  8.51 55.85 25.00  6.91</code></pre>
+  No uso IA           39.13 24.64 30.43  4.35  1.45
+  Otros               28.07 10.53 26.32 19.30 15.79
+  Programar            1.00 10.95 42.29 28.36 17.41
+  Redactar             6.90  8.05 54.02 27.59  3.45
+  Resolver ejercicios  2.17  9.78 45.29 36.23  6.52
+  Resumir              3.38  8.21 57.00 24.64  6.76</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
@@ -915,7 +915,7 @@ Conclusión Descriptiva:</code></pre>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Coeficiente de Correlación de Spearman:"</span>, <span class="fu">round</span>(correlacion, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Coeficiente de Correlación de Spearman: -0.127 </code></pre>
+<pre><code>Coeficiente de Correlación de Spearman: -0.104 </code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Código</summary>
@@ -1025,30 +1025,30 @@ Conclusión Descriptiva:</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Muy corto</td>
 <td style="text-align: left;">Seleccionar un registro con 5 horas de sueño o menos (<span class="math inline">\(h \leq 5\)</span>)</td>
-<td style="text-align: right;">199</td>
-<td style="text-align: right;">0.2457</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 25 corresponden a la categoría «Muy corto» (24.6%)</td>
+<td style="text-align: right;">224</td>
+<td style="text-align: right;">0.2497</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 25 corresponden a la categoría «Muy corto» (25%)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Corto</td>
 <td style="text-align: left;">Seleccionar un registro con más de 5 y hasta 7 horas (<span class="math inline">\(5 &lt; h \leq 7\)</span>)</td>
-<td style="text-align: right;">336</td>
-<td style="text-align: right;">0.4148</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 41 corresponden a la categoría «Corto» (41.5%)</td>
+<td style="text-align: right;">365</td>
+<td style="text-align: right;">0.4069</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 41 corresponden a la categoría «Corto» (40.7%)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Adecuado</td>
 <td style="text-align: left;">Seleccionar un registro con más de 7 y hasta 9 horas (<span class="math inline">\(7 &lt; h \leq 9\)</span>)</td>
-<td style="text-align: right;">237</td>
-<td style="text-align: right;">0.2926</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 29 corresponden a la categoría «Adecuado» (29.3%)</td>
+<td style="text-align: right;">270</td>
+<td style="text-align: right;">0.3010</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 30 corresponden a la categoría «Adecuado» (30.1%)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Largo</td>
 <td style="text-align: left;">Seleccionar un registro con más de 9 horas (<span class="math inline">\(h &gt; 9\)</span>)</td>
 <td style="text-align: right;">38</td>
-<td style="text-align: right;">0.0469</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 5 corresponden a la categoría «Largo» (4.7%)</td>
+<td style="text-align: right;">0.0424</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 4 corresponden a la categoría «Largo» (4.2%)</td>
 </tr>
 </tbody>
 </table>
@@ -1104,37 +1104,37 @@ Conclusión Descriptiva:</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Muy bajo</td>
 <td style="text-align: left;">Seleccionar un registro con nivel de comprensión «Muy bajo»</td>
-<td style="text-align: right;">35</td>
-<td style="text-align: right;">0.0432</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.0435</td>
 <td style="text-align: left;">De cada 100 registros, aproximadamente 4 reportan comprensión «Muy bajo» (4.3%)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Bajo</td>
 <td style="text-align: left;">Seleccionar un registro con nivel de comprensión «Bajo»</td>
-<td style="text-align: right;">62</td>
-<td style="text-align: right;">0.0765</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 8 reportan comprensión «Bajo» (7.6%)</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">0.0725</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 7 reportan comprensión «Bajo» (7.2%)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Moderado</td>
 <td style="text-align: left;">Seleccionar un registro con nivel de comprensión «Moderado»</td>
-<td style="text-align: right;">479</td>
-<td style="text-align: right;">0.5914</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 59 reportan comprensión «Moderado» (59.1%)</td>
+<td style="text-align: right;">532</td>
+<td style="text-align: right;">0.5931</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 59 reportan comprensión «Moderado» (59.3%)</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Alto</td>
 <td style="text-align: left;">Seleccionar un registro con nivel de comprensión «Alto»</td>
-<td style="text-align: right;">173</td>
-<td style="text-align: right;">0.2136</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 21 reportan comprensión «Alto» (21.4%)</td>
+<td style="text-align: right;">193</td>
+<td style="text-align: right;">0.2152</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 22 reportan comprensión «Alto» (21.5%)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Muy alto</td>
 <td style="text-align: left;">Seleccionar un registro con nivel de comprensión «Muy alto»</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">0.0753</td>
-<td style="text-align: left;">De cada 100 registros, aproximadamente 8 reportan comprensión «Muy alto» (7.5%)</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0.0758</td>
+<td style="text-align: left;">De cada 100 registros, aproximadamente 8 reportan comprensión «Muy alto» (7.6%)</td>
 </tr>
 </tbody>
 </table>
@@ -1164,7 +1164,7 @@ Conclusión Descriptiva:</code></pre>
 <span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>p12 <span class="ot">&lt;-</span> <span class="fu">mean</span>(E1 <span class="sc">&amp;</span> E2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>P(E₁) = 0.6605, P(E₂) = 0.2889, P(E₁ ∩ E₂) = 0.1815.</p>
+<p>P(E₁) = 0.6566, P(E₂) = 0.291, P(E₁ ∩ E₂) = 0.1806.</p>
 </section>
 <section id="prueba-de-independencia-de-eventos" class="level3">
 <h3 class="anchored" data-anchor-id="prueba-de-independencia-de-eventos">2. Prueba de independencia de eventos</h3>
@@ -1199,11 +1199,11 @@ Conclusión Descriptiva:</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><span class="math inline">\(P(E_1 \mid E_2)\)</span></td>
-<td style="text-align: right;">0.628</td>
+<td style="text-align: right;">0.621</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><span class="math inline">\(P(E_1)\)</span></td>
-<td style="text-align: right;">0.660</td>
+<td style="text-align: right;">0.657</td>
 </tr>
 </tbody>
 </table>
@@ -1215,7 +1215,7 @@ Conclusión Descriptiva:</code></pre>
 </details>
 </div>
 <p>Aproximando al tercer decimal, los eventos <strong>no</strong> son independientes; aproximando al segundo decimal, <strong>no</strong>.</p>
-<p>Con los valores sin redondear, P(E₁ ∩ E₂) = 0.181481 y P(E₁)·P(E₂) = 0.190809. La igualdad <strong>no</strong> se cumple, y la conclusión se basa en estos valores sin redondear.</p>
+<p>Con los valores sin redondear, P(E₁ ∩ E₂) = 0.180602 y P(E₁)·P(E₂) = 0.191061. La igualdad <strong>no</strong> se cumple, y la conclusión se basa en estos valores sin redondear.</p>
 </section>
 <section id="propiedades-de-la-probabilidad" class="level3">
 <h3 class="anchored" data-anchor-id="propiedades-de-la-probabilidad">3. Propiedades de la probabilidad</h3>
@@ -1244,22 +1244,22 @@ Conclusión Descriptiva:</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Unión</td>
 <td style="text-align: left;"><span class="math inline">\(P(E_1 \cup E_2)=P(E_1)+P(E_2)-P(E_1 \cap E_2)\)</span></td>
-<td style="text-align: right;">0.7679</td>
+<td style="text-align: right;">0.7670</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Condicional</td>
 <td style="text-align: left;"><span class="math inline">\(P(E_1 \mid E_2)=P(E_1 \cap E_2)/P(E_2)\)</span></td>
-<td style="text-align: right;">0.6282</td>
+<td style="text-align: right;">0.6207</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Condicional</td>
 <td style="text-align: left;"><span class="math inline">\(P(E_2 \mid E_1)=P(E_1 \cap E_2)/P(E_1)\)</span></td>
-<td style="text-align: right;">0.2748</td>
+<td style="text-align: right;">0.2750</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Complemento de <span class="math inline">\(E_2\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(P(E_2^c)=1-P(E_2)\)</span></td>
-<td style="text-align: right;">0.7111</td>
+<td style="text-align: right;">0.7090</td>
 </tr>
 </tbody>
 </table>
@@ -1301,11 +1301,11 @@ Conclusión Descriptiva:</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><span class="math inline">\(P(E_1)+P(E_2)\)</span></td>
-<td style="text-align: right;">0.9494</td>
+<td style="text-align: right;">0.9476</td>
 </tr>
 </tbody>
 </table>
-<p>Los dos cálculos de <span class="math inline">\(P(E_1 \triangle E_2)\)</span> coinciden (0.5864), y como 0.5864 ≤ 0.9494, la desigualdad triangular <strong>sí</strong> se cumple. La diferencia entre ambos lados es <span class="math inline">\(2P(E_1 \cap E_2)\)</span>: los registros comunes se cuentan dos veces al sumar y no pertenecen a la diferencia simétrica.</p>
+<p>Los dos cálculos de <span class="math inline">\(P(E_1 \triangle E_2)\)</span> coinciden (0.5864), y como 0.5864 ≤ 0.9476, la desigualdad triangular <strong>sí</strong> se cumple. La diferencia entre ambos lados es <span class="math inline">\(2P(E_1 \cap E_2)\)</span>: los registros comunes se cuentan dos veces al sumar y no pertenecen a la diferencia simétrica.</p>
 </section>
 <section id="teorema-de-bayes" class="level3">
 <h3 class="anchored" data-anchor-id="teorema-de-bayes">4. Teorema de Bayes</h3>
@@ -1340,23 +1340,23 @@ Conclusión Descriptiva:</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><span class="math inline">\(P(E_1 \mid E_2)\)</span></td>
-<td style="text-align: right;">0.6282</td>
+<td style="text-align: right;">0.6207</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><span class="math inline">\(P(E_1 \mid E_2^c)\)</span></td>
-<td style="text-align: right;">0.6736</td>
+<td style="text-align: right;">0.6714</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><span class="math inline">\(P(E_2^c)\)</span></td>
-<td style="text-align: right;">0.7111</td>
+<td style="text-align: right;">0.7090</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Probabilidad total <span class="math inline">\(P(E_1)\)</span></td>
-<td style="text-align: right;">0.6605</td>
+<td style="text-align: right;">0.6566</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Bayes: <span class="math inline">\(P(E_2 \mid E_1)\)</span></td>
-<td style="text-align: right;">0.2748</td>
+<td style="text-align: right;">0.2750</td>
 </tr>
 </tbody>
 </table>
@@ -1366,9 +1366,9 @@ Conclusión Descriptiva:</code></pre>
 <section id="interpretación-en-el-contexto-del-estudio" class="level3">
 <h3 class="anchored" data-anchor-id="interpretación-en-el-contexto-del-estudio">5. Interpretación en el contexto del estudio</h3>
 <ul>
-<li><strong>Independencia:</strong> P(E₁ ∩ E₂) = 0.181 y P(E₁)·P(E₂) = 0.191. Sin redondear, la diferencia P(E₁ ∩ E₂) − P(E₁)·P(E₂) es -0.0093, distinta de cero, por lo que los eventos no son independientes. La diferencia es pequeña: la relación entre dormir 7 horas o menos y el nivel de comprensión es débil en estos datos.</li>
-<li><strong>Probabilidad condicional:</strong> P(E₁|E₂) = 0.628. Entre los registros con comprensión alta o muy alta, el <strong>62.8%</strong> corresponde a estudiantes que durmieron 7 horas o menos, algo menos que en el total de registros (66%).</li>
-<li><strong>Bayes:</strong> P(E₂|E₁) = 0.275. Dado que el estudiante durmió 7 horas o menos, la probabilidad de tener una comprensión alta o muy alta es de <strong>27.5%</strong>, ligeramente menor que la probabilidad general de <strong>28.9%</strong>.</li>
+<li><strong>Independencia:</strong> P(E₁ ∩ E₂) = 0.181 y P(E₁)·P(E₂) = 0.191. Sin redondear, la diferencia P(E₁ ∩ E₂) − P(E₁)·P(E₂) es -0.0105, distinta de cero, por lo que los eventos no son independientes. La diferencia es pequeña: la relación entre dormir 7 horas o menos y el nivel de comprensión es débil en estos datos.</li>
+<li><strong>Probabilidad condicional:</strong> P(E₁|E₂) = 0.621. Entre los registros con comprensión alta o muy alta, el <strong>62.1%</strong> corresponde a estudiantes que durmieron 7 horas o menos, algo menos que en el total de registros (65.7%).</li>
+<li><strong>Bayes:</strong> P(E₂|E₁) = 0.275. Dado que el estudiante durmió 7 horas o menos, la probabilidad de tener una comprensión alta o muy alta es de <strong>27.5%</strong>, ligeramente menor que la probabilidad general de <strong>29.1%</strong>.</li>
 </ul>
 <p>En el contexto del estudio, quienes duermen 7 horas o menos reportan una comprensión alta o muy alta algo menos seguido que el resto de estudiantes. La diferencia es de pocos puntos porcentuales, por lo que no se puede concluir que el sueño por sí solo determine la comprensión. Se trata de una asociación leve observada en la sección. Otros factores, como el uso de IA o las horas de estudio, podrían influir en la comprensión, pero son solo hipótesis: no se evaluaron en este análisis.</p>
 </section>
@@ -1394,7 +1394,7 @@ Conclusión Descriptiva:</code></pre>
 <ul>
 <li><strong>Definición de la variable:</strong> <span class="math inline">\(X =\)</span> número de respuestas diarias seleccionadas hasta encontrar la primera con <strong>más de 10 consultas a la IA</strong>.</li>
 <li><strong>Modelo probabilístico:</strong> <span class="math inline">\(X \sim \text{Geom}(p)\)</span>, considerando el conteo de ensayos desde 1 hasta el primer éxito, donde <span class="math inline">\(P(X=k) = (1-p)^{k-1}p\)</span> para <span class="math inline">\(k = 1, 2, \dots\)</span></li>
-<li><strong>Identificación del éxito y parámetro:</strong> El éxito consiste en seleccionar un registro diario que reporte más de 10 consultas a la IA. A partir de los datos empíricos de la sección, <span class="math inline">\(p = P(\text{Consultas} &gt; 10) =\)</span> <strong>0.375</strong> (37.53%).</li>
+<li><strong>Identificación del éxito y parámetro:</strong> El éxito consiste en seleccionar un registro diario que reporte más de 10 consultas a la IA. A partir de los datos empíricos de la sección, <span class="math inline">\(p = P(\text{Consultas} &gt; 10) =\)</span> <strong>0.376</strong> (37.57%).</li>
 </ul>
 <p><strong>Propiedades y caso de aplicación:</strong></p>
 <p>Se plantea calcular la probabilidad de que la primera respuesta con más de 10 consultas a la IA aparezca exactamente en la vigésima selección (<span class="math inline">\(X = 20\)</span>), así como la probabilidad acumulada de encontrarla antes de la vigésima selección (<span class="math inline">\(X &lt; 20\)</span>).</p>
@@ -1410,22 +1410,22 @@ Conclusión Descriptiva:</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Valor esperado</td>
 <td style="text-align: left;"><span class="math inline">\(E(X) = 1/p\)</span></td>
-<td style="text-align: right;">2.664 registros</td>
+<td style="text-align: right;">2.662 registros</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varianza</td>
 <td style="text-align: left;"><span class="math inline">\(V(X) = (1-p)/p^2\)</span></td>
-<td style="text-align: right;">4.435</td>
+<td style="text-align: right;">4.423</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Desviación estándar</td>
 <td style="text-align: left;"><span class="math inline">\(SD(X) = \sqrt{V(X)}\)</span></td>
-<td style="text-align: right;">2.106 registros</td>
+<td style="text-align: right;">2.103 registros</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Coeficiente de variación</td>
 <td style="text-align: left;"><span class="math inline">\(CV(X) = SD(X)/E(X)\)</span></td>
-<td style="text-align: right;">79.04%</td>
+<td style="text-align: right;">79.01%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Probabilidad puntual</td>
@@ -1486,7 +1486,7 @@ Conclusión Descriptiva:</code></pre>
 <ul>
 <li><strong>Definición de la variable:</strong> <span class="math inline">\(Y =\)</span> cantidad de registros, entre 10 seleccionados de forma independiente y con reemplazo, que corresponden a estudiantes con <strong>20 créditos académicos o más</strong>.</li>
 <li><strong>Modelo probabilístico:</strong> <span class="math inline">\(Y \sim \text{Binomial}(n = 10, p)\)</span>, con función de probabilidad <span class="math inline">\(P(Y=y) = \binom{10}{y} p^y (1-p)^{10-y}\)</span> para <span class="math inline">\(y = 0, 1, \dots, 10\)</span>.</li>
-<li><strong>Identificación del éxito y parámetro:</strong> El éxito se define como registrar una carga académica de 20 créditos o más. De la muestra demográfica se estima <span class="math inline">\(p = P(\text{Créditos} \geq 20) =\)</span> <strong>0.477</strong> (47.73%).</li>
+<li><strong>Identificación del éxito y parámetro:</strong> El éxito se define como registrar una carga académica de 20 créditos o más. De la muestra demográfica se estima <span class="math inline">\(p = P(\text{Créditos} \geq 20) =\)</span> <strong>0.447</strong> (44.68%).</li>
 </ul>
 <p><strong>Propiedades y caso de aplicación:</strong></p>
 <p>Si se eligen 10 registros demográficos al azar con reemplazo, se evalúa la probabilidad de que exactamente 7 correspondan a estudiantes con 20 créditos o más (<span class="math inline">\(Y = 7\)</span>), junto con la probabilidad de obtener al menos 7 registros con dicha carga (<span class="math inline">\(Y \geq 7\)</span>).</p>
@@ -1507,32 +1507,32 @@ Conclusión Descriptiva:</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Valor esperado</td>
 <td style="text-align: left;"><span class="math inline">\(E(Y) = np\)</span></td>
-<td style="text-align: right;">4.773 estudiantes</td>
+<td style="text-align: right;">4.468 estudiantes</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varianza</td>
 <td style="text-align: left;"><span class="math inline">\(V(Y) = np(1-p)\)</span></td>
-<td style="text-align: right;">2.495</td>
+<td style="text-align: right;">2.472</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Desviación estándar</td>
 <td style="text-align: left;"><span class="math inline">\(SD(Y) = \sqrt{V(Y)}\)</span></td>
-<td style="text-align: right;">1.58 estudiantes</td>
+<td style="text-align: right;">1.572 estudiantes</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Coeficiente de variación</td>
 <td style="text-align: left;"><span class="math inline">\(CV(Y) = SD(Y)/E(Y)\)</span></td>
-<td style="text-align: right;">33.09%</td>
+<td style="text-align: right;">35.19%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Probabilidad puntual</td>
 <td style="text-align: left;"><span class="math inline">\(P(Y = 7) = \binom{10}{7}p^7(1-p)^3\)</span></td>
-<td style="text-align: right;"><strong>9.67%</strong></td>
+<td style="text-align: right;"><strong>7.22%</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Probabilidad acumulada</td>
 <td style="text-align: left;"><span class="math inline">\(P(Y \geq 7) = 1 - P(Y \leq 6)\)</span></td>
-<td style="text-align: right;">13.71%</td>
+<td style="text-align: right;">9.83%</td>
 </tr>
 </tbody>
 </table>
@@ -1587,7 +1587,7 @@ Conclusión Descriptiva:</code></pre>
 </div>
 <ul>
 <li><strong>Definición de la variable:</strong> <span class="math inline">\(H =\)</span> horas dormidas la noche anterior, registradas en el formulario diario.</li>
-<li><strong>Validación del supuesto de normalidad:</strong> Se obtuvo una media de 6.594 h, mediana de 7 h, desviación estándar de 1.926 h y coeficiente de asimetría de -0.416. En la prueba de Shapiro-Wilk se obtiene <span class="math inline">\(p &lt; 0.001\)</span> (se rechaza la normalidad al 5%). Dado que la media y la mediana son cercanas, la asimetría es moderada y el gráfico Q-Q sigue la recta teórica en la zona central, se acepta el modelo normal como aproximación razonable: <span class="math inline">\(H \sim N(\mu = 6.594, \sigma^2 = 3.709)\)</span>.</li>
+<li><strong>Validación del supuesto de normalidad:</strong> Se obtuvo una media de 6.577 h, mediana de 7 h, desviación estándar de 1.929 h y coeficiente de asimetría de -0.485. En la prueba de Shapiro-Wilk se obtiene <span class="math inline">\(p &lt; 0.001\)</span> (se rechaza la normalidad al 5%). Dado que la media y la mediana son cercanas, la asimetría es moderada y el gráfico Q-Q sigue la recta teórica en la zona central, se acepta el modelo normal como aproximación razonable: <span class="math inline">\(H \sim N(\mu = 6.577, \sigma^2 = 3.721)\)</span>.</li>
 </ul>
 <div class="cell">
 <details open="" class="code-fold">
@@ -1630,32 +1630,32 @@ Conclusión Descriptiva:</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Valor esperado</td>
 <td style="text-align: left;"><span class="math inline">\(E(H) = \mu\)</span></td>
-<td style="text-align: right;">6.594 horas</td>
+<td style="text-align: right;">6.577 horas</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varianza</td>
 <td style="text-align: left;"><span class="math inline">\(V(H) = \sigma^2\)</span></td>
-<td style="text-align: right;">3.709 horas<span class="math inline">\(^2\)</span></td>
+<td style="text-align: right;">3.721 horas<span class="math inline">\(^2\)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Desviación estándar</td>
 <td style="text-align: left;"><span class="math inline">\(SD(H) = \sigma\)</span></td>
-<td style="text-align: right;">1.926 horas</td>
+<td style="text-align: right;">1.929 horas</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Coeficiente de variación</td>
 <td style="text-align: left;"><span class="math inline">\(CV(H) = \sigma/\mu\)</span></td>
-<td style="text-align: right;">29.21%</td>
+<td style="text-align: right;">29.33%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Probabilidad de intervalo</td>
 <td style="text-align: left;"><span class="math inline">\(P(6 \leq H \leq 8) = F(8) - F(6)\)</span></td>
-<td style="text-align: right;"><strong>38.84%</strong></td>
+<td style="text-align: right;"><strong>38.73%</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Probabilidad acumulada</td>
 <td style="text-align: left;"><span class="math inline">\(P(H \leq 7) = F(7)\)</span></td>
-<td style="text-align: right;">58.35%</td>
+<td style="text-align: right;">58.67%</td>
 </tr>
 </tbody>
 </table>
@@ -1681,7 +1681,7 @@ Conclusión Descriptiva:</code></pre>
 </div>
 <ul>
 <li><strong>Definición de la variable:</strong> <span class="math inline">\(T =\)</span> nota obtenida en el examen, medida en una escala continua de 0 a 20 puntos.</li>
-<li><strong>Validación del supuesto de normalidad:</strong> La muestra presenta una media de 13.263 puntos, mediana de 14 puntos, desviación estándar de 4.51 puntos y asimetría de -0.441. El test de Shapiro-Wilk arroja <span class="math inline">\(p &lt; 0.001\)</span> (se rechaza la normalidad al 5%). Aunque existe una leve asimetría negativa y acumulación en el límite superior (el modelo teórico asigna 6.93% fuera del rango <span class="math inline">\([0, 20]\)</span>), la cercanía entre media y mediana y el ajuste central en el gráfico Q-Q permiten emplear la distribución normal como modelo aproximado: <span class="math inline">\(T \sim N(\mu = 13.263, \sigma^2 = 20.341)\)</span>.</li>
+<li><strong>Validación del supuesto de normalidad:</strong> La muestra presenta una media de 13.317 puntos, mediana de 14 puntos, desviación estándar de 4.477 puntos y asimetría de -0.426. El test de Shapiro-Wilk arroja <span class="math inline">\(p &lt; 0.001\)</span> (se rechaza la normalidad al 5%). Aunque existe una leve asimetría negativa y acumulación en el límite superior (el modelo teórico asigna 6.92% fuera del rango <span class="math inline">\([0, 20]\)</span>), la cercanía entre media y mediana y el ajuste central en el gráfico Q-Q permiten emplear la distribución normal como modelo aproximado: <span class="math inline">\(T \sim N(\mu = 13.317, \sigma^2 = 20.043)\)</span>.</li>
 </ul>
 <div class="cell">
 <details open="" class="code-fold">
@@ -1724,32 +1724,32 @@ Conclusión Descriptiva:</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Valor esperado</td>
 <td style="text-align: left;"><span class="math inline">\(E(T) = \mu\)</span></td>
-<td style="text-align: right;">13.263 puntos</td>
+<td style="text-align: right;">13.317 puntos</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Varianza</td>
 <td style="text-align: left;"><span class="math inline">\(V(T) = \sigma^2\)</span></td>
-<td style="text-align: right;">20.341 puntos<span class="math inline">\(^2\)</span></td>
+<td style="text-align: right;">20.043 puntos<span class="math inline">\(^2\)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Desviación estándar</td>
 <td style="text-align: left;"><span class="math inline">\(SD(T) = \sigma\)</span></td>
-<td style="text-align: right;">4.51 puntos</td>
+<td style="text-align: right;">4.477 puntos</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Coeficiente de variación</td>
 <td style="text-align: left;"><span class="math inline">\(CV(T) = \sigma/\mu\)</span></td>
-<td style="text-align: right;">34%</td>
+<td style="text-align: right;">33.62%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Probabilidad de cola superior</td>
 <td style="text-align: left;"><span class="math inline">\(P(T \geq 14) = 1 - F(14)\)</span></td>
-<td style="text-align: right;"><strong>43.51%</strong></td>
+<td style="text-align: right;"><strong>43.94%</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Probabilidad de intervalo</td>
 <td style="text-align: left;"><span class="math inline">\(P(10 \leq T \leq 16) = F(16) - F(10)\)</span></td>
-<td style="text-align: right;">49.33%</td>
+<td style="text-align: right;">49.61%</td>
 </tr>
 </tbody>
 </table>
@@ -1776,27 +1776,27 @@ Conclusión Descriptiva:</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><span class="math inline">\(X\)</span>: registros hasta el primero con <span class="math inline">\(&gt; 10\)</span> consultas</td>
-<td style="text-align: left;">Geométrica (<span class="math inline">\(p = 0.375\)</span>)</td>
+<td style="text-align: left;">Geométrica (<span class="math inline">\(p = 0.376\)</span>)</td>
 <td style="text-align: left;"><span class="math inline">\(P(X = 20)\)</span></td>
 <td style="text-align: right;"><strong>0%</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><span class="math inline">\(Y\)</span>: registros con <span class="math inline">\(\geq 20\)</span> créditos entre 10 elegidos</td>
-<td style="text-align: left;">Binomial (<span class="math inline">\(n = 10, p = 0.477\)</span>)</td>
+<td style="text-align: left;">Binomial (<span class="math inline">\(n = 10, p = 0.447\)</span>)</td>
 <td style="text-align: left;"><span class="math inline">\(P(Y = 7)\)</span></td>
-<td style="text-align: right;"><strong>9.67%</strong></td>
+<td style="text-align: right;"><strong>7.22%</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><span class="math inline">\(H\)</span>: horas dormidas la noche anterior</td>
-<td style="text-align: left;">Normal (<span class="math inline">\(\mu = 6.594, \sigma = 1.926\)</span>)</td>
+<td style="text-align: left;">Normal (<span class="math inline">\(\mu = 6.577, \sigma = 1.929\)</span>)</td>
 <td style="text-align: left;"><span class="math inline">\(P(6 \leq H \leq 8)\)</span></td>
-<td style="text-align: right;"><strong>38.84%</strong></td>
+<td style="text-align: right;"><strong>38.73%</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><span class="math inline">\(T\)</span>: nota obtenida en el examen</td>
-<td style="text-align: left;">Normal (<span class="math inline">\(\mu = 13.263, \sigma = 4.51\)</span>)</td>
+<td style="text-align: left;">Normal (<span class="math inline">\(\mu = 13.317, \sigma = 4.477\)</span>)</td>
 <td style="text-align: left;"><span class="math inline">\(P(T \geq 14)\)</span></td>
-<td style="text-align: right;"><strong>43.51%</strong></td>
+<td style="text-align: right;"><strong>43.94%</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1806,10 +1806,11 @@ Conclusión Descriptiva:</code></pre>
 <section id="conclusiones" class="level1">
 <h1>CONCLUSIONES</h1>
 <ol type="1">
-<li><p><strong>Horas de sueño y comprensión:</strong> El descanso diario por sí solo no determina el nivel de comprensión percibida. La mediana de sueño se mantiene constante en <strong>7 horas</strong> en casi todas las categorías y, aunque dormir <span class="math inline">\(\leq 7\)</span> horas (<span class="math inline">\(E_1\)</span>) y tener comprensión alta o muy alta (<span class="math inline">\(E_2\)</span>) no son eventos estrictamente independientes, la probabilidad condicional <span class="math inline">\(P(E_2 \mid E_1)\)</span> (27.48%) apenas difiere de la probabilidad general <span class="math inline">\(P(E_2)\)</span> (28.89%). Los hábitos de sueño más irregulares se concentraron en el grupo de comprensión <em>“Muy bajo”</em>.</p></li>
-<li><p><strong>Uso de IA y satisfacción:</strong> El uso de IA se asocia con mayor satisfacción académica diaria (destacando el uso para <strong>Programar</strong>), mientras que no usarla concentra mayor insatisfacción. La correlación entre horas de sueño y consultas es cercana a cero (-0.127), indicando que las consultas intensivas (<span class="math inline">\(&gt;10\)</span>, con <span class="math inline">\(p = 0.375\)</span>) responden a exigencias académicas puntuales y no al cansancio.</p></li>
-<li><p><strong>Modelado probabilístico y limitaciones:</strong> Las horas de sueño (<span class="math inline">\(H \sim N(6.594, 3.709)\)</span>) concentran un 38.84% de probabilidad entre 6 y 8 horas, y las notas (<span class="math inline">\(T \sim N(13.263, 20.341)\)</span>) presentan un 43.51% de probabilidad de alcanzar al menos 14 puntos. Los modelos discretos asumen independencia entre registros, mientras que la aproximación normal en notas asigna un 6.93% fuera del rango <span class="math inline">\([0, 20]\)</span>. Al ser un estudio observacional con registros repetidos por alumno, los resultados muestran asociaciones y no causalidad.</p></li>
+<li><p><strong>Horas de sueño y comprensión:</strong> El descanso diario por sí solo no determina el nivel de comprensión percibida. La mediana de sueño se mantiene constante en <strong>7 horas</strong> en casi todas las categorías y, aunque dormir <span class="math inline">\(\leq 7\)</span> horas (<span class="math inline">\(E_1\)</span>) y tener comprensión alta o muy alta (<span class="math inline">\(E_2\)</span>) no son eventos estrictamente independientes, la probabilidad condicional <span class="math inline">\(P(E_2 \mid E_1)\)</span> (27.5%) apenas difiere de la probabilidad general <span class="math inline">\(P(E_2)\)</span> (29.1%). Los hábitos de sueño más irregulares se concentraron en el grupo de comprensión <em>“Muy bajo”</em>.</p></li>
+<li><p><strong>Uso de IA y satisfacción:</strong> El uso de IA se asocia con mayor satisfacción académica diaria (destacando el uso para <strong>Programar</strong>), mientras que no usarla concentra mayor insatisfacción. La correlación entre horas de sueño y consultas es cercana a cero (-0.104), indicando que las consultas intensivas (<span class="math inline">\(&gt;10\)</span>, con <span class="math inline">\(p = 0.376\)</span>) responden a exigencias académicas puntuales y no al cansancio.</p></li>
+<li><p><strong>Modelado probabilístico y limitaciones:</strong> Las horas de sueño (<span class="math inline">\(H \sim N(6.577, 3.721)\)</span>) concentran un 38.73% de probabilidad entre 6 y 8 horas, y las notas (<span class="math inline">\(T \sim N(13.317, 20.043)\)</span>) presentan un 43.94% de probabilidad de alcanzar al menos 14 puntos. Los modelos discretos asumen independencia entre registros, mientras que la aproximación normal en notas asigna un 6.92% fuera del rango <span class="math inline">\([0, 20]\)</span>. Al ser un estudio observacional con registros repetidos por alumno, los resultados muestran asociaciones y no causalidad.</p></li>
 </ol>
+<p>Este documento tiene 3840 palabras.</p>
 </section>
 
 </main>
