@@ -1,0 +1,537 @@
+---
+title: "Relación entre las horas de sueño, el uso de Inteligencia Artificial y el rendimiento académico"
+subtitle: "Estudiantes de Estadística y Probabilidades 1 · Sección 1 Grupo 7 · Ciclo 2026-2"
+author: "Cristobal Aranda · Pedro Chávez · Joaquín Temoche · Eden Paredes · Néstor de la Cruz"
+date: "2026-11-06"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: none
+    width: 1280
+    height: 720
+    margin: 0.05
+    smaller: true
+    embed-resources: true
+    include-in-header:
+      text: |
+        <style>
+        .reveal .title { font-size: 1.8em !important; line-height: 1.2 !important; color: #1f4e78; }
+        .reveal .subtitle { font-size: 1.1em !important; color: #555555; margin-top: 15px; }
+        .reveal .quarto-title-authors { margin-top: 40px; font-size: 0.9em; }
+        .tabla-compacta table { font-size: 0.62em !important; line-height: 1.25 !important; width: 100%; }
+        .tabla-compacta th, .tabla-compacta td { padding: 6px 8px !important; }
+        .reveal h2 { font-size: 1.35em !important; margin-bottom: 0.35em !important; color: #1f4e78; }
+        .reveal h3 { font-size: 0.95em !important; margin-bottom: 0.25em !important; }
+        .reveal p, .reveal li { font-size: 0.78em !important; line-height: 1.3 !important; }
+        .slide-conclusiones li { font-size: 1.05em !important; line-height: 1.55 !important; margin-bottom: 18px !important; }
+        </style>
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+
+## Objetivos del estudio
+
+::: {.callout-note appearance="simple" icon=false}
+### Objetivo general
+Evaluar la relación entre las horas de sueño, el uso de herramientas de Inteligencia Artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades 1 (Sección 1, ciclo 2026-2).
+:::
+
+### Objetivos específicos
+
+1. **Sueño y rendimiento:** Analizar la relación entre las horas de sueño y el rendimiento académico (notas de examen).
+2. **Uso de IA y rendimiento:** Evaluar cómo la intensidad de uso (consultas) y utilidad percibida de la IA se relacionan con el desempeño académico.
+3. **Sueño y comprensión:** Describir la correlación entre las horas de sueño y el nivel de comprensión de las actividades académicas diarias.
+
+## Variables de estudio
+
+Se seleccionaron **8 variables principales** provenientes de tres formularios (Diario, Demográfico y Exámenes) :
+
+::: {.tabla-compacta}
+| Variable | Tipo | Escala / Valores permitidos |
+|:--|:--|:--|
+| **Horas de sueño** | Cuantitativa continua | Numérica decimal en $[0, 24]$ horas (ej. `6.5 h`)  |
+| **Nota de examen** | Cuantitativa continua | Numérica decimal en escala vigesimal $[0, 20]$ (ej. `15.5`)  |
+| **Consultas a IA** | Cuantitativa discreta | Enteros no negativos (`0, 1, 2...`)  |
+| **Créditos académicos** | Cuantitativa discreta | Enteros positivos en $[0, 40]$ (ej. `18, 20`)  |
+| **Nivel de comprensión** | Cualitativa ordinal | *Muy bajo* $<$ *Bajo* $<$ *Moderado* $<$ *Alto* $<$ *Muy alto*  |
+| **Satisfacción académica** | Cualitativa ordinal | Escala Likert ordenada: `1` $<$ `2` $<$ `3` $<$ `4` $<$ `5`  |
+| **Uso principal de IA** | Cualitativa nominal | *Resolver ejercicios*, *Resumir*, *Programar*, *Redactar*, *No uso IA*, *Otros*  |
+| **Sensación post-IA** | Cualitativa nominal | *Confianza*, *Alivio*, *Frustración*, *Indiferencia*, *No usó IA*  |
+:::
+
+```{r}
+#| label: setup-datos
+#| include: false
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+DF_diario <- read_csv("diario.csv", show_col_types = FALSE)
+DF_exam   <- read_csv("examenes.csv", show_col_types = FALSE)
+DF_demo   <- read_csv("demograficos.csv", show_col_types = FALSE)
+
+subset_diario <- DF_diario %>%
+  rename(
+    Cod = `Dirección de correo electrónico`,
+    Registro = `Marca temporal`,
+    Horas = `¿Cuántas horas dormiste la noche pasada?`,
+    Consultas = `¿Cuántas consultas a una IA realizaste hoy?`,
+    Comprension = `¿Qué nivel de comprensión tuviste de las actividades académicas que realizaste hoy?`,
+    Satisfaccion = `¿Qué nivel de satisfacción tienes con tu avance académico de hoy?`,
+    Uso = `¿Cuál fue el uso principal que le diste a la IA hoy?`,
+    Sensacion = `¿Cuál fue tu sensación principal después de usar la IA hoy?`
+  ) %>%
+  select(Cod, Registro, Horas, Consultas, Comprension, Satisfaccion, Uso, Sensacion) %>%
+  mutate(
+    Horas = as.numeric(Horas),
+    Consultas = as.integer(Consultas),
+    Comprension = factor(trimws(as.character(Comprension)),
+                         levels = c("Muy bajo", "Bajo", "Moderado", "Alto", "Muy alto"),
+                         ordered = TRUE),
+    Satisfaccion = factor(trimws(as.character(Satisfaccion)),
+                          levels = c("1", "2", "3", "4", "5"),
+                          ordered = TRUE),
+    Uso = case_when(
+      grepl("(?i)ningun|nada|no.*us[eé]|nothing", Uso) ~ "No uso IA",
+      Uso %in% c("Resolver ejercicios", "Resumir", "Programar", "Redactar", "No uso IA") ~ Uso,
+      TRUE ~ "Otros"
+    ),
+    Uso = factor(Uso, ordered = FALSE),
+    Sensacion = factor(trimws(as.character(Sensacion)), ordered = FALSE),
+    Fecha = as.Date(Registro)
+  ) %>%
+  arrange(Cod, Registro) %>%
+  distinct(Cod, Fecha, .keep_all = TRUE) %>%
+  select(-Fecha)
+
+subset_demo <- DF_demo %>%
+  rename(
+    Cod = `Dirección de correo electrónico`,
+    Creditos = `cantidad de créditos académicos cursados en el ciclo regular ( colocar solo el número  )`
+  ) %>%
+  select(Cod, Creditos) %>%
+  mutate(Creditos = as.integer(Creditos))
+
+subset_exam <- DF_exam %>%
+  rename(
+    Cod = `Dirección de correo electrónico`,
+    Nota = `Nota del examen`
+  ) %>%
+  select(Cod, Nota) %>%
+  mutate(Nota = as.numeric(Nota))
+
+grupo <- c("cristobal.aranda@utec.edu.pe", "pedro.chavez@utec.edu.pe",
+           "joaquin.temoche@utec.edu.pe", "eden.paredes@utec.edu.pe",
+           "nestor.delacruz@utec.edu.pe")
+
+n_total <- nrow(subset_diario) + nrow(subset_demo) + nrow(subset_exam)
+n_grupo <- nrow(filter(subset_diario, Cod %in% grupo)) +
+           nrow(filter(subset_demo, Cod %in% grupo)) +
+           nrow(filter(subset_exam, Cod %in% grupo))
+```
+
+## Limpieza y muestra efectiva
+
+::: {.columns}
+::: {.column width="52%"}
+### Proceso de depuración
+- **Tipificación estricta:** Conversión de variables numéricas (`Horas`, `Consultas`, `Créditos`, `Nota`) y codificación de factores ordinales y nominales.
+- **Estandarización de texto:** Agrupación de respuestas libres en `Uso` mediante expresiones regulares hacia *No uso IA* y *Otros*.
+- **Control de duplicados:** Filtrado de registros repetidos por estudiante en una misma fecha (`distinct(Cod, Fecha)`) en el formulario diario.
+:::
+
+::: {.column width="48%"}
+### Tamaño efectivo de muestra
+
+| Base de datos | Registros válidos |
+|:--|:--:|
+| Formulario Diario | `r nrow(subset_diario)` |
+| Formulario Demográfico | `r nrow(subset_demo)` |
+| Formulario Exámenes | `r nrow(subset_exam)` |
+| **Total Sección 1** | **`r n_total`** |
+| *Aporte del Grupo 7* | *`r n_grupo`* |
+:::
+:::
+
+```{r}
+#| label: prep-descriptivo
+#| include: false
+
+# Univariado: Horas
+media_h   <- round(mean(subset_diario$Horas, na.rm = TRUE), 2)
+mediana_h <- round(median(subset_diario$Horas, na.rm = TRUE), 2)
+sd_h      <- round(sd(subset_diario$Horas, na.rm = TRUE), 2)
+iqr_h     <- round(IQR(subset_diario$Horas, na.rm = TRUE), 2)
+
+# Univariado: Consultas
+mediana_c <- median(subset_diario$Consultas, na.rm = TRUE)
+iqr_c     <- IQR(subset_diario$Consultas, na.rm = TRUE)
+min_c     <- min(subset_diario$Consultas, na.rm = TRUE)
+max_c     <- max(subset_diario$Consultas, na.rm = TRUE)
+
+# Univariado: Comprensión
+tab_comp  <- table(subset_diario$Comprension)
+moda_comp <- names(tab_comp)[which.max(tab_comp)]
+pct_comp  <- round(max(prop.table(tab_comp)) * 100, 1)
+med_comp  <- levels(subset_diario$Comprension)[median(as.numeric(subset_diario$Comprension), na.rm = TRUE)]
+
+# Univariado: Uso de IA
+tab_uso   <- sort(prop.table(table(subset_diario$Uso)) * 100, decreasing = TRUE)
+moda_uso  <- names(tab_uso)[1]
+pct_uso   <- round(tab_uso[1], 1)
+
+# Bivariado: Correlación Horas vs Consultas
+cor_hc    <- round(cor(subset_diario$Horas, subset_diario$Consultas, method = "spearman", use = "complete.obs"), 3)
+```
+
+## Análisis descriptivo: comportamiento univariado
+
+::: {.columns}
+::: {.column width="54%"}
+### Medidas de posición y dispersión
+
+::: {.tabla-compacta}
+| Variable | Posición central | Dispersión | Hallazgo principal |
+|:--|:--|:--|:--|
+| **Horas de sueño** *(Continua)* | Media: **`r media_h` h**<br>Mediana: **`r mediana_h` h** | DE: `r sd_h` h<br>IQR: `r iqr_h` h | Distribución simétrica alrededor de las 7 horas. |
+| **Consultas a IA** *(Discreta)* | Mediana: **`r mediana_c`** | IQR: `r iqr_c`<br>Rango: [`r min_c`, `r max_c`] | Uso mayormente bajo, con picos atípicos altos. |
+| **Comprensión** *(Ordinal)* | Moda: **`r moda_comp`** (`r pct_comp`%)<br>Mediana: **`r med_comp`** | Concentración en niveles medios-altos | Predomina una percepción favorable del aprendizaje. |
+| **Uso de IA** *(Nominal)* | Moda: **`r moda_uso`** (`r pct_uso`%) | Distribución heterogénea | La resolución de ejercicios lidera el uso diario. |
+:::
+:::
+
+::: {.column width="46%"}
+```{r}
+#| fig-width: 5.8
+#| fig-height: 4.2
+ggplot(subset_diario %>% filter(!is.na(Horas)), aes(x = Horas)) +
+  geom_histogram(binwidth = 1, fill = "#4C72B0", color = "white", alpha = 0.85) +
+  geom_vline(aes(xintercept = media_h), color = "#D95F02", linetype = "dashed", linewidth = 1.1) +
+  geom_vline(aes(xintercept = mediana_h), color = "#1B9E77", linetype = "solid", linewidth = 1.1) +
+  labs(title = "Distribución de Horas de Sueño",
+       subtitle = paste0("Media = ", media_h, " h (naranja) | Mediana = ", mediana_h, " h (verde)"),
+       x = "Horas de sueño", y = "Frecuencia") +
+  theme_minimal(base_size = 12)
+```
+:::
+:::
+
+## Análisis descriptivo: interacciones clave
+
+::: {.columns}
+::: {.column width="33%"}
+```{r}
+#| fig-width: 4.5
+#| fig-height: 3.6
+ggplot(subset_diario %>% filter(!is.na(Comprension), !is.na(Horas)),
+       aes(x = Comprension, y = Horas, fill = Comprension)) +
+  geom_boxplot(alpha = 0.75, color = "black", outlier.color = "red") +
+  scale_fill_brewer(palette = "Blues") +
+  labs(title = "Sueño vs. Comprensión",
+       x = NULL, y = "Horas de sueño") +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "none", axis.text.x = element_text(angle = 25, hjust = 1))
+```
+
+- La mediana es constante (**7 h**) en casi todos los niveles.
+- Dormir más horas por sí solo no garantiza mayor comprensión.
+:::
+
+::: {.column width="34%"}
+```{r}
+#| fig-width: 4.5
+#| fig-height: 3.6
+ggplot(subset_diario %>% filter(!is.na(Uso), !is.na(Satisfaccion)),
+       aes(x = Uso, fill = Satisfaccion)) +
+  geom_bar(position = "fill", color = "black") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_brewer(palette = "RdYlGn") +
+  labs(title = "Uso de IA vs. Satisfacción",
+       x = NULL, y = "Porcentaje", fill = "Satisfacción") +
+  theme_minimal(base_size = 11) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+- Usar IA (especialmente para **Programar**) eleva la satisfacción diaria .
+- **No usar IA** concentra mayor insatisfacción académica .
+:::
+
+::: {.column width="33%"}
+```{r}
+#| fig-width: 4.5
+#| fig-height: 3.6
+ggplot(subset_diario %>% filter(!is.na(Horas), !is.na(Consultas)),
+       aes(x = Horas, y = Consultas)) +
+  geom_jitter(alpha = 0.6, color = "#D95F02", width = 0.2, height = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x, color = "#1f4e78", linetype = "dashed", se = FALSE) +
+  labs(title = "Sueño vs. Consultas IA",
+       subtitle = paste("Spearman =", cor_hc),
+       x = "Horas de sueño", y = "Consultas a IA") +
+  theme_minimal(base_size = 11)
+```
+
+- Correlación muy débil ($\rho =$ `r cor_hc`).
+- El uso intensivo de IA depende de tareas puntuales, no del cansancio.
+:::
+:::
+
+```{r}
+#| label: prep-probabilistico
+#| include: false
+
+df_prob <- subset_diario %>%
+  filter(!is.na(Horas), !is.na(Comprension)) %>%
+  mutate(
+    Sueno = cut(
+      Horas,
+      breaks = c(-Inf, 5, 7, 9, Inf),
+      labels = c("Muy corto (≤5h)", "Corto (5-7h]", "Adecuado (7-9h]", "Largo (>9h)"),
+      ordered_result = TRUE
+    )
+  )
+
+n_prob <- nrow(df_prob)
+
+# Tablas empíricas
+t_sueno <- as.data.frame(table(df_prob$Sueno))
+colnames(t_sueno) <- c("Evento", "n")
+t_sueno$Prob <- round(t_sueno$n / sum(t_sueno$n), 4)
+t_sueno$Pct  <- paste0(round(t_sueno$Prob * 100, 1), "%")
+
+t_comp <- as.data.frame(table(df_prob$Comprension))
+colnames(t_comp) <- c("Evento", "n")
+t_comp$Prob <- round(t_comp$n / sum(t_comp$n), 4)
+t_comp$Pct  <- paste0(round(t_comp$Prob * 100, 1), "%")
+
+# Eventos condicionales
+E1  <- df_prob$Horas <= 7
+E2  <- df_prob$Comprension %in% c("Alto", "Muy alto")
+
+p_e1  <- mean(E1)
+p_e2  <- mean(E2)
+p_e12 <- mean(E1 & E2)
+
+p_e1_dado_e2  <- p_e12 / p_e2
+p_e2_dado_e1  <- p_e12 / p_e1
+p_e1_dado_e2c <- mean(E1[!E2])
+p_e2c         <- 1 - p_e2
+bayes_e2_e1   <- (p_e1_dado_e2 * p_e2) / (p_e1_dado_e2 * p_e2 + p_e1_dado_e2c * p_e2c)
+
+dif_sim <- p_e1 + p_e2 - 2 * p_e12
+suma_e  <- p_e1 + p_e2
+```
+
+## Probabilidad empírica ($n = `r n_prob`$)
+
+::: {.columns}
+::: {.column width="50%"}
+### Horas de sueño
+::: {.tabla-compacta}
+| Evento atómico | $n$ | $P(X)$ | % |
+|:--|:--:|:--:|:--:|
+| `r t_sueno$Evento[1]` \vert{} `r t_sueno$n[1]` | `r t_sueno$Prob[1]` \vert{} `r t_sueno$Pct[1]` |
+| `r t_sueno$Evento[2]` \vert{} `r t_sueno$n[2]` | `r t_sueno$Prob[2]` \vert{} `r t_sueno$Pct[2]` |
+| `r t_sueno$Evento[3]` \vert{} `r t_sueno$n[3]` | `r t_sueno$Prob[3]` \vert{} `r t_sueno$Pct[3]` |
+| `r t_sueno$Evento[4]` \vert{} `r t_sueno$n[4]` | `r t_sueno$Prob[4]` \vert{} `r t_sueno$Pct[4]` |
+| **Total** | **`r sum(t_sueno$n)`** | **`r sum(t_sueno$Prob)`** | **100%** |
+:::
+:::
+
+::: {.column width="50%"}
+### Nivel de comprensión
+::: {.tabla-compacta}
+| Evento atómico | $n$ | $P(X)$ | % |
+|:--|:--:|:--:|:--:|
+| `r t_comp$Evento[1]` \vert{} `r t_comp$n[1]` | `r t_comp$Prob[1]` \vert{} `r t_comp$Pct[1]` |
+| `r t_comp$Evento[2]` \vert{} `r t_comp$n[2]` | `r t_comp$Prob[2]` \vert{} `r t_comp$Pct[2]` |
+| `r t_comp$Evento[3]` \vert{} `r t_comp$n[3]` | `r t_comp$Prob[3]` \vert{} `r t_comp$Pct[3]` |
+| `r t_comp$Evento[4]` \vert{} `r t_comp$n[4]` | `r t_comp$Prob[4]` \vert{} `r t_comp$Pct[4]` |
+| `r t_comp$Evento[5]` \vert{} `r t_comp$n[5]` | `r t_comp$Prob[5]` \vert{} `r t_comp$Pct[5]` |
+| **Total** | **`r sum(t_comp$n)`** | **`r sum(t_comp$Prob)`** | **100%** |
+:::
+:::
+:::
+
+**Hallazgo:** Predomina el sueño **Corto (5–7 h)** y los niveles de comprensión **Moderado** y **Alto**.
+
+## Probabilidad condicional e independencia
+
+**Eventos:** $E_1$: dormir $\leq 7$ horas ($P(E_1) = `r round(p_e1, 3)`$) $\;\mid\;$ $E_2$: comprensión *Alto/Muy alto* ($P(E_2) = `r round(p_e2, 3)`$).
+
+::: {.columns}
+::: {.column width="55%"}
+### Propiedades y prueba
+::: {.tabla-compacta}
+| Propiedad | Expresión | Valor |
+|:--|:--|--:|
+| Intersección | $P(E_1 \cap E_2)$ | `r round(p_e12, 4)` |
+| Producto marginal | $P(E_1) \cdot P(E_2)$ | `r round(p_e1 * p_e2, 4)` |
+| Unión | $P(E_1 \cup E_2)$ | `r round(p_e1 + p_e2 - p_e12, 4)` |
+| Diferencia simétrica | $P(E_1 \triangle E_2)$ | `r round(dif_sim, 4)` |
+| Desigualdad triangular | $P(E_1 \triangle E_2) \leq P(E_1)+P(E_2)$ | `r round(dif_sim, 4)` $\leq$ `r round(suma_e, 4)` |
+:::
+:::
+
+::: {.column width="45%"}
+### Conclusión de independencia
+- **No son independientes:** $P(E_1 \cap E_2) \neq P(E_1)\cdot P(E_2)$ sin redondear.
+- **Asociación débil:** La diferencia entre ambas probabilidades es mínima.
+- **Desigualdad triangular:** Se cumple satisfactoriamente.
+:::
+:::
+
+## Teorema de Bayes
+
+Queremos hallar la probabilidad de tener comprensión alta dado que se durmió $\leq 7$ horas: **$P(E_2 \mid E_1)$**.
+
+::: {.columns}
+::: {.column width="55%"}
+$$P(E_2 \mid E_1) = \frac{P(E_1 \mid E_2)P(E_2)}{P(E_1 \mid E_2)P(E_2) + P(E_1 \mid E_2^c)P(E_2^c)}$$
+
+::: {.tabla-compacta}
+| Componente | Valor |
+|:--|--:|
+| $P(E_1 \mid E_2)$ | `r round(p_e1_dado_e2, 4)` |
+| $P(E_1 \mid E_2^c)$ | `r round(p_e1_dado_e2c, 4)` |
+| Probabilidad total $P(E_1)$ | `r round(p_e1, 4)` |
+| **Bayes: $P(E_2 \mid E_1)$** | **`r round(bayes_e2_e1, 4)` (`r round(bayes_e2_e1 * 100, 1)`%)** |
+:::
+:::
+
+::: {.column width="45%"}
+::: {.callout-note appearance="simple" icon=false}
+### Interpretación
+Dormir $\leq 7$ h reduce ligeramente la probabilidad de comprensión alta (**`r round(bayes_e2_e1 * 100, 1)`%**) frente al promedio general (**`r round(p_e2 * 100, 1)`%**). 
+
+El descanso por sí solo no determina la comprensión académica.
+:::
+:::
+:::
+
+
+```{r}
+#| label: prep-va
+#| include: false
+
+# Filtros limpios para VA
+va_horas     <- subset_diario$Horas[is.finite(subset_diario$Horas) & subset_diario$Horas >= 0 & subset_diario$Horas <= 24]
+va_consultas <- subset_diario$Consultas[is.finite(subset_diario$Consultas) & subset_diario$Consultas >= 0 & subset_diario$Consultas == floor(subset_diario$Consultas)]
+va_creditos  <- subset_demo$Creditos[is.finite(subset_demo$Creditos) & subset_demo$Creditos >= 0 & subset_demo$Creditos <= 40]
+va_notas     <- subset_exam$Nota[is.finite(subset_exam$Nota) & subset_exam$Nota >= 0 & subset_exam$Nota <= 20]
+
+# Discreta 1: Geométrica (Consultas > 10)
+p_ia   <- mean(va_consultas > 10)
+esp_ia <- round(1 / p_ia, 2)
+sd_ia  <- round(sqrt((1 - p_ia) / p_ia^2), 2)
+prob_ia20 <- round(dgeom(19, p_ia) * 100, 2)
+
+# Discreta 2: Binomial (Créditos >= 20, n = 10)
+p_cr   <- mean(va_creditos >= 20)
+n_cr   <- 10
+esp_cr <- round(n_cr * p_cr, 2)
+sd_cr  <- round(sqrt(n_cr * p_cr * (1 - p_cr)), 2)
+prob_cr7 <- round(dbinom(7, n_cr, p_cr) * 100, 2)
+
+# Continua 1: Normal (Horas de sueño)
+mu_h   <- round(mean(va_horas), 2)
+sd_h   <- round(sd(va_horas), 2)
+var_h  <- round(sd_h^2, 2)
+prob_h68 <- round((pnorm(8, mean(va_horas), sd(va_horas)) - pnorm(6, mean(va_horas), sd(va_horas))) * 100, 2)
+
+# Continua 2: Normal (Notas de examen)
+mu_n   <- round(mean(va_notas), 2)
+sd_n   <- round(sd(va_notas), 2)
+var_n  <- round(sd_n^2, 2)
+prob_n14 <- round(pnorm(14, mean(va_notas), sd(va_notas), lower.tail = FALSE) * 100, 2)
+fuera_n  <- round((pnorm(0, mean(va_notas), sd(va_notas)) + pnorm(20, mean(va_notas), sd(va_notas), lower.tail = FALSE)) * 100, 2)
+```
+
+## Variables aleatorias discretas
+
+::: {.columns}
+::: {.column width="50%"}
+### 1. Consultas a IA ($X \sim \text{Geom}(p)$)
+- **Definición:** Registros hasta encontrar el primero con **$>10$ consultas**.
+- **Parámetro:** $p = `r round(p_ia, 3)`$ | $E(X) = `r esp_ia`$ | $SD = `r sd_ia`$
+- **Caso:** $P(X = 20) =$ **`r prob_ia20`%**
+
+```{r}
+#| fig-width: 5.5
+#| fig-height: 2.9
+df_g <- data.frame(k = 1:25, prob = dgeom(0:24, p_ia), dest = ifelse(1:25 == 20, "k=20", "Otros"))
+ggplot(df_g, aes(x = k, y = prob, fill = dest)) +
+  geom_col(color = "black", alpha = 0.85) +
+  scale_fill_manual(values = c("k=20" = "#D95F02", "Otros" = "#4C72B0")) +
+  labs(title = "Modelo Geométrico (k = 20 destacado)", x = "Ensayo (k)", y = "P(X = k)") +
+  theme_minimal(base_size = 11) + theme(legend.position = "none")
+```
+:::
+
+::: {.column width="50%"}
+### 2. Créditos ($Y \sim \text{Bin}(10, p)$)
+- **Definición:** Registros con **$\geq 20$ créditos** entre 10 elegidos.
+- **Parámetro:** $p = `r round(p_cr, 3)`$ | $E(Y) = `r esp_cr`$ | $SD = `r sd_cr`$
+- **Caso:** $P(Y = 7) =$ **`r prob_cr7`%**
+
+```{r}
+#| fig-width: 5.5
+#| fig-height: 2.9
+df_b <- data.frame(y = 0:n_cr, prob = dbinom(0:n_cr, n_cr, p_cr), dest = ifelse(0:n_cr == 7, "y=7", "Otros"))
+ggplot(df_b, aes(x = factor(y), y = prob, fill = dest)) +
+  geom_col(color = "black", alpha = 0.85) +
+  scale_fill_manual(values = c("y=7" = "#D95F02", "Otros" = "#4C72B0")) +
+  labs(title = "Modelo Binomial (y = 7 destacado)", x = "Éxitos (y)", y = "P(Y = y)") +
+  theme_minimal(base_size = 11) + theme(legend.position = "none")
+```
+:::
+:::
+
+## Variables aleatorias continuas (Aproximación Normal)
+
+::: {.columns}
+::: {.column width="50%"}
+### 1. Horas de sueño ($H \sim N(`r mu_h`, `r var_h`)$)
+- **Parámetros:** $\mu = `r mu_h`\text{ h}$, $\sigma = `r sd_h`\text{ h}$
+- **Validación:** Media y mediana cercanas; ajuste aceptable en zona central.
+- **Caso:** $P(6 \leq H \leq 8) =$ **`r prob_h68`%**
+
+```{r}
+#| fig-width: 5.5
+#| fig-height: 2.9
+ggplot(data.frame(x = va_horas), aes(x = x)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 10, fill = "#A6CEE3", color = "black") +
+  stat_function(fun = dnorm, args = list(mean = mean(va_horas), sd = sd(va_horas)), color = "#1F78B4", linewidth = 1.2) +
+  labs(title = "Ajuste Normal: Horas de Sueño", x = "Horas", y = "Densidad") +
+  theme_minimal(base_size = 11)
+```
+:::
+
+::: {.column width="50%"}
+### 2. Nota de examen ($T \sim N(`r mu_n`, `r var_n`)$)
+- **Parámetros:** $\mu = `r mu_n`\text{ pts}$, $\sigma = `r sd_n`\text{ pts}$
+- **Limitación:** Asigna **`r fuera_n`%** fuera del rango $[0, 20]$.
+- **Caso:** $P(T \geq 14) =$ **`r prob_n14`%**
+
+```{r}
+#| fig-width: 5.5
+#| fig-height: 2.9
+ggplot(data.frame(x = va_notas), aes(x = x)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 10, fill = "#B2DF8A", color = "black") +
+  stat_function(fun = dnorm, args = list(mean = mean(va_notas), sd = sd(va_notas)), color = "#33A02C", linewidth = 1.2) +
+  labs(title = "Ajuste Normal: Notas de Examen", x = "Nota (0 - 20)", y = "Densidad") +
+  theme_minimal(base_size = 11)
+```
+:::
+:::
+
+## Conclusiones {.slide-conclusiones}
+
+1. **Sueño y comprensión:** El descanso diario por sí solo no determina la comprensión académica. La mediana se mantiene en **7 horas** en casi todos los niveles y la diferencia entre $P(E_2 \mid E_1)$ y $P(E_2)$ es mínima.
+
+2. **Uso de IA y satisfacción:** El uso de IA se asocia con mayor satisfacción diaria (destacando **Programar**), mientras que su ausencia concentra mayor insatisfacción. Las consultas intensivas ($>10$) responden a exigencias académicas puntuales y no al cansancio ($\rho \approx 0$).
+
+3. **Modelado probabilístico y alcance:** Los modelos discretos y normales permiten estimar escenarios clave (como **`r prob_h68`%** de probabilidad de dormir 6–8 h o **`r prob_n14`%** de obtener nota $\geq 14$). Al ser un estudio observacional con registros repetidos por estudiante, los hallazgos reflejan **asociaciones y no causalidad**.

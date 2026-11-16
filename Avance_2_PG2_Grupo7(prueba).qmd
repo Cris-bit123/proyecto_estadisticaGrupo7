@@ -1,5 +1,5 @@
 ---
-title: "Avance 2 - PG2"
+title: "Relación entre las horas de sueño, el uso de Inteligencia Artificial y el rendimiento académico de los estudiantes de Estadística y Probabilidades 1, sección 1 durante el ciclo 2026-2"
 subtitle: "Variables aleatorias discretas y continuas | Estadística y Probabilidades I - Sección 1"
 author: "Cristóbal Aranda · Pedro Chávez · Joaquín Temoche · Eden Paredes · Néstor de la Cruz"
 date: "2026-11-06"
