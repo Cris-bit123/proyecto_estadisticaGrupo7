@@ -2,11 +2,7 @@
 title: "Avance 1 - PG2: Probabilidad empírica y condicional"
 subtitle: "Estadística y Probabilidades I (CC1105)"
 author:
-  - "Nestor Alonso De La Cruz Gomez"
-  - "Eden Denisse Paredes Bartolo"
-  - "Cristobal Javier Aranda Gallardo "
-  - "Pedro Máximo Chávez Oscanoa"
-  - "Joaquín Antonio Temoche Sánchez"
+  - "GRUPO7"
 
 lang: es
 format:
@@ -30,20 +26,16 @@ Se trabaja con los registros del formulario diario de **toda la sección** (Esta
 #| label: lectura
 # Las columnas se toman por posición porque los nombres del forms son largos:
 # 5 = horas de sueño, 11 = nivel de comprensión, 16 = correo
-ruta <- "1diario.csv"
+ruta <- "diario.csv"
 diario <- read_delim(ruta, delim = NULL, show_col_types = FALSE)
-
-# DIAGNÓSTICO (borrar cuando salga bien): muestra qué archivo se leyó realmente
-cat("Renderizado:", format(Sys.time()), "\n",
-    "Archivo:", normalizePath(ruta), "\n",
-    "Tamaño (bytes):", file.size(ruta), "\n",
-    "Filas leídas:", nrow(diario), "\n")
 
 # Duplicados exactos: se buscan en la fila completa (incluye la marca temporal)
 diario <- distinct(diario)
 
 df <- tibble(
   correo = tolower(trimws(diario[[16]])),
+  marca = as.POSIXct(diario[[1]], tz = "UTC"),
+  fecha = as.Date(as.POSIXct(diario[[1]], tz = "UTC")),
   horas = as.numeric(diario[[5]]),
   comprension = factor(
     trimws(diario[[11]]),
@@ -52,9 +44,20 @@ df <- tibble(
   )
 )
 
+stopifnot("No se pudo leer la marca temporal" = !anyNA(df$marca))
+
 # Limpieza: filas incompletas
 df <- df |>
   filter(!is.na(horas), !is.na(comprension))
+
+n_todas <- nrow(df)                       # filas limpias, sin limitar respuestas por día
+
+# Una sola respuesta por estudiante y día: se conserva la última del día
+df <- df |>
+  arrange(marca) |>
+  group_by(correo, fecha) |>
+  slice_tail(n = 1) |>
+  ungroup()
 
 # Horas de sueño (continua) categorizada en 4 rangos
 df <- df |>
@@ -70,13 +73,13 @@ df <- df |>
 n <- nrow(df)
 ```
 
-Tras la limpieza (sin valores vacíos ni registros duplicados), la muestra efectiva de la sección es de **`r n` observaciones**.
+Tras la limpieza (sin valores vacíos ni registros duplicados) hay `r n_todas` registros. Como el formulario es diario, se conservó **una sola respuesta por estudiante y día** (la última del día), por lo que la muestra efectiva de la sección es de **`r n` observaciones**.
 
 Entre las horas de sueño hay `r sum(df$horas == 0)` registros con 0 horas y `r sum(df$horas > 12)` con más de 12 horas. Se conservaron porque son valores posibles (por ejemplo, una noche sin dormir o un día de descanso largo) y no corresponden a errores de digitación evidentes.
 
 ### Observaciones limpias del grupo
 
-Se filtra el grupo
+Se filtra el grupo solo para mostrar que se alcanza el mínimo solicitado (151). Luego se quita el filtro y se sigue con toda la sección.
 
 ```{r}
 #| label: grupo
@@ -90,10 +93,15 @@ grupo <- c(
 )
 
 n_grupo <- df |> filter(correo %in% grupo) |> nrow()
+
+# Solo informativo: filas del grupo si se aceptaran varias respuestas por día
+n_grupo_todas <- tibble(correo = tolower(trimws(diario[[16]]))) |>
+  filter(correo %in% grupo) |> nrow()
+
 n_grupo
 ```
 
-El grupo cuenta con **`r n_grupo` observaciones limpias** (mínimo requerido: 151).
+El grupo cuenta con **`r n_grupo` observaciones limpias**, con una respuesta por estudiante y día (mínimo requerido: 151). Si se aceptaran varias respuestas por día, el grupo tendría `r n_grupo_todas` filas.
 
 ## Parte 1: Probabilidad empírica
 
@@ -115,13 +123,26 @@ Rangos según las horas de sueño $h$: Muy corto: $h \leq 5$; Corto: $5 < h \leq
 
 1. **Experimento aleatorio:** seleccionar un registro al azar del estudio y observar las horas de sueño de la noche pasada.
 2. **Espacio de resultados:** Ω = {Muy corto, Corto, Adecuado, Largo}
-3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio cuyas horas de sueño pertenezcan a la categoría indicada (por ejemplo, Muy corto: 5 h o menos).
+3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio cuyas horas de sueño pertenezcan a la categoría indicada (por ejemplo, Muy corto: 5 h o menos). Son atómicos porque cada uno corresponde a un único resultado de Ω: no se pueden dividir en eventos más pequeños dentro de este espacio, son mutuamente excluyentes (un registro pertenece a una sola categoría) y juntos cubren todo Ω, por lo que sus probabilidades suman 1.
 4. **Probabilidades:**
 
 ```{r}
 #| label: prob-sueno
 t_sueno <- tabla_prob(df$sueno)
-t_sueno
+t_sueno$descripcion <- c(
+  "Seleccionar un registro con 5 horas de sueño o menos ($h \\leq 5$)",
+  "Seleccionar un registro con más de 5 y hasta 7 horas ($5 < h \\leq 7$)",
+  "Seleccionar un registro con más de 7 y hasta 9 horas ($7 < h \\leq 9$)",
+  "Seleccionar un registro con más de 9 horas ($h > 9$)"
+)
+t_sueno$interpretacion <- paste0(
+  "De cada 100 registros, aproximadamente ", round(t_sueno$P * 100),
+  " corresponden a la categoría «", t_sueno$evento, "» (", round(t_sueno$P * 100, 1), "%)"
+)
+knitr::kable(t_sueno[, c("evento", "descripcion", "n", "P", "interpretacion")],
+             col.names = c("Evento atómico", "Descripción", "Frecuencia (n)", "Probabilidad",
+                           "Interpretación del resultado"),
+             digits = 4, align = "llrrl")
 ```
 
 5. **Comprobación:** la suma de las probabilidades es `r sum(table(df$sueno)) / n`.
@@ -130,13 +151,23 @@ t_sueno
 
 1. **Experimento aleatorio:** seleccionar un registro al azar del estudio y observar el nivel de comprensión de las actividades académicas del día.
 2. **Espacio de resultados:** Ω = {Muy bajo, Bajo, Moderado, Alto, Muy alto}
-3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio con el nivel de comprensión indicado.
+3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio con el nivel de comprensión indicado. Son atómicos porque cada uno corresponde a un único resultado de Ω: no se pueden dividir en eventos más pequeños dentro de este espacio, son mutuamente excluyentes (un registro tiene un solo nivel de comprensión) y juntos cubren todo Ω, por lo que sus probabilidades suman 1.
 4. **Probabilidades:**
 
 ```{r}
 #| label: prob-comprension
 t_comp <- tabla_prob(df$comprension)
-t_comp
+t_comp$descripcion <- paste0(
+  "Seleccionar un registro con nivel de comprensión «", t_comp$evento, "»"
+)
+t_comp$interpretacion <- paste0(
+  "De cada 100 registros, aproximadamente ", round(t_comp$P * 100),
+  " reportan comprensión «", t_comp$evento, "» (", round(t_comp$P * 100, 1), "%)"
+)
+knitr::kable(t_comp[, c("evento", "descripcion", "n", "P", "interpretacion")],
+             col.names = c("Evento atómico", "Descripción", "Frecuencia (n)", "Probabilidad",
+                           "Interpretación del resultado"),
+             digits = 4, align = "llrrl")
 ```
 
 5. **Comprobación:** la suma de las probabilidades es `r sum(table(df$comprension)) / n`.
@@ -164,11 +195,13 @@ P(E₁) = `r round(p1, 4)`, P(E₂) = `r round(p2, 4)`, P(E₁ ∩ E₂) = `r ro
 
 ```{r}
 #| label: independencia
-c(
-  `P(E1 ∩ E2)` = round(p12, 3),
-  `P(E1)·P(E2)` = round(p1 * p2, 3),
-  `P(E1|E2)` = round(p12 / p2, 3),
-  `P(E1)` = round(p1, 3)
+knitr::kable(
+  data.frame(
+    Expresión = c("$P(E_1 \\cap E_2)$", "$P(E_1)\\cdot P(E_2)$",
+                  "$P(E_1 \\mid E_2)$", "$P(E_1)$"),
+    Valor = round(c(p12, p1 * p2, p12 / p2, p1), 3)
+  ),
+  align = "lr"
 )
 indep3 <- round(p12, 3) == round(p1 * p2, 3)
 indep2 <- round(p12, 2) == round(p1 * p2, 2)
@@ -182,13 +215,46 @@ Con los valores sin redondear, P(E₁ ∩ E₂) = `r round(p12, 6)` y P(E₁)·P
 
 ```{r}
 #| label: propiedades
-c(
-  `P(E1 ∪ E2)` = round(p1 + p2 - p12, 4),
-  `P(E1 | E2)` = round(p12 / p2, 4),
-  `P(E2 | E1)` = round(p12 / p1, 4),
-  `P(E2 complemento)` = round(1 - p2, 4)
+#| results: asis
+f <- function(x) formatC(x, format = "f", digits = 4)
+cat(
+  "| Propiedad | Fórmula | Resultado |\n",
+  "|:--|:--|--:|\n",
+  "| Unión | $P(E_1 \\cup E_2)=P(E_1)+P(E_2)-P(E_1 \\cap E_2)$ | ", f(p1 + p2 - p12), " |\n",
+  "| Condicional | $P(E_1 \\mid E_2)=P(E_1 \\cap E_2)/P(E_2)$ | ", f(p12 / p2), " |\n",
+  "| Condicional | $P(E_2 \\mid E_1)=P(E_1 \\cap E_2)/P(E_1)$ | ", f(p12 / p1), " |\n",
+  "| Complemento de $E_2$ | $P(E_2^c)=1-P(E_2)$ | ", f(1 - p2), " |\n",
+  sep = ""
 )
 ```
+
+**Diferencia simétrica:** los registros que están en $E_1$ o en $E_2$, pero no en ambos ($E_1 \triangle E_2$). Su probabilidad es
+
+$$P(E_1 \triangle E_2)=P(E_1)+P(E_2)-2P(E_1 \cap E_2)$$
+
+**Desigualdad triangular:** como $P(A \triangle B)$ mide qué tan distintos son dos eventos, cumple la desigualdad triangular $P(A \triangle C) \leq P(A \triangle B)+P(B \triangle C)$. Tomando $A=E_1$, $B=\varnothing$ y $C=E_2$ se obtiene
+
+$$P(E_1 \triangle E_2) \leq P(E_1)+P(E_2)$$
+
+```{r}
+#| label: desigualdad-triangular
+#| results: asis
+dif_sim  <- p1 + p2 - 2 * p12            # por la fórmula
+dif_dir  <- mean(xor(E1, E2))            # conteo directo en los datos
+suma     <- p1 + p2
+cumple_tri <- dif_sim <= suma
+f <- function(x) formatC(x, format = "f", digits = 4)
+cat(
+  "| Expresión | Valor |\n",
+  "|:--|--:|\n",
+  "| $P(E_1)+P(E_2)-2P(E_1 \\cap E_2)$ | ", f(dif_sim), " |\n",
+  "| $P(E_1 \\triangle E_2)$ (conteo directo) | ", f(dif_dir), " |\n",
+  "| $P(E_1)+P(E_2)$ | ", f(suma), " |\n",
+  sep = ""
+)
+```
+
+Los dos cálculos de $P(E_1 \triangle E_2)$ coinciden (`r f(dif_sim)`), y como `r f(dif_sim)` ≤ `r f(suma)`, la desigualdad triangular **`r ifelse(cumple_tri, "sí", "no")`** se cumple. La diferencia entre ambos lados es $2P(E_1 \cap E_2)$: los registros comunes se cuentan dos veces al sumar y no pertenecen a la diferencia simétrica.
 
 Aquí se agregan las demás propiedades vistas en clase.
 
@@ -205,11 +271,14 @@ p2c <- 1 - p2
 total <- p_e1_dado_e2 * p2 + p_e1_dado_e2c * p2c   # probabilidad total = P(E1)
 bayes <- (p_e1_dado_e2 * p2) / total
 
-c(`P(E1|E2)` = round(p_e1_dado_e2, 4),
-  `P(E1|E2c)` = round(p_e1_dado_e2c, 4),
-  `P(E2c)` = round(p2c, 4),
-  `Prob. total` = round(total, 4),
-  `P(E2|E1) Bayes` = round(bayes, 4))
+knitr::kable(
+  data.frame(
+    Expresión = c("$P(E_1 \\mid E_2)$", "$P(E_1 \\mid E_2^c)$", "$P(E_2^c)$",
+                  "Probabilidad total $P(E_1)$", "Bayes: $P(E_2 \\mid E_1)$"),
+    Valor = round(c(p_e1_dado_e2, p_e1_dado_e2c, p2c, total, bayes), 4)
+  ),
+  align = "lr"
+)
 ```
 
 ### 5. Interpretación en el contexto del estudio

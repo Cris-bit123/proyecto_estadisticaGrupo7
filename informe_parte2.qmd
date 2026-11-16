@@ -1,12 +1,8 @@
 ---
-title: "Influencias en el rendimiento académico"
+title: "PG2 - Informe"
 subtitle: "Estadística y Probabilidades I (CC1105)"
 author:
-  - "Nestor Alonso De La Cruz Gomez"
-  - "Eden Denisse Paredes Bartolo"
-  - "Cristobal Javier Aranda Gallardo"
-  - "Pedro Máximo Chávez Oscanoa"
-  - "Joaquín Antonio Temoche Sánchez"
+  - "S1-G7"
 
 lang: es
 format:
@@ -251,10 +247,6 @@ cat("Total de observaciones limpias del grupo:", n_grupo_di + n_grupo_ex + n_gru
 
 Calculamos la media y la mediana como medidas de posición y la Desviación Estándar y el Rango Intercuartil como medidas de dispersión.
 
-La media nos da el promedio aritmético, pero se puede ver afectado a valores muy grandes o pequeños . Por otro lado, la mediana nos dara el valor que está exactamente en el medio. Al compararlas podemos analizar que si la media es muy distinta a la mediana, significa que hay valores extremos que tiran del promedio, pero si son similares, el sueño en el salón es más simétrico.
-
-La desviación estándar nos indica cuántas horas, en promedio, se alejan los alumnos de la media global. El rango intercuartil nos indica en qué rango de horas de sueño se concentra el 50% central de los estudiantes, ignorando a los que duermen muy poco o en exceso.
-
 ```{r}
 
 
@@ -284,11 +276,9 @@ ggplot(subset_diario, aes(x = Horas)) +
 
 ### Consultas
 
-Se puede notar como la mayoría de estudiantes hace pocas consultas usualmente, pero también es posible que a veces se hacen consultas más numerosas. Por ello, la medida de posición más confiable aquí es la mediana, junto con el rango (mínimo y máximo) y el IQR para la dispersión.
+Se puede notar como la mayoría de estudiantes hace pocas consultas usualmente, pero también es posible que a veces se hacen consultas más numerosas. Por ello, la medida de posición más confiable aquí es la mediana, junto con el rango y el rango intercuartil para la dispersión.
 
 La mediana sería la descripción más adecuada, si se usará la media, es probable que aquellas observaciones que contienen las consultas numerosas muevan el promedio, y esto no representaría al publico general.
-
-El rango nos revela los extremos absolutos de uso en el salón, y para medir la variabilidad en la cantidad de consultas a la IA, el rango intercuartil permite hacer esto de forma que aquellos valores más altos no influyan enormemente en el nivel de dispersión del rango de consultas
 
 ```{r}
 
@@ -307,7 +297,7 @@ cat("Rango Intercuartílico (IQR):", iqr_consultas, "\n")
 
 Utilizamos la mediana y la moda como medidas de posición, y la Distribución de Frecuencias Relativas para evaluar la dispersión.
 
-Al ser una variable ordinal, sus categorías tienen una jerarquía lógica de "Muy bajo" a "Muy alto". Aunque no podemos calcular un promedio matemático, la mediana nos permite identificar el punto de quiebre donde se sitúa el 50% de la clase, mientras que la moda nos indica la sensación más predominante.\\
+Al ser una variable ordinal, sus categorías tienen una jerarquía lógica de "Muy bajo" a "Muy alto". Aunque no podemos calcular un promedio matemático, la mediana nos permite identificar el punto de quiebre donde se sitúa el 50% de la clase, mientras que la moda nos indica la sensación más predominante.
 
 La dispersión se justifica a través de los porcentajes relativos, esto nos revela si el salón tiene baja ("Moderado") o alta dispersión ("Muy bajo" y "Muy alto")
 
@@ -369,7 +359,7 @@ Para evaluar la interacción entre una variable cuantitativa continua (`Horas` d
 
 De esta forma podremos comparar directamente si los estudiantes que reportan un nivel de comprensión "Alto" o "Muy alto" presentan, en promedio, patrones de sueño distintos frente a los que reportan un nivel "Bajo" o "Muy bajo".
 
-Para la visualización utilizaremos Boxplots. Nos permite observar en paralelo las medianas (línea central de la caja), la dispersión del 50% central (tamaño de la caja) y la presencia de valores atípicos en las horas de sueño para cada uno de los cinco niveles de comprensión percibida.
+Para la visualización utilizaremos Boxplots. 
 
 ```{r}
 
@@ -479,8 +469,435 @@ Se puede concluir que, a pesar de que existe una relación mínima, la cantidad 
 
 ## Probabilidad empírica
 
+```{r}
+#| label: preparacion-probabilidad
+# Filtramos casos completos en las variables de interés y categorizamos Horas
+df_prob <- subset_diario %>%
+  filter(!is.na(Horas), !is.na(Comprension)) %>%
+  mutate(
+    Sueno = cut(
+      Horas,
+      breaks = c(-Inf, 5, 7, 9, Inf),
+      labels = c("Muy corto", "Corto", "Adecuado", "Largo"),
+      ordered_result = TRUE
+    )
+  )
+
+n <- nrow(df_prob)
+
+tabla_prob <- function(x) {
+  t <- table(x)
+  tibble(
+    evento = names(t),
+    n = as.integer(t),
+    P = round(as.numeric(t) / sum(t), 4)
+  )
+}
+```
+
+### Variable 1: Horas de sueño (cuantitativa continua, categorizada)
+
+Rangos según las horas de sueño $h$: Muy corto: $h \leq 5$; Corto: $5 < h \leq 7$; Adecuado: $7 < h \leq 9$; Largo: $h > 9$.
+
+1. **Experimento aleatorio:** seleccionar un registro al azar del estudio y observar las horas de sueño de la noche pasada.
+2. **Espacio de resultados:** Ω = {Muy corto, Corto, Adecuado, Largo}
+3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio cuyas horas de sueño pertenezcan a la categoría indicada (por ejemplo, Muy corto: 5 h o menos). Son atómicos porque cada uno corresponde a un único resultado de Ω: no se pueden dividir en eventos más pequeños dentro de este espacio, son mutuamente excluyentes (un registro pertenece a una sola categoría) y juntos cubren todo Ω, por lo que sus probabilidades suman 1.
+4. **Probabilidades:**
+
+```{r}
+#| label: prob-sueno
+t_sueno <- tabla_prob(df_prob$Sueno)
+t_sueno$descripcion <- c(
+  "Seleccionar un registro con 5 horas de sueño o menos ($h \\leq 5$)",
+  "Seleccionar un registro con más de 5 y hasta 7 horas ($5 < h \\leq 7$)",
+  "Seleccionar un registro con más de 7 y hasta 9 horas ($7 < h \\leq 9$)",
+  "Seleccionar un registro con más de 9 horas ($h > 9$)"
+)
+t_sueno$interpretacion <- paste0(
+  "De cada 100 registros, aproximadamente ", round(t_sueno$P * 100),
+  " corresponden a la categoría «", t_sueno$evento, "» (", round(t_sueno$P * 100, 1), "%)"
+)
+knitr::kable(t_sueno[, c("evento", "descripcion", "n", "P", "interpretacion")],
+             col.names = c("Evento atómico", "Descripción", "Frecuencia (n)", "Probabilidad",
+                           "Interpretación del resultado"),
+             digits = 4, align = "llrrl")
+```
+
+5. **Comprobación:** la suma de las probabilidades es `r sum(table(df_prob$Sueno)) / n`.
+
+### Variable 2: Nivel de comprensión (cualitativa ordinal)
+
+1. **Experimento aleatorio:** seleccionar un registro al azar del estudio y observar el nivel de comprensión de las actividades académicas del día.
+2. **Espacio de resultados:** Ω = {Muy bajo, Bajo, Moderado, Alto, Muy alto}
+3. **Eventos atómicos:** cada evento consiste en seleccionar un registro al azar del estudio con el nivel de comprensión indicado. Son atómicos porque cada uno corresponde a un único resultado de Ω: no se pueden dividir en eventos más pequeños dentro de este espacio, son mutuamente excluyentes (un registro tiene un solo nivel de comprensión) y juntos cubren todo Ω, por lo que sus probabilidades suman 1.
+4. **Probabilidades:**
+
+```{r}
+#| label: prob-comprension
+t_comp <- tabla_prob(df_prob$Comprension)
+t_comp$descripcion <- paste0(
+  "Seleccionar un registro con nivel de comprensión «", t_comp$evento, "»"
+)
+t_comp$interpretacion <- paste0(
+  "De cada 100 registros, aproximadamente ", round(t_comp$P * 100),
+  " reportan comprensión «", t_comp$evento, "» (", round(t_comp$P * 100, 1), "%)"
+)
+knitr::kable(t_comp[, c("evento", "descripcion", "n", "P", "interpretacion")],
+             col.names = c("Evento atómico", "Descripción", "Frecuencia (n)", "Probabilidad",
+                           "Interpretación del resultado"),
+             digits = 4, align = "llrrl")
+```
+
+5. **Comprobación:** la suma de las probabilidades es `r sum(table(df_prob$Comprension)) / n`.
+
 ## Probabilidad condicional
+
+### 1. Eventos
+
+- **E₁:** seleccionar un registro al azar del estudio en el que el estudiante durmió 7 horas o menos.
+- **E₂:** seleccionar un registro al azar del estudio con nivel de comprensión alto o muy alto.
+
+```{r}
+#| label: eventos
+E1 <- df_prob$Horas <= 7
+E2 <- df_prob$Comprension %in% c("Alto", "Muy alto")
+
+p1  <- mean(E1)
+p2  <- mean(E2)
+p12 <- mean(E1 & E2)
+```
+
+P(E₁) = `r round(p1, 4)`, P(E₂) = `r round(p2, 4)`, P(E₁ ∩ E₂) = `r round(p12, 4)`.
+
+### 2. Prueba de independencia de eventos
+
+```{r}
+#| label: independencia
+knitr::kable(
+  data.frame(
+    Expresión = c("$P(E_1 \\cap E_2)$", "$P(E_1)\\cdot P(E_2)$",
+                  "$P(E_1 \\mid E_2)$", "$P(E_1)$"),
+    Valor = round(c(p12, p1 * p2, p12 / p2, p1), 3)
+  ),
+  align = "lr"
+)
+indep3 <- round(p12, 3) == round(p1 * p2, 3)
+indep2 <- round(p12, 2) == round(p1 * p2, 2)
+```
+
+Aproximando al tercer decimal, los eventos **`r ifelse(indep3, "sí", "no")`** son independientes; aproximando al segundo decimal, **`r ifelse(indep2, "sí", "no")`**.
+
+Con los valores sin redondear, P(E₁ ∩ E₂) = `r round(p12, 6)` y P(E₁)·P(E₂) = `r round(p1 * p2, 6)`. La igualdad **`r ifelse(isTRUE(all.equal(p12, p1 * p2)), "sí", "no")`** se cumple, y la conclusión se basa en estos valores sin redondear.
+
+### 3. Propiedades de la probabilidad
+
+```{r}
+#| label: propiedades
+#| results: asis
+f <- function(x) formatC(x, format = "f", digits = 4)
+cat(
+  "| Propiedad | Fórmula | Resultado |\n",
+  "|:--|:--|--:|\n",
+  "| Unión | $P(E_1 \\cup E_2)=P(E_1)+P(E_2)-P(E_1 \\cap E_2)$ | ", f(p1 + p2 - p12), " |\n",
+  "| Condicional | $P(E_1 \\mid E_2)=P(E_1 \\cap E_2)/P(E_2)$ | ", f(p12 / p2), " |\n",
+  "| Condicional | $P(E_2 \\mid E_1)=P(E_1 \\cap E_2)/P(E_1)$ | ", f(p12 / p1), " |\n",
+  "| Complemento de $E_2$ | $P(E_2^c)=1-P(E_2)$ | ", f(1 - p2), " |\n",
+  sep = ""
+)
+```
+
+**Diferencia simétrica:** los registros que están en $E_1$ o en $E_2$, pero no en ambos ($E_1 \triangle E_2$). Su probabilidad es
+
+$$P(E_1 \triangle E_2)=P(E_1)+P(E_2)-2P(E_1 \cap E_2)$$
+
+**Desigualdad triangular:** como $P(A \triangle B)$ mide qué tan distintos son dos eventos, cumple la desigualdad triangular $P(A \triangle C) \leq P(A \triangle B)+P(B \triangle C)$. Tomando $A=E_1$, $B=\varnothing$ y $C=E_2$ se obtiene
+
+$$P(E_1 \triangle E_2) \leq P(E_1)+P(E_2)$$
+
+```{r}
+#| label: desigualdad-triangular
+#| results: asis
+dif_sim  <- p1 + p2 - 2 * p12            # por la fórmula
+dif_dir  <- mean(xor(E1, E2))            # conteo directo en los datos
+suma     <- p1 + p2
+cumple_tri <- dif_sim <= suma
+f <- function(x) formatC(x, format = "f", digits = 4)
+cat(
+  "| Expresión | Valor |\n",
+  "|:--|--:|\n",
+  "| $P(E_1)+P(E_2)-2P(E_1 \\cap E_2)$ | ", f(dif_sim), " |\n",
+  "| $P(E_1 \\triangle E_2)$ (conteo directo) | ", f(dif_dir), " |\n",
+  "| $P(E_1)+P(E_2)$ | ", f(suma), " |\n",
+  sep = ""
+)
+```
+
+Los dos cálculos de $P(E_1 \triangle E_2)$ coinciden (`r f(dif_sim)`), y como `r f(dif_sim)` ≤ `r f(suma)`, la desigualdad triangular **`r ifelse(cumple_tri, "sí", "no")`** se cumple. La diferencia entre ambos lados es $2P(E_1 \cap E_2)$: los registros comunes se cuentan dos veces al sumar y no pertenecen a la diferencia simétrica.
+
+### 4. Teorema de Bayes
+
+P(E₂|E₁) = P(E₁|E₂)·P(E₂) / \[ P(E₁\vert{}E₂)·P(E₂) + P(E₁\vert{}E₂ᶜ)·P(E₂ᶜ) \]
+
+```{r}
+#| label: bayes
+p_e1_dado_e2  <- p12 / p2
+p_e1_dado_e2c <- mean(E1[!E2])
+p2c <- 1 - p2
+
+total <- p_e1_dado_e2 * p2 + p_e1_dado_e2c * p2c   # probabilidad total = P(E1)
+bayes <- (p_e1_dado_e2 * p2) / total
+
+knitr::kable(
+  data.frame(
+    Expresión = c("$P(E_1 \\mid E_2)$", "$P(E_1 \\mid E_2^c)$", "$P(E_2^c)$",
+                  "Probabilidad total $P(E_1)$", "Bayes: $P(E_2 \\mid E_1)$"),
+    Valor = round(c(p_e1_dado_e2, p_e1_dado_e2c, p2c, total, bayes), 4)
+  ),
+  align = "lr"
+)
+```
+
+### 5. Interpretación en el contexto del estudio
+
+- **Independencia:** P(E₁ ∩ E₂) = `r round(p12, 3)` y P(E₁)·P(E₂) = `r round(p1 * p2, 3)`. Sin redondear, la diferencia P(E₁ ∩ E₂) − P(E₁)·P(E₂) es `r round(p12 - p1 * p2, 4)`, distinta de cero, por lo que los eventos no son independientes. La diferencia es pequeña: la relación entre dormir 7 horas o menos y el nivel de comprensión es débil en estos datos.
+- **Probabilidad condicional:** P(E₁|E₂) = `r round(p_e1_dado_e2, 3)`. Entre los registros con comprensión alta o muy alta, el **`r round(p_e1_dado_e2 * 100, 1)`%** corresponde a estudiantes que durmieron 7 horas o menos, algo menos que en el total de registros (`r round(p1 * 100, 1)`%).
+- **Bayes:** P(E₂|E₁) = `r round(bayes, 3)`. Dado que el estudiante durmió 7 horas o menos, la probabilidad de tener una comprensión alta o muy alta es de **`r round(bayes * 100, 1)`%**, ligeramente menor que la probabilidad general de **`r round(p2 * 100, 1)`%**.
+
+En el contexto del estudio, quienes duermen 7 horas o menos reportan una comprensión alta o muy alta algo menos seguido que el resto de estudiantes. La diferencia es de pocos puntos porcentuales, por lo que no se puede concluir que el sueño por sí solo determine la comprensión. Se trata de una asociación leve observada en la sección. Otros factores, como el uso de IA o las horas de estudio, podrían influir en la comprensión, pero son solo hipótesis: no se evaluaron en este análisis.
 
 ## Variables aleatorias
 
-# Conclusiones
+```{r}
+#| label: prep-variables-aleatorias
+#| include: false
+
+porcentaje <- function(x) ifelse(is.na(x), "No definido", paste0(round(100 * x, 2), "%"))
+numero <- function(x) round(x, 3)
+pvalor <- function(p) ifelse(p < 0.001, "$p < 0.001$", paste0("$p = ", format(round(p, 3), nsmall = 3), "$"))
+
+va_horas     <- subset_diario$Horas[is.finite(subset_diario$Horas) & subset_diario$Horas >= 0 & subset_diario$Horas <= 24]
+va_consultas <- subset_diario$Consultas[is.finite(subset_diario$Consultas) & subset_diario$Consultas >= 0 & subset_diario$Consultas == floor(subset_diario$Consultas)]
+va_creditos  <- subset_demo$Creditos[is.finite(subset_demo$Creditos) & subset_demo$Creditos >= 0 & subset_demo$Creditos <= 40]
+va_notas     <- subset_exam$Nota[is.finite(subset_exam$Nota) & subset_exam$Nota >= 0 & subset_exam$Nota <= 20]
+```
+
+### Variables aleatorias discretas
+
+#### 1. Consultas a la IA (Distribución Geométrica)
+
+```{r}
+#| label: va-discreta-1
+prob_exito_ia <- mean(va_consultas > 10)
+esp1  <- 1 / prob_exito_ia
+var1  <- (1 - prob_exito_ia) / prob_exito_ia^2
+desv1 <- sqrt(var1)
+cv1   <- desv1 / esp1
+prob1 <- dgeom(19, prob_exito_ia)
+acum1 <- pgeom(18, prob_exito_ia)
+```
+
+- **Definición de la variable:** $X =$ número de respuestas diarias seleccionadas hasta encontrar la primera con **más de 10 consultas a la IA**.
+- **Modelo probabilístico:** $X \sim \text{Geom}(p)$, considerando el conteo de ensayos desde 1 hasta el primer éxito, donde $P(X=k) = (1-p)^{k-1}p$ para $k = 1, 2, \dots$
+- **Identificación del éxito y parámetro:** El éxito consiste en seleccionar un registro diario que reporte más de 10 consultas a la IA. A partir de los datos empíricos de la sección, $p = P(\text{Consultas} > 10) =$ **`r numero(prob_exito_ia)`** (`r porcentaje(prob_exito_ia)`).
+
+**Propiedades y caso de aplicación:**
+
+Se plantea calcular la probabilidad de que la primera respuesta con más de 10 consultas a la IA aparezca exactamente en la vigésima selección ($X = 20$), así como la probabilidad acumulada de encontrarla antes de la vigésima selección ($X < 20$).
+
+| Medida / Cálculo | Expresión | Resultado |
+|:--|:--|--:|
+| Valor esperado | $E(X) = 1/p$ | `r numero(esp1)` registros |
+| Varianza | $V(X) = (1-p)/p^2$ | `r numero(var1)` |
+| Desviación estándar | $SD(X) = \sqrt{V(X)}$ | `r numero(desv1)` registros |
+| Coeficiente de variación | $CV(X) = SD(X)/E(X)$ | `r porcentaje(cv1)` |
+| Probabilidad puntual | $P(X = 20) = (1-p)^{19}p$ | **`r porcentaje(prob1)`** |
+| Probabilidad acumulada | $P(X < 20) = P(X \leq 19)$ | `r porcentaje(acum1)` |
+
+```{r}
+#| label: plot-va-discreta-1
+df_geom <- data.frame(
+  k = 1:25,
+  prob = dgeom(0:24, prob_exito_ia),
+  destacado = ifelse(1:25 == 20, "k = 20", "Otros")
+)
+
+ggplot(df_geom, aes(x = k, y = prob, fill = destacado)) +
+  geom_col(color = "black", alpha = 0.8) +
+  scale_fill_manual(values = c("k = 20" = "#D95F02", "Otros" = "#4C72B0")) +
+  labs(title = "Función de masa de probabilidad: Consultas a IA > 10",
+       subtitle = paste0("Modelo Geométrico con p = ", numero(prob_exito_ia)),
+       x = "Número de registros seleccionados (k)",
+       y = "Probabilidad P(X = k)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+---
+
+#### 2. Créditos académicos (Distribución Binomial)
+
+```{r}
+#| label: va-discreta-2
+prob_exito_cred <- mean(va_creditos >= 20)
+n2    <- 10
+esp2  <- n2 * prob_exito_cred
+var2  <- n2 * prob_exito_cred * (1 - prob_exito_cred)
+desv2 <- sqrt(var2)
+cv2   <- if (esp2 == 0) NA_real_ else desv2 / esp2
+prob2 <- dbinom(7, n2, prob_exito_cred)
+acum2 <- pbinom(6, n2, prob_exito_cred, lower.tail = FALSE)
+```
+
+- **Definición de la variable:** $Y =$ cantidad de registros, entre 10 seleccionados de forma independiente y con reemplazo, que corresponden a estudiantes con **20 créditos académicos o más**.
+- **Modelo probabilístico:** $Y \sim \text{Binomial}(n = 10, p)$, con función de probabilidad $P(Y=y) = \binom{10}{y} p^y (1-p)^{10-y}$ para $y = 0, 1, \dots, 10$.
+- **Identificación del éxito y parámetro:** El éxito se define como registrar una carga académica de 20 créditos o más. De la muestra demográfica se estima $p = P(\text{Créditos} \geq 20) =$ **`r numero(prob_exito_cred)`** (`r porcentaje(prob_exito_cred)`).
+
+**Propiedades y caso de aplicación:**
+
+Si se eligen 10 registros demográficos al azar con reemplazo, se evalúa la probabilidad de que exactamente 7 correspondan a estudiantes con 20 créditos o más ($Y = 7$), junto con la probabilidad de obtener al menos 7 registros con dicha carga ($Y \geq 7$).
+
+| Medida / Cálculo | Expresión | Resultado |
+|:--|:--|--:|
+| Valor esperado | $E(Y) = np$ | `r numero(esp2)` estudiantes |
+| Varianza | $V(Y) = np(1-p)$ | `r numero(var2)` |
+| Desviación estándar | $SD(Y) = \sqrt{V(Y)}$ | `r numero(desv2)` estudiantes |
+| Coeficiente de variación | $CV(Y) = SD(Y)/E(Y)$ | `r porcentaje(cv2)` |
+| Probabilidad puntual | $P(Y = 7) = \binom{10}{7}p^7(1-p)^3$ | **`r porcentaje(prob2)`** |
+| Probabilidad acumulada | $P(Y \geq 7) = 1 - P(Y \leq 6)$ | `r porcentaje(acum2)` |
+
+```{r}
+#| label: plot-va-discreta-2
+df_binom <- data.frame(
+  y = 0:n2,
+  prob = dbinom(0:n2, n2, prob_exito_cred),
+  destacado = ifelse(0:n2 == 7, "y = 7", "Otros")
+)
+
+ggplot(df_binom, aes(x = factor(y), y = prob, fill = destacado)) +
+  geom_col(color = "black", alpha = 0.8) +
+  scale_fill_manual(values = c("y = 7" = "#D95F02", "Otros" = "#4C72B0")) +
+  labs(title = "Función de masa de probabilidad: Estudiantes con 20 o más créditos",
+       subtitle = paste0("Modelo Binomial con n = 10 y p = ", numero(prob_exito_cred)),
+       x = "Cantidad de registros con >= 20 créditos (y)",
+       y = "Probabilidad P(Y = y)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+---
+
+### Variables aleatorias continuas
+
+#### 1. Horas de sueño (Aproximación Normal)
+
+```{r}
+#| label: va-continua-1
+mu_h   <- mean(va_horas)
+sd_h   <- sd(va_horas)
+var_h  <- sd_h^2
+cv_h   <- sd_h / mu_h
+asim_h <- mean(((va_horas - mu_h) / sd_h)^3)
+p_sw_h <- shapiro.test(head(va_horas, 5000))$p.value
+diagnostico_h <- if (p_sw_h >= 0.05) "no se rechaza la normalidad" else "se rechaza la normalidad"
+
+prob_h <- pnorm(8, mu_h, sd_h) - pnorm(6, mu_h, sd_h)
+acum_h <- pnorm(7, mu_h, sd_h)
+```
+
+- **Definición de la variable:** $H =$ horas dormidas la noche anterior, registradas en el formulario diario.
+- **Validación del supuesto de normalidad:** Se obtuvo una media de `r numero(mu_h)` h, mediana de `r numero(median(va_horas))` h, desviación estándar de `r numero(sd_h)` h y coeficiente de asimetría de `r numero(asim_h)`. En la prueba de Shapiro-Wilk se obtiene `r pvalor(p_sw_h)` (`r diagnostico_h` al 5%). Dado que la media y la mediana son cercanas, la asimetría es moderada y el gráfico Q-Q sigue la recta teórica en la zona central, se acepta el modelo normal como aproximación razonable: $H \sim N(\mu = `r numero(mu_h)`, \sigma^2 = `r numero(var_h)`)$.
+
+```{r}
+#| label: plot-va-continua-1
+#| fig-height: 3.5
+par(mfrow = c(1, 2), mar = c(4, 4, 2.5, 1))
+hist(va_horas, probability = TRUE, breaks = "Sturges", col = "#A6CEE3",
+     border = "black", main = "Ajuste Normal: Horas de Sueño", xlab = "Horas")
+curve(dnorm(x, mu_h, sd_h), add = TRUE, col = "#1F78B4", lwd = 2)
+qqnorm(va_horas, pch = 16, cex = 0.6, col = "#4C72B0", main = "Gráfico Q-Q: Horas de Sueño")
+qqline(va_horas, col = "#D95F02", lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+**Propiedades y caso de aplicación:**
+
+Se determina la probabilidad de que un registro elegido al azar presente entre 6 y 8 horas de sueño ($6 \leq H \leq 8$), así como la probabilidad de dormir 7 horas o menos ($H \leq 7$).
+
+| Medida / Cálculo | Expresión | Resultado |
+|:--|:--|--:|
+| Valor esperado | $E(H) = \mu$ | `r numero(mu_h)` horas |
+| Varianza | $V(H) = \sigma^2$ | `r numero(var_h)` horas$^2$ |
+| Desviación estándar | $SD(H) = \sigma$ | `r numero(sd_h)` horas |
+| Coeficiente de variación | $CV(H) = \sigma/\mu$ | `r porcentaje(cv_h)` |
+| Probabilidad de intervalo | $P(6 \leq H \leq 8) = F(8) - F(6)$ | **`r porcentaje(prob_h)`** |
+| Probabilidad acumulada | $P(H \leq 7) = F(7)$ | `r porcentaje(acum_h)` |
+
+---
+
+#### 2. Nota de examen (Aproximación Normal)
+
+```{r}
+#| label: va-continua-2
+mu_n    <- mean(va_notas)
+sd_n    <- sd(va_notas)
+var_n   <- sd_n^2
+cv_n    <- sd_n / mu_n
+asim_n  <- mean(((va_notas - mu_n) / sd_n)^3)
+p_sw_n  <- shapiro.test(head(va_notas, 5000))$p.value
+diagnostico_n <- if (p_sw_n >= 0.05) "no se rechaza la normalidad" else "se rechaza la normalidad"
+
+prob_n  <- pnorm(14, mu_n, sd_n, lower.tail = FALSE)
+acum_n  <- pnorm(16, mu_n, sd_n) - pnorm(10, mu_n, sd_n)
+fuera_n <- pnorm(0, mu_n, sd_n) + pnorm(20, mu_n, sd_n, lower.tail = FALSE)
+```
+
+- **Definición de la variable:** $T =$ nota obtenida en el examen, medida en una escala continua de 0 a 20 puntos.
+- **Validación del supuesto de normalidad:** La muestra presenta una media de `r numero(mu_n)` puntos, mediana de `r numero(median(va_notas))` puntos, desviación estándar de `r numero(sd_n)` puntos y asimetría de `r numero(asim_n)`. El test de Shapiro-Wilk arroja `r pvalor(p_sw_n)` (`r diagnostico_n` al 5%). Aunque existe una leve asimetría negativa y acumulación en el límite superior (el modelo teórico asigna `r porcentaje(fuera_n)` fuera del rango $[0, 20]$), la cercanía entre media y mediana y el ajuste central en el gráfico Q-Q permiten emplear la distribución normal como modelo aproximado: $T \sim N(\mu = `r numero(mu_n)`, \sigma^2 = `r numero(var_n)`)$.
+
+```{r}
+#| label: plot-va-continua-2
+#| fig-height: 3.5
+par(mfrow = c(1, 2), mar = c(4, 4, 2.5, 1))
+hist(va_notas, probability = TRUE, breaks = "Sturges", col = "#B2DF8A",
+     border = "black", main = "Ajuste Normal: Notas de Examen", xlab = "Nota (0 a 20)")
+curve(dnorm(x, mu_n, sd_n), add = TRUE, col = "#33A02C", lwd = 2)
+qqnorm(va_notas, pch = 16, cex = 0.6, col = "#33A02C", main = "Gráfico Q-Q: Notas de Examen")
+qqline(va_notas, col = "#D95F02", lwd = 2)
+par(mfrow = c(1, 1))
+```
+
+**Propiedades y caso de aplicación:**
+
+Se calcula la probabilidad de que un estudiante seleccionado al azar obtenga una nota de al menos 14 puntos ($T \geq 14$), así como la probabilidad de ubicarse en el rango de 10 a 16 puntos ($10 \leq T \leq 16$).
+
+| Medida / Cálculo | Expresión | Resultado |
+|:--|:--|--:|
+| Valor esperado | $E(T) = \mu$ | `r numero(mu_n)` puntos |
+| Varianza | $V(T) = \sigma^2$ | `r numero(var_n)` puntos$^2$ |
+| Desviación estándar | $SD(T) = \sigma$ | `r numero(sd_n)` puntos |
+| Coeficiente de variación | $CV(T) = \sigma/\mu$ | `r porcentaje(cv_n)` |
+| Probabilidad de cola superior | $P(T \geq 14) = 1 - F(14)$ | **`r porcentaje(prob_n)`** |
+| Probabilidad de intervalo | $P(10 \leq T \leq 16) = F(16) - F(10)$ | `r porcentaje(acum_n)` |
+
+---
+
+### Síntesis comparativa de modelos
+
+| Variable aleatoria | Distribución planteada | Evento evaluado | Probabilidad |
+|:--|:--|:--|--:|
+| $X$: registros hasta el primero con $> 10$ consultas | Geométrica ($p = `r numero(prob_exito_ia)`$) | $P(X = 20)$ | **`r porcentaje(prob1)`** |
+| $Y$: registros con $\geq 20$ créditos entre 10 elegidos | Binomial ($n = 10, p = `r numero(prob_exito_cred)`$) | $P(Y = 7)$ | **`r porcentaje(prob2)`** |
+| $H$: horas dormidas la noche anterior | Normal ($\mu = `r numero(mu_h)`, \sigma = `r numero(sd_h)`$) | $P(6 \leq H \leq 8)$ | **`r porcentaje(prob_h)`** |
+| $T$: nota obtenida en el examen | Normal ($\mu = `r numero(mu_n)`, \sigma = `r numero(sd_n)`$) | $P(T \geq 14)$ | **`r porcentaje(prob_n)`** |
+
+
+# CONCLUSIONES
+
+1. **Horas de sueño y comprensión:** El descanso diario por sí solo no determina el nivel de comprensión percibida. La mediana de sueño se mantiene constante en **7 horas** en casi todas las categorías y, aunque dormir $\leq 7$ horas ($E_1$) y tener comprensión alta o muy alta ($E_2$) no son eventos estrictamente independientes, la probabilidad condicional $P(E_2 \mid E_1)$ (`r porcentaje(bayes)`) apenas difiere de la probabilidad general $P(E_2)$ (`r porcentaje(p2)`). Los hábitos de sueño más irregulares se concentraron en el grupo de comprensión *"Muy bajo"*.
+
+2. **Uso de IA y satisfacción:** El uso de IA se asocia con mayor satisfacción académica diaria (destacando el uso para **Programar**), mientras que no usarla concentra mayor insatisfacción. La correlación entre horas de sueño y consultas es cercana a cero (`r round(correlacion, 3)`), indicando que las consultas intensivas ($>10$, con $p = `r numero(prob_exito_ia)`$) responden a exigencias académicas puntuales y no al cansancio.
+
+3. **Modelado probabilístico y limitaciones:** Las horas de sueño ($H \sim N(`r numero(mu_h)`, `r numero(var_h)`)$) concentran un `r porcentaje(prob_h)` de probabilidad entre 6 y 8 horas, y las notas ($T \sim N(`r numero(mu_n)`, `r numero(var_n)`)$) presentan un `r porcentaje(prob_n)` de probabilidad de alcanzar al menos 14 puntos. Los modelos discretos asumen independencia entre registros, mientras que la aproximación normal en notas asigna un `r porcentaje(fuera_n)` fuera del rango $[0, 20]$. Al ser un estudio observacional con registros repetidos por alumno, los resultados muestran asociaciones y no causalidad.
+
+
+Este documento tiene 3840 palabras.

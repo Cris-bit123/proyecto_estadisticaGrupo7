@@ -57,6 +57,7 @@ numerico <- function(x) {
 
 porcentaje <- function(x) ifelse(is.na(x), "No definido", paste0(round(100 * x, 2), "%"))
 numero <- function(x) round(x, 3)
+pvalor <- function(p) ifelse(p < 0.001, "$p < 0.001$", paste0("$p = ", format(round(p, 3), nsmall = 3), "$"))
 
 base_diario <- leer_archivo("diario.csv")
 base_demo <- leer_archivo("demograficos.csv")
@@ -179,6 +180,8 @@ barplot(dgeom(x - 1, p1), names.arg = x, col = "grey60",
 ```
 :::
 ::: {.column width="47%"}
+$P(X=k)=(1-p)^{k-1}p,\ k=1,2,\dots$
+
 $E(X)=1/p =$ `r numero(esp1)`
 
 $V(X)=(1-p)/p^2 =$ `r numero(var1)`
@@ -232,6 +235,8 @@ barplot(dbinom(y, n2, p2), names.arg = y,
 ```
 :::
 ::: {.column width="47%"}
+$P(Y=y)=\binom{10}{y}p^y(1-p)^{10-y},\ y=0,\dots,10$
+
 $E(Y)=np =$ `r numero(esp2)`
 
 $V(Y)=np(1-p) =$ `r numero(var2)`
@@ -258,7 +263,7 @@ Se evalúa una aproximación normal mediante histograma, curva ajustada y gráfi
 
 ```{r}
 #| fig-width: 11
-#| fig-height: 3.6
+#| fig-height: 2.5
 #| out-width: 100%
 op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
 hist(horas, probability = TRUE, breaks = "Sturges", col = "grey80",
@@ -270,7 +275,9 @@ par(op)
 ```
 
 Media: `r numero(mu_h)` h. Mediana: `r numero(median(horas))` h. Desviación: `r numero(sd_h)` h. Asimetría: `r numero(asim_h)`.  
-Shapiro-Wilk: $p =$ `r numero(p_sw_h)`; `r diagnostico_h` al 5%.
+Shapiro-Wilk: `r pvalor(p_sw_h)`; `r diagnostico_h` al 5%.
+
+**Validación:** media y mediana cercanas, asimetría moderada y forma de campana; el Q-Q sigue la recta en el centro y se separa en los extremos. Se acepta la normal como aproximación (**caso 2**).
 
 ## Continua 1: propiedades y ejemplo
 
@@ -298,7 +305,7 @@ Se evalúa una aproximación normal con el histograma y el gráfico Q-Q.
 
 ```{r}
 #| fig-width: 11
-#| fig-height: 3.6
+#| fig-height: 2.5
 #| out-width: 100%
 op <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
 hist(notas, probability = TRUE, breaks = "Sturges", col = "grey80",
@@ -310,7 +317,9 @@ par(op)
 ```
 
 Media: `r numero(mu_n)`. Mediana: `r numero(median(notas))`. Desviación: `r numero(sd_n)`. Asimetría: `r numero(asim_n)`.  
-Shapiro-Wilk: $p =$ `r numero(p_sw_n)`; `r diagnostico_n` al 5%.
+Shapiro-Wilk: `r pvalor(p_sw_n)`; `r diagnostico_n` al 5%.
+
+**Validación:** media y mediana cercanas, Q-Q aceptable en el centro, pero con asimetría negativa y acumulación en 20 (`r porcentaje(fuera_n)` fuera de 0 a 20). Se usa la normal como aproximación (**caso 2**).
 
 ## Continua 2: propiedades y ejemplo
 
@@ -350,3 +359,4 @@ Los dos casos discretos utilizan **consultas** y **créditos**. Los dos casos co
 - Los registros repetidos de un estudiante no equivalen a estudiantes distintos, y las respuestas no permiten afirmar causalidad.
 
 **Fuente de datos:** formularios diario, demográfico y de exámenes, Estadística y Probabilidades I, sección 1, ciclo 2026-2.
+
